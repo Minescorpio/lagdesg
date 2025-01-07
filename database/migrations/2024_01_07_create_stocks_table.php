@@ -11,15 +11,14 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->decimal('quantity', 10, 3);
-            $table->decimal('minimum_quantity', 10, 3)->default(0);
-            $table->string('location')->nullable();
-            $table->enum('movement_type', ['in', 'out', 'adjustment', 'loss', 'return']);
-            $table->text('reason')->nullable();
             $table->foreignId('user_id')->constrained();
+            $table->enum('type', ['in', 'out', 'adjustment']);
+            $table->decimal('quantity', 10, 3);
             $table->decimal('unit_price', 10, 2)->nullable();
             $table->string('reference')->nullable();
-            $table->json('metadata')->nullable();
+            $table->text('notes')->nullable();
+            $table->json('meta_data')->nullable();
+            $table->timestamp('date')->useCurrent();
             $table->timestamps();
             $table->softDeletes();
         });

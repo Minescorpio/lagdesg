@@ -25,14 +25,13 @@ class Index extends Component
     {
         // Calculate today's sales
         $this->todaySales = Sale::whereDate('created_at', today())
-            ->sum('total');
+            ->sum('total_amount');
 
         // Get total orders count
         $this->totalOrders = Sale::count();
 
         // Get low stock items count
-        $this->lowStockItems = Product::where('quantity', '<=', DB::raw('alert_quantity'))
-            ->count();
+        $this->lowStockItems = Product::lowStock()->count();
 
         // Get total customers
         $this->totalCustomers = Customer::count();
@@ -46,6 +45,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('dashboard');
+        return view('livewire.dashboard.index');
     }
 } 

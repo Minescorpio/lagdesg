@@ -9,7 +9,8 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\DashboardController;
 use App\Livewire\Dashboard\Index as DashboardIndex;
-use App\Livewire\Pos\Terminal;
+use App\Livewire\Pos\Terminal as PosTerminal;
+use App\Http\Controllers\PosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +30,22 @@ Route::middleware([
     // Dashboard
     Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
     
-    // POS Terminal
-    Route::get('/pos', Terminal::class)->name('pos.terminal');
-    
     // Settings
     Route::get('/settings', function() {
         return view('settings.index');
     })->name('settings');
+
+    // POS Routes
+    Route::prefix('pos')->name('pos.')->group(function () {
+        Route::get('/terminal', PosTerminal::class)->name('terminal');
+        Route::get('/products', [PosController::class, 'getProducts'])->name('products');
+        Route::post('/add-to-cart', [PosController::class, 'addToCart'])->name('add-to-cart');
+        Route::post('/update-cart', [PosController::class, 'updateCart'])->name('update-cart');
+        Route::post('/remove-from-cart', [PosController::class, 'removeFromCart'])->name('remove-from-cart');
+        Route::post('/clear-cart', [PosController::class, 'clearCart'])->name('clear-cart');
+        Route::post('/complete-sale', [PosController::class, 'completeSale'])->name('complete-sale');
+        Route::get('/receipt/{sale}', [PosController::class, 'receipt'])->name('receipt');
+    });
 });
 
 // Products Routes
