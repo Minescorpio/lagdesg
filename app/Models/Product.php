@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Helpers\CurrencyHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -39,7 +43,11 @@ class Product extends Model
         'has_free_price' => 'boolean'
     ];
 
-    protected $appends = ['current_stock'];
+    protected $appends = [
+        'formatted_price',
+        'formatted_cost_price',
+        'current_stock'
+    ];
 
     public function category(): BelongsTo
     {
@@ -54,6 +62,16 @@ class Product extends Model
     public function stocks(): HasMany
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function getFormattedPriceAttribute()
+    {
+        return CurrencyHelper::format($this->price);
+    }
+
+    public function getFormattedCostPriceAttribute()
+    {
+        return CurrencyHelper::format($this->cost_price);
     }
 
     public function getCurrentStockAttribute(): float
