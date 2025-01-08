@@ -8,6 +8,7 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Storage;
 
 class Edit extends Component
 {
@@ -71,7 +72,7 @@ class Edit extends Component
         $this->weighable = $product->weighable;
         $this->free_price = $product->free_price;
         $this->active = $product->active;
-        $this->current_image = $product->getFirstMediaUrl('product_images');
+        $this->current_image = $product->image_path ? asset('storage/' . $product->image_path) : null;
     }
 
     public function formatPrice($value)
@@ -94,7 +95,7 @@ class Edit extends Component
         $this->validate();
 
         try {
-            $this->product->update([
+            $data = [
                 'name' => $this->name,
                 'description' => $this->description,
                 'barcode' => $this->barcode,
@@ -107,12 +108,17 @@ class Edit extends Component
                 'weighable' => $this->weighable,
                 'free_price' => $this->free_price,
                 'active' => $this->active
-            ]);
+            ];
 
             if ($this->image) {
-                $this->product->clearMediaCollection('product_images');
-                $this->product->addMedia($this->image)->toMediaCollection('product_images');
+                // Delete old image if exists
+                if ($this->product->image_path) {
+                    Storage::disk('public')->delete($this->product->image_path);
+                }
+                $data['image_path'] = $this->image->store('products', 'public');
             }
+
+            $this->product->update($data);
 
             session()->flash('success', __('Product updated successfully.'));
             return redirect()->route('products.index');

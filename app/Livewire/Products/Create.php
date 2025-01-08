@@ -72,7 +72,7 @@ class Create extends Component
         $this->validate();
 
         try {
-            $product = Product::create([
+            $data = [
                 'name' => $this->name,
                 'description' => $this->description,
                 'barcode' => $this->barcode,
@@ -85,7 +85,13 @@ class Create extends Component
                 'weighable' => $this->weighable,
                 'free_price' => $this->free_price,
                 'active' => $this->active
-            ]);
+            ];
+
+            if ($this->image) {
+                $data['image_path'] = $this->image->store('products', 'public');
+            }
+
+            $product = Product::create($data);
 
             if ($this->track_stock && $this->initial_stock > 0) {
                 $product->stocks()->create([
@@ -95,10 +101,6 @@ class Create extends Component
                     'reference' => 'Initial Stock',
                     'user_id' => auth()->id()
                 ]);
-            }
-
-            if ($this->image) {
-                $product->addMedia($this->image)->toMediaCollection('product_images');
             }
 
             session()->flash('success', __('Product created successfully.'));
