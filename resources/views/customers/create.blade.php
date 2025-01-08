@@ -1,149 +1,133 @@
 <div>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Add Customer') }}
+            <h2 class="font-semibold text-xl text-white leading-tight">
+                {{ __('Nouveau client') }}
             </h2>
-            <a href="{{ route('customers.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                {{ __('Back to List') }}
+            <a href="{{ route('customers.index') }}" class="btn-secondary">
+                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                </svg>
+                {{ __('Retour à la liste') }}
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <form wire:submit.prevent="save" class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Informations personnelles -->
-                        <div class="space-y-4">
-                            <h3 class="text-lg font-medium text-gray-900">{{ __('Personal Information') }}</h3>
-                            
-                            <!-- Civilité -->
-                            <div>
-                                <x-label for="title" value="{{ __('Title') }}" />
-                                <select id="title" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="title">
-                                    <option value="">{{ __('Select Title') }}</option>
-                                    <option value="mr">{{ __('Mr.') }}</option>
-                                    <option value="mrs">{{ __('Mrs.') }}</option>
-                                    <option value="ms">{{ __('Ms.') }}</option>
-                                </select>
-                                <x-input-error for="title" class="mt-2" />
-                            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form wire:submit="save" class="space-y-8">
+                        <!-- Personal Information -->
+                        <div>
+                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Informations personnelles') }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="form-group">
+                                    <label for="title" class="form-label">{{ __('Civilité') }}</label>
+                                    <select id="title" wire:model="title" class="form-select">
+                                        <option value="">{{ __('Sélectionner une civilité') }}</option>
+                                        <option value="mr">{{ __('M.') }}</option>
+                                        <option value="mrs">{{ __('Mme') }}</option>
+                                        <option value="ms">{{ __('Mlle') }}</option>
+                                    </select>
+                                    @error('title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                            <!-- Prénom -->
-                            <div>
-                                <x-label for="first_name" value="{{ __('First Name') }}" />
-                                <x-input id="first_name" type="text" class="mt-1 block w-full" wire:model="first_name" required />
-                                <x-input-error for="first_name" class="mt-2" />
-                            </div>
+                                <div class="form-group">
+                                    <label for="first_name" class="form-label">{{ __('Prénom') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" id="first_name" wire:model="first_name" class="form-input" required>
+                                    @error('first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                            <!-- Nom -->
-                            <div>
-                                <x-label for="last_name" value="{{ __('Last Name') }}" />
-                                <x-input id="last_name" type="text" class="mt-1 block w-full" wire:model="last_name" required />
-                                <x-input-error for="last_name" class="mt-2" />
-                            </div>
+                                <div class="form-group">
+                                    <label for="last_name" class="form-label">{{ __('Nom') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" id="last_name" wire:model="last_name" class="form-input" required>
+                                    @error('last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                            <!-- Date de naissance -->
-                            <div>
-                                <x-label for="birth_date" value="{{ __('Birth Date') }}" />
-                                <x-input id="birth_date" type="date" class="mt-1 block w-full" wire:model="birth_date" />
-                                <x-input-error for="birth_date" class="mt-2" />
-                            </div>
-                        </div>
+                                <div class="form-group">
+                                    <label for="birth_date" class="form-label">{{ __('Date de naissance') }}</label>
+                                    <input type="date" id="birth_date" wire:model="birth_date" class="form-input">
+                                    @error('birth_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                        <!-- Coordonnées -->
-                        <div class="space-y-4">
-                            <h3 class="text-lg font-medium text-gray-900">{{ __('Contact Information') }}</h3>
-                            
-                            <!-- Email -->
-                            <div>
-                                <x-label for="email" value="{{ __('Email') }}" />
-                                <x-input id="email" type="email" class="mt-1 block w-full" wire:model="email" />
-                                <x-input-error for="email" class="mt-2" />
-                            </div>
-
-                            <!-- Téléphone -->
-                            <div>
-                                <x-label for="phone" value="{{ __('Phone') }}" />
-                                <x-input id="phone" type="tel" class="mt-1 block w-full" wire:model="phone" />
-                                <x-input-error for="phone" class="mt-2" />
-                            </div>
-
-                            <!-- Adresse -->
-                            <div>
-                                <x-label for="address" value="{{ __('Address') }}" />
-                                <textarea id="address" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="address" rows="2"></textarea>
-                                <x-input-error for="address" class="mt-2" />
-                            </div>
-
-                            <!-- Code postal -->
-                            <div>
-                                <x-label for="postal_code" value="{{ __('Postal Code') }}" />
-                                <x-input id="postal_code" type="text" class="mt-1 block w-full" wire:model="postal_code" />
-                                <x-input-error for="postal_code" class="mt-2" />
-                            </div>
-
-                            <!-- Ville -->
-                            <div>
-                                <x-label for="city" value="{{ __('City') }}" />
-                                <x-input id="city" type="text" class="mt-1 block w-full" wire:model="city" />
-                                <x-input-error for="city" class="mt-2" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Options supplémentaires -->
-                    <div class="mt-6 space-y-4">
-                        <h3 class="text-lg font-medium text-gray-900">{{ __('Additional Options') }}</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Programme de fidélité -->
-                            <div>
-                                <x-label for="loyalty_program" value="{{ __('Loyalty Program') }}" />
-                                <select id="loyalty_program" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="loyalty_program">
-                                    <option value="">{{ __('Select Program') }}</option>
-                                    @foreach($loyaltyPrograms as $program)
-                                        <option value="{{ $program->id }}">{{ $program->name }}</option>
-                                    @endforeach
-                                </select>
-                                <x-input-error for="loyalty_program" class="mt-2" />
-                            </div>
-
-                            <!-- Notes -->
-                            <div>
-                                <x-label for="notes" value="{{ __('Notes') }}" />
-                                <textarea id="notes" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="notes" rows="3"></textarea>
-                                <x-input-error for="notes" class="mt-2" />
+                                <div class="form-group">
+                                    <label for="company" class="form-label">{{ __('Société') }}</label>
+                                    <input type="text" id="company" wire:model="company" class="form-input">
+                                    @error('company') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Options -->
-                        <div class="flex space-x-6">
-                            <label class="flex items-center">
-                                <x-checkbox wire:model="active" />
-                                <span class="ml-2 text-sm text-gray-600">{{ __('Active') }}</span>
-                            </label>
+                        <!-- Contact Information -->
+                        <div>
+                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Coordonnées') }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">{{ __('Email') }}</label>
+                                    <input type="email" id="email" wire:model="email" class="form-input">
+                                    @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                            <label class="flex items-center">
-                                <x-checkbox wire:model="accepts_marketing" />
-                                <span class="ml-2 text-sm text-gray-600">{{ __('Accepts Marketing') }}</span>
-                            </label>
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">{{ __('Téléphone') }}</label>
+                                    <input type="tel" id="phone" wire:model="phone" class="form-input">
+                                    @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group col-span-2">
+                                    <label for="address" class="form-label">{{ __('Adresse') }}</label>
+                                    <textarea id="address" wire:model="address" class="form-input" rows="2"></textarea>
+                                    @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="postal_code" class="form-label">{{ __('Code postal') }}</label>
+                                    <input type="text" id="postal_code" wire:model="postal_code" class="form-input">
+                                    @error('postal_code') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="city" class="form-label">{{ __('Ville') }}</label>
+                                    <input type="text" id="city" wire:model="city" class="form-input">
+                                    @error('city') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Boutons d'action -->
-                    <div class="mt-6 flex justify-end space-x-3">
-                        <x-secondary-button type="button" wire:click="cancel">
-                            {{ __('Cancel') }}
-                        </x-secondary-button>
+                        <!-- Additional Information -->
+                        <div>
+                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Informations complémentaires') }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="form-group col-span-2">
+                                    <label for="notes" class="form-label">{{ __('Notes') }}</label>
+                                    <textarea id="notes" wire:model="notes" class="form-input" rows="3"></textarea>
+                                    @error('notes') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
 
-                        <x-button type="submit" wire:loading.attr="disabled">
-                            {{ __('Create Customer') }}
-                        </x-button>
-                    </div>
-                </form>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="active" wire:model="active" class="form-checkbox">
+                                    <label for="active" class="ml-2 text-gray-300">{{ __('Actif') }}</label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="accepts_marketing" wire:model="accepts_marketing" class="form-checkbox">
+                                    <label for="accepts_marketing" class="ml-2 text-gray-300">{{ __('Accepte les communications marketing') }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn-primary">
+                                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ __('Créer le client') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

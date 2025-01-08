@@ -1,66 +1,74 @@
 <div>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('New Category') }}
+            <h2 class="font-semibold text-xl text-white leading-tight">
+                {{ __('Nouvelle catégorie') }}
             </h2>
-            <a href="{{ route('categories.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                {{ __('Back to List') }}
+            <a href="{{ route('categories.index') }}" class="btn-secondary">
+                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                </svg>
+                {{ __('Retour à la liste') }}
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <form wire:submit.prevent="save" class="p-6">
-                    <!-- Basic Information -->
-                    <div class="space-y-6">
-                        <!-- Name -->
+            <div class="card">
+                <div class="card-body">
+                    <form wire:submit="save" class="space-y-8">
+                        <!-- Basic Information -->
                         <div>
-                            <x-label for="name" value="{{ __('Name') }}" />
-                            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="name" required autofocus />
-                            <x-input-error for="name" class="mt-2" />
+                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Informations de base') }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">{{ __('Nom') }} <span class="text-red-500">*</span></label>
+                                    <input type="text" id="name" wire:model="name" class="form-input" required>
+                                    @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="parent_id" class="form-label">{{ __('Catégorie parente') }}</label>
+                                    <select id="parent_id" wire:model="parent_id" class="form-select">
+                                        <option value="">{{ __('Aucune') }}</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('parent_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group col-span-2">
+                                    <label for="description" class="form-label">{{ __('Description') }}</label>
+                                    <textarea id="description" wire:model="description" class="form-input" rows="3"></textarea>
+                                    @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Description -->
+                        <!-- Additional Options -->
                         <div>
-                            <x-label for="description" value="{{ __('Description') }}" />
-                            <textarea id="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="description" rows="3"></textarea>
-                            <x-input-error for="description" class="mt-2" />
+                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Options') }}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="active" wire:model="active" class="form-checkbox">
+                                    <label for="active" class="ml-2 text-gray-300">{{ __('Actif') }}</label>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Parent Category -->
-                        <div>
-                            <x-label for="parent_id" value="{{ __('Parent Category') }}" />
-                            <select id="parent_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model="parent_id">
-                                <option value="">{{ __('None') }}</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error for="parent_id" class="mt-2" />
+                        <!-- Submit Button -->
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn-primary">
+                                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ __('Créer la catégorie') }}
+                            </button>
                         </div>
-
-                        <!-- Active Status -->
-                        <div class="flex items-center">
-                            <x-checkbox wire:model="active" />
-                            <x-label for="active" value="{{ __('Active') }}" class="ml-2" />
-                            <x-input-error for="active" class="mt-2" />
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="mt-6 flex justify-end space-x-3">
-                        <x-secondary-button type="button" wire:click="cancel">
-                            {{ __('Cancel') }}
-                        </x-secondary-button>
-
-                        <x-button type="submit" wire:loading.attr="disabled">
-                            {{ __('Create Category') }}
-                        </x-button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
