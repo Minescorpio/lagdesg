@@ -17,9 +17,16 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->integer('sort_order')->default(0);
             $table->boolean('active')->default(true);
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreign('parent_id')
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('set null');
         });
     }
 

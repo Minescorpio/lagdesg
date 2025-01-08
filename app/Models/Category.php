@@ -15,8 +15,8 @@ class Category extends Model
         'name',
         'description',
         'slug',
-        'parent_id',
-        'active'
+        'active',
+        'parent_id'
     ];
 
     protected $casts = [
@@ -28,13 +28,13 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function children(): HasMany
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
 } 

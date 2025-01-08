@@ -5,43 +5,19 @@ namespace App\Livewire\Categories;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class CategoryList extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $sortField = 'sort_order';
-    public $sortDirection = 'asc';
     public $showInactive = false;
     public $perPage = 10;
-
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'sortField' => ['except' => 'sort_order'],
-        'sortDirection' => ['except' => 'asc'],
-        'showInactive' => ['except' => false],
-        'perPage' => ['except' => 10],
-    ];
-
-    protected $listeners = [
-        'categoryReordered' => 'handleReorder'
-    ];
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
+    public $sortField = 'name';
+    public $sortDirection = 'asc';
+    public $showDeleteModal = false;
+    public $categoryToDelete;
 
     public function render()
     {
@@ -69,41 +45,56 @@ class CategoryList extends Component
         $category->update(['active' => !$category->active]);
         
         $this->dispatch('notify', [
-            'message' => __('Category status updated successfully'),
+            'message' => 'Statut de la catégorie mis à jour avec succès',
             'type' => 'success'
         ]);
     }
 
-    public function delete($categoryId)
+    public function confirmDelete($categoryId)
     {
-        $category = Category::findOrFail($categoryId);
-        
-        if ($category->products()->exists()) {
+        $this->categoryToDelete = Category::findOrFail($categoryId);
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteCategory()
+    {
+        if ($this->categoryToDelete) {
+            // Vérifier si la catégorie a des produits
+            if ($this->categoryToDelete->products()->count() > 0) {
+                $this->dispatch('notify', [
+                    'message' => 'Impossible de supprimer une catégorie avec des produits associés',
+                    'type' => 'error'
+                ]);
+                return;
+            }
+
+            // Vérifier si la catégorie a des sous-catégories
+            if ($this->categoryToDelete->children()->count() > 0) {
+                $this->dispatch('notify', [
+                    'message' => 'Impossible de supprimer une catégorie avec des sous-catégories',
+                    'type' => 'error'
+                ]);
+                return;
+            }
+
+            $this->categoryToDelete->delete();
+            $this->showDeleteModal = false;
+            $this->categoryToDelete = null;
+
             $this->dispatch('notify', [
-                'message' => __('Cannot delete category with associated products.'),
-                'type' => 'error'
+                'message' => 'Catégorie supprimée avec succès',
+                'type' => 'success'
             ]);
-            return;
         }
-        
-        $category->delete();
-        
-        $this->dispatch('notify', [
-            'message' => __('Category deleted successfully'),
-            'type' => 'success'
-        ]);
     }
 
-    public function handleReorder($orderedIds)
+    public function sortBy($field)
     {
-        foreach ($orderedIds as $order => $categoryId) {
-            Category::where('id', $categoryId)
-                ->update(['sort_order' => $order]);
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
         }
-
-        $this->dispatch('notify', [
-            'message' => __('Categories reordered successfully'),
-            'type' => 'success'
-        ]);
     }
 } 

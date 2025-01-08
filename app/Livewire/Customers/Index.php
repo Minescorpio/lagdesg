@@ -12,69 +12,51 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
-    public $perPage = 10;
-    public $sortField = 'last_name';
-    public $sortDirection = 'asc';
-    public $confirmingCustomerDeletion = false;
-    public $customerId;
+    public $showDeleteModal = false;
+    public $customerToDelete;
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'perPage' => ['except' => 10],
-        'sortField' => ['except' => 'last_name'],
-        'sortDirection' => ['except' => 'asc'],
-    ];
-
-    public function updatingSearch()
+    #[Layout('layouts.app')]
+    public function render()
     {
-        $this->resetPage();
-    }
+        $customers = Customer::query()
+            ->withCount('sales')
+            ->withSum('sales', 'total_amount as total_spent')
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('first_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                        ->orWhere('email', 'like', '%' . $this->search . '%')
+                        ->orWhere('phone', 'like', '%' . $this->search . '%')
+                        ->orWhere('customer_code', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orderByName()
+            ->paginate(10);
 
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
+        return view('livewire.customers.index', [
+            'customers' => $customers
+        ]);
     }
 
     public function confirmDelete($customerId)
     {
-        $this->customerId = $customerId;
-        $this->confirmingCustomerDeletion = true;
+        $this->customerToDelete = $customerId;
+        $this->showDeleteModal = true;
     }
 
     public function deleteCustomer()
     {
-        $customer = Customer::findOrFail($this->customerId);
+        $customer = Customer::findOrFail($this->customerToDelete);
         $customer->delete();
-        $this->confirmingCustomerDeletion = false;
-        
-        $this->dispatch('notify', [
-            'type' => 'success',
-            'message' => __('Customer deleted successfully.')
-        ]);
+
+        $this->showDeleteModal = false;
+        $this->customerToDelete = null;
+
+        session()->flash('success', __('Customer deleted successfully.'));
     }
 
-    #[Layout('components.layouts.app')]
-    public function render()
+    public function updatingSearch()
     {
-        $customers = Customer::query()
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('first_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('last_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%')
-                      ->orWhere('phone', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate($this->perPage);
-
-        return view('customers.index', [
-            'customers' => $customers,
-        ]);
+        $this->resetPage();
     }
 } 

@@ -5,44 +5,53 @@ namespace App\Livewire\Dashboard;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Customer;
-use App\Helpers\CurrencyHelper;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
+#[Title('Tableau de bord')]
 class Index extends Component
 {
-    #[Layout('components.layouts.app')]
-    public function render()
+    public $totalSalesToday = 0;
+    public $totalOrders = 0;
+    public $lowStockItems = 0;
+    public $totalCustomers = 0;
+    public $recentSales = [];
+
+    public function mount()
     {
-        $today = Carbon::today();
+        $this->loadStats();
+        $this->loadRecentSales();
+    }
 
-        $totalSalesToday = CurrencyHelper::format(
-            Sale::whereDate('created_at', $today)
-                ->where('status', 'completed')
-                ->sum('total_amount') ?? 0
-        );
+    public function loadStats()
+    {
+        // Total des ventes aujourd'hui
+        $this->totalSalesToday = Sale::whereDate('created_at', Carbon::today())
+            ->sum('total_amount');
 
-        $totalOrders = Sale::whereDate('created_at', $today)
-            ->where('status', 'completed')
+        // Total des commandes
+        $this->totalOrders = Sale::count();
+
+        // Articles en stock bas
+        $this->lowStockItems = Product::whereRaw('stock_quantity <= minimum_stock')
             ->count();
 
-        $lowStockItems = Product::lowStock()->count();
+        // Total des clients
+        $this->totalCustomers = Customer::count();
+    }
 
-        $totalCustomers = Customer::count();
-
-        $recentSales = Sale::with('customer')
-            ->where('status', 'completed')
+    public function loadRecentSales()
+    {
+        $this->recentSales = Sale::with('customer')
             ->latest()
-            ->take(5)
+            ->take(10)
             ->get();
+    }
 
-        return view('dashboard.index', compact(
-            'totalSalesToday',
-            'totalOrders',
-            'lowStockItems',
-            'totalCustomers',
-            'recentSales'
-        ));
+    public function render()
+    {
+        return view('dashboard.index');
     }
 } 

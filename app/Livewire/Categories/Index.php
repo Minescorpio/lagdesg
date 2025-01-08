@@ -13,8 +13,8 @@ class Index extends Component
 
     public $search = '';
     public $perPage = 10;
-    public $confirmingCategoryDeletion = false;
-    public $categoryIdToDelete;
+    public $showDeleteModal = false;
+    public $categoryToDelete;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -28,44 +28,57 @@ class Index extends Component
 
     public function confirmDelete($categoryId)
     {
-        $this->categoryIdToDelete = $categoryId;
-        $this->confirmingCategoryDeletion = true;
+        $this->categoryToDelete = Category::findOrFail($categoryId);
+        $this->showDeleteModal = true;
     }
 
     public function deleteCategory()
     {
-        $category = Category::findOrFail($this->categoryIdToDelete);
-        
-        // Check if category has products
-        if ($category->products()->count() > 0) {
-            // Uncategorize products
-            $category->products()->update(['category_id' => null]);
-        }
+        if ($this->categoryToDelete) {
+            // Vérifier si la catégorie a des produits
+            if ($this->categoryToDelete->products()->count() > 0) {
+                $this->dispatch('notify', [
+                    'message' => 'Impossible de supprimer une catégorie avec des produits associés',
+                    'type' => 'error'
+                ]);
+                return;
+            }
 
-        $category->delete();
-        $this->confirmingCategoryDeletion = false;
-        
-        $this->dispatch('notify', [
-            'type' => 'success',
-            'message' => __('Category deleted successfully.')
-        ]);
+            // Vérifier si la catégorie a des sous-catégories
+            if ($this->categoryToDelete->children()->count() > 0) {
+                $this->dispatch('notify', [
+                    'message' => 'Impossible de supprimer une catégorie avec des sous-catégories',
+                    'type' => 'error'
+                ]);
+                return;
+            }
+
+            $this->categoryToDelete->delete();
+            $this->showDeleteModal = false;
+            $this->categoryToDelete = null;
+
+            $this->dispatch('notify', [
+                'message' => 'Catégorie supprimée avec succès',
+                'type' => 'success'
+            ]);
+        }
     }
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     public function render()
     {
-        $categories = Category::query()
+        $query = Category::query()
             ->withCount('products')
-            ->with('parent')
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
                 });
             })
-            ->orderBy('name')
-            ->paginate($this->perPage);
+            ->orderBy('name');
 
-        return view('categories.index', compact('categories'));
+        return view('livewire.categories.index', [
+            'categories' => $query->paginate($this->perPage),
+        ]);
     }
 } 

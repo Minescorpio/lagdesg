@@ -10,19 +10,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('barcode')->unique()->nullable();
+            $table->string('code')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
-            $table->decimal('cost_price', 10, 2);
-            $table->boolean('is_weighable')->default(false);
-            $table->boolean('has_free_price')->default(false);
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('image_path')->nullable();
-            $table->boolean('track_stock')->default(true);
-            $table->integer('min_stock_alert')->default(0);
-            $table->decimal('vat_rate', 5, 2);
-            $table->boolean('active')->default(true);
+            $table->integer('stock_quantity')->default(0);
+            $table->integer('minimum_stock')->default(0);
+            $table->string('image')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

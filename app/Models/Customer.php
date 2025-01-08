@@ -39,4 +39,9 @@ class Customer extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    public function scopeOrderByName($query)
+    {
+        return $query->orderBy('first_name')->orderBy('last_name');
+    }
 } 

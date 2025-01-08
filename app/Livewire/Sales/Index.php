@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Sales;
 
+use App\Models\Sale;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Sale;
+use Livewire\Attributes\Layout;
 use Carbon\Carbon;
 
 class Index extends Component
@@ -12,117 +13,119 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
-    public $paymentMethodFilter = '';
-    public $dateFilter = 'today';
-    public $startDate;
-    public $endDate;
+    public $dateRange = 'today';
+    public $paymentMethod = '';
     public $showDeleteModal = false;
     public $showReceiptModal = false;
-    public $selectedSaleId;
+    public $saleToDelete;
     public $selectedSale;
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'paymentMethodFilter' => ['except' => ''],
-        'dateFilter' => ['except' => 'today'],
-    ];
-
-    public function mount()
+    #[Layout('layouts.app')]
+    public function render()
     {
-        $this->startDate = now()->format('Y-m-d');
-        $this->endDate = now()->format('Y-m-d');
+        $query = Sale::query()
+            ->with(['customer', 'items.product'])
+            ->withCount('items')
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('receipt_no', 'like', '%' . $this->search . '%')
+                        ->orWhereHas('customer', function ($q) {
+                            $q->where('first_name', 'like', '%' . $this->search . '%')
+                                ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                                ->orWhere('email', 'like', '%' . $this->search . '%')
+                                ->orWhere('phone', 'like', '%' . $this->search . '%');
+                        });
+                });
+            })
+            ->when($this->paymentMethod, function ($query) {
+                $query->where('payment_method', $this->paymentMethod);
+            })
+            ->when($this->dateRange, function ($query) {
+                switch ($this->dateRange) {
+                    case 'today':
+                        $query->whereDate('created_at', Carbon::today());
+                        break;
+                    case 'yesterday':
+                        $query->whereDate('created_at', Carbon::yesterday());
+                        break;
+                    case 'last7days':
+                        $query->whereBetween('created_at', [Carbon::now()->subDays(7), Carbon::now()]);
+                        break;
+                    case 'last30days':
+                        $query->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()]);
+                        break;
+                    case 'thisMonth':
+                        $query->whereMonth('created_at', Carbon::now()->month)
+                            ->whereYear('created_at', Carbon::now()->year);
+                        break;
+                    case 'lastMonth':
+                        $query->whereMonth('created_at', Carbon::now()->subMonth()->month)
+                            ->whereYear('created_at', Carbon::now()->subMonth()->year);
+                        break;
+                }
+            })
+            ->latest();
+
+        $sales = $query->paginate(10);
+
+        // Calculate statistics
+        $statsQuery = clone $query;
+        $totalSales = $statsQuery->sum('total_amount');
+        $totalOrders = $sales->total();
+        $averageOrderValue = $totalOrders > 0 ? $totalSales / $totalOrders : 0;
+        $totalTax = $statsQuery->sum('tax');
+
+        return view('livewire.sales.index', [
+            'sales' => $sales,
+            'totalSales' => $totalSales,
+            'totalOrders' => $totalOrders,
+            'averageOrderValue' => $averageOrderValue,
+            'totalTax' => $totalTax,
+        ]);
     }
 
-    public function updatedDateFilter()
+    public function confirmDelete($saleId)
     {
-        if ($this->dateFilter === 'custom') {
-            $this->startDate = now()->format('Y-m-d');
-            $this->endDate = now()->format('Y-m-d');
-        }
-    }
-
-    public function showReceipt($saleId)
-    {
-        $this->selectedSaleId = $saleId;
-        $this->selectedSale = Sale::with(['items.product', 'customer'])->find($saleId);
-        $this->showReceiptModal = true;
-    }
-
-    public function printReceipt()
-    {
-        $this->dispatch('print-receipt', saleId: $this->selectedSaleId);
-    }
-
-    public function confirmSaleDeletion($saleId)
-    {
-        $this->selectedSaleId = $saleId;
+        $this->saleToDelete = $saleId;
         $this->showDeleteModal = true;
     }
 
     public function deleteSale()
     {
-        $sale = Sale::findOrFail($this->selectedSaleId);
-        
-        // Only allow deletion of today's sales
-        if (!$sale->created_at->isToday()) {
-            $this->addError('delete', __('Seules les ventes du jour peuvent être supprimées.'));
-            return;
-        }
-
-        // Restore stock for each item
-        foreach ($sale->items as $item) {
-            $item->product->increment('stock', $item->quantity);
-        }
-
+        $sale = Sale::findOrFail($this->saleToDelete);
         $sale->delete();
 
         $this->showDeleteModal = false;
-        $this->dispatch('sale-deleted');
-        session()->flash('success', __('La vente a été supprimée avec succès.'));
+        $this->saleToDelete = null;
+
+        session()->flash('success', __('Sale deleted successfully.'));
     }
 
-    public function getDateRange()
+    public function showReceipt($saleId)
     {
-        return match($this->dateFilter) {
-            'today' => [now()->startOfDay(), now()->endOfDay()],
-            'yesterday' => [now()->subDay()->startOfDay(), now()->subDay()->endOfDay()],
-            'this_week' => [now()->startOfWeek(), now()->endOfWeek()],
-            'this_month' => [now()->startOfMonth(), now()->endOfMonth()],
-            'last_month' => [now()->subMonth()->startOfMonth(), now()->subMonth()->endOfMonth()],
-            'this_year' => [now()->startOfYear(), now()->endOfYear()],
-            'custom' => [
-                Carbon::parse($this->startDate)->startOfDay(),
-                Carbon::parse($this->endDate)->endOfDay()
-            ],
-            default => [now()->startOfDay(), now()->endOfDay()],
-        };
+        $this->selectedSale = Sale::with(['customer', 'items.product'])->findOrFail($saleId);
+        $this->showReceiptModal = true;
     }
 
-    public function render()
+    public function printReceipt($saleId)
     {
-        [$startDate, $endDate] = $this->getDateRange();
+        // Implement receipt printing logic here
+        session()->flash('success', __('Receipt printed successfully.'));
+        $this->showReceiptModal = false;
+    }
 
-        $sales = Sale::query()
-            ->with(['customer', 'items'])
-            ->when($this->search, function ($query) {
-                $query->where(function ($query) {
-                    $query->where('receipt_number', 'like', '%' . $this->search . '%')
-                        ->orWhereHas('customer', function ($query) {
-                            $query->where('first_name', 'like', '%' . $this->search . '%')
-                                ->orWhere('last_name', 'like', '%' . $this->search . '%')
-                                ->orWhere('email', 'like', '%' . $this->search . '%');
-                        });
-                });
-            })
-            ->when($this->paymentMethodFilter, function ($query) {
-                $query->where('payment_method', $this->paymentMethodFilter);
-            })
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->latest()
-            ->paginate(10);
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
-        return view('sales.index', [
-            'sales' => $sales
-        ]);
+    public function updatingDateRange()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPaymentMethod()
+    {
+        $this->resetPage();
     }
 }
