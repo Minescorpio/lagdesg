@@ -13,153 +13,147 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6">
-                    <!-- Search and Filters -->
-                    <div class="mb-4">
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <div class="flex-1">
-                                <input type="text" 
-                                    class="w-full rounded-md border-gray-300" 
-                                    placeholder="{{ __('Search products...') }}"
-                                    wire:model.debounce.300ms="search">
-                            </div>
-                            <div class="sm:w-48">
-                                <select class="w-full rounded-md border-gray-300" wire:model="selectedCategory">
-                                    <option value="">{{ __('All Categories') }}</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="sm:w-32">
-                                <select class="w-full rounded-md border-gray-300" wire:model="perPage">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
+                <!-- Filters -->
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <x-input type="search" wire:model.live="search" placeholder="{{ __('Search products...') }}" class="w-full" />
+                        </div>
+                        <div class="w-full md:w-48">
+                            <select wire:model.live="selectedCategory" class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                <option value="">{{ __('All Categories') }}</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w-full md:w-32">
+                            <select wire:model.live="perPage" class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Products Table -->
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                <!-- Products Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('name')">
+                                    {{ __('Name') }}
+                                    @if($sortField === 'name')
+                                        @if($sortDirection === 'asc')
+                                            <span class="ml-1">↑</span>
+                                        @else
+                                            <span class="ml-1">↓</span>
+                                        @endif
+                                    @endif
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    {{ __('Category') }}
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('price')">
+                                    {{ __('Price') }}
+                                    @if($sortField === 'price')
+                                        @if($sortDirection === 'asc')
+                                            <span class="ml-1">↑</span>
+                                        @else
+                                            <span class="ml-1">↓</span>
+                                        @endif
+                                    @endif
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    {{ __('Stock') }}
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    {{ __('Status') }}
+                                </th>
+                                <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">{{ __('Actions') }}</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($products as $product)
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('name')">
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            {{ __('Name') }}
-                                            @if($sortField === 'name')
-                                                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    @if($sortDirection === 'asc')
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                                                    @else
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                                    @endif
-                                                </svg>
+                                            @if($product->getFirstMediaUrl('product_images'))
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ $product->getFirstMediaUrl('product_images') }}" alt="{{ $product->name }}">
+                                                </div>
                                             @endif
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('Category') }}
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('price')">
-                                        <div class="flex items-center">
-                                            {{ __('Price') }}
-                                            @if($sortField === 'price')
-                                                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    @if($sortDirection === 'asc')
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                                                    @else
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                                    @endif
-                                                </svg>
-                                            @endif
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('Stock') }}
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('Status') }}
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        {{ __('Actions') }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($products as $product)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                @if($product->image_path)
-                                                    <div class="flex-shrink-0 h-10 w-10">
-                                                        <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
-                                                    </div>
-                                                @endif
-                                                <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        {{ $product->name }}
-                                                    </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    {{ $product->name }}
+                                                </div>
+                                                @if($product->barcode)
                                                     <div class="text-sm text-gray-500">
                                                         {{ $product->barcode }}
                                                     </div>
-                                                </div>
+                                                @endif
                                             </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                {{ $product->category?->name ?? __('Uncategorized') }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                {{ number_format($product->price, 2) }}
-                                            </div>
-                                            @if($product->compare_price)
-                                                <div class="text-sm text-gray-500 line-through">
-                                                    {{ number_format($product->compare_price, 2) }}
-                                                </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $product->category?->name ?? '-' }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $product->formatted_price }}</div>
+                                        <div class="text-sm text-gray-500">{{ $product->formatted_cost_price }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($product->track_stock)
+                                            <div class="text-sm text-gray-900">{{ $product->current_stock }}</div>
+                                            @if($product->alert_quantity && $product->current_stock <= $product->alert_quantity)
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    {{ __('Low Stock') }}
+                                                </span>
                                             @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-900">
-                                                {{ $product->current_stock }}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $product->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $product->active ? __('Active') : __('Inactive') }}
+                                        @else
+                                            <span class="text-sm text-gray-500">{{ __('Not Tracked') }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($product->active)
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                {{ __('Active') }}
                                             </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div class="flex justify-end space-x-2">
-                                                <a href="{{ route('products.edit', $product) }}" class="text-indigo-600 hover:text-indigo-900">
-                                                    {{ __('Edit') }}
-                                                </a>
-                                                <button wire:click="confirmDelete({{ $product->id }})" class="text-red-600 hover:text-red-900">
-                                                    {{ __('Delete') }}
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                            {{ __('No products found.') }}
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        @else
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                {{ __('Inactive') }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <div class="flex justify-end space-x-2">
+                                            <a href="{{ route('products.edit', $product) }}" class="text-indigo-600 hover:text-indigo-900">
+                                                {{ __('Edit') }}
+                                            </a>
+                                            <button wire:click="confirmDelete({{ $product->id }})" class="text-red-600 hover:text-red-900">
+                                                {{ __('Delete') }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        {{ __('No products found.') }}
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-4">
-                        {{ $products->links() }}
-                    </div>
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>
