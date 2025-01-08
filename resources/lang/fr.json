@@ -138,5 +138,11 @@
     "TOTAL": "TOTAL",
     "PAYMENT METHOD": "MODE DE PAIEMENT",
     "DATE": "DATE",
-    "No recent sales found": "Aucune vente récente trouvée"
+    "No recent sales found": "Aucune vente récente trouvée",
+    "New Category": "Nouvelle catégorie",
+    "Parent Category": "Catégorie parente",
+    "None": "Aucune",
+    "Create Category": "Créer la catégorie",
+    "Category created successfully.": "Catégorie créée avec succès.",
+    "Error creating category:": "Erreur lors de la création de la catégorie :"
 } 
