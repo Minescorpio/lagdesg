@@ -82,9 +82,9 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @if($product->getFirstMediaUrl('product_images'))
+                                            @if($product->image_path)
                                                 <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ $product->getFirstMediaUrl('product_images') }}" alt="{{ $product->name }}">
+                                                    <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
                                                 </div>
                                             @endif
                                             <div class="ml-4">
