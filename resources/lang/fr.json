@@ -123,5 +123,20 @@
     "Accepts Marketing": "Accepte les communications marketing",
     "Create Customer": "Créer le client",
     "Customer created successfully.": "Client créé avec succès.",
-    "Error creating customer:": "Erreur lors de la création du client :"
+    "Error creating customer:": "Erreur lors de la création du client :",
+    "Total Sales Today": "Total des ventes aujourd'hui",
+    "Total Orders": "Total des commandes",
+    "Low Stock Items": "Articles en stock bas",
+    "Total Customers": "Total des clients",
+    "Quick Actions": "Actions rapides",
+    "Create a new sale transaction": "Créer une nouvelle vente",
+    "Add a new product to inventory": "Ajouter un nouveau produit à l'inventaire",
+    "Register a new customer": "Enregistrer un nouveau client",
+    "Recent Sales": "Ventes récentes",
+    "RECEIPT NO": "N° DE REÇU",
+    "CLIENT": "CLIENT",
+    "TOTAL": "TOTAL",
+    "PAYMENT METHOD": "MODE DE PAIEMENT",
+    "DATE": "DATE",
+    "No recent sales found": "Aucune vente récente trouvée"
 } 

@@ -82,6 +82,7 @@ Route::middleware([
     // Sales Routes
     Route::get('/sales', SalesComponent::class)->name('sales.index');
     Route::prefix('sales')->name('sales.')->group(function () {
+        Route::get('/create', \App\Livewire\Sales\Create::class)->name('create');
         Route::get('/{sale}/receipt', [SaleController::class, 'receipt'])->name('receipt');
         Route::post('/{sale}/void', [SaleController::class, 'void'])->name('void');
     });
