@@ -19,7 +19,7 @@ class Create extends Component
         'active' => 'boolean'
     ];
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('categories.create');

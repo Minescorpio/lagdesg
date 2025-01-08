@@ -50,7 +50,7 @@ class Create extends Component
         // Initialisation si nécessaire
     }
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('customers.create', [

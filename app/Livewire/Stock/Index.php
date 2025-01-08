@@ -3,7 +3,11 @@
 namespace App\Livewire\Stock;
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Title('Gestion du stock')]
+#[Layout('layouts.app')]
 class Index extends Component
 {
     public function render()

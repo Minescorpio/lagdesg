@@ -57,7 +57,7 @@ class Create extends Component
         return CurrencyHelper::format($value);
     }
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('products.create', [

@@ -7,10 +7,12 @@ use App\Models\Product;
 use App\Models\Customer;
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 #[Title('Tableau de bord')]
+#[Layout('layouts.app')]
 class Index extends Component
 {
     public $totalSalesToday = 0;

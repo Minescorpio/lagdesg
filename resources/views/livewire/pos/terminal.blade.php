@@ -1,10 +1,15 @@
 <div>
-    <div class="flex h-screen bg-[#1B1D29]">
-        <!-- Left Side -->
-        <div class="flex-1 flex flex-col">
-            <!-- Stats Bar -->
-            <div class="grid grid-cols-4 gap-4 p-4">
-                <!-- Cart Total -->
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-white leading-tight">
+            {{ __('Terminal de vente') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Cart -->
                 <div class="stats-card">
                     <div class="flex items-center justify-between">
                         <div>
@@ -17,7 +22,7 @@
                     </div>
                 </div>
 
-                <!-- Items in Cart -->
+                <!-- Cart Items Count -->
                 <div class="stats-card">
                     <div class="flex items-center justify-between">
                         <div>
@@ -57,78 +62,105 @@
                 </div>
             </div>
 
-            <!-- Products Grid -->
-            <div class="flex-1 p-4 overflow-y-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    @foreach($products as $product)
-                    <button wire:click="addToCart({{ $product->id }})" class="bg-[#2E324A] p-4 rounded-lg hover:bg-[#3E4366] transition-colors duration-150">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-white font-medium">{{ $product->name }}</h3>
-                            <span class="text-gray-400 text-sm">{{ $product->code }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-white text-lg font-semibold">{{ number_format($product->price, 2, ',', ' ') }} €</span>
-                            <span class="text-gray-400 text-sm">Stock: {{ $product->stock_quantity }}</span>
-                        </div>
+            <!-- Quick Actions -->
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-white mb-4">{{ __('Actions rapides') }}</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Clear Cart -->
+                    <button wire:click="clearCart" class="btn-danger flex items-center justify-center gap-2 py-2">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        {{ __('Vider le panier') }}
                     </button>
-                    @endforeach
-                </div>
-            </div>
-        </div>
 
-        <!-- Right Side -->
-        <div class="w-96 bg-[#2E324A] border-l border-gray-700 flex flex-col">
-            <!-- Cart Header -->
-            <div class="p-4 border-b border-gray-700">
-                <h2 class="text-lg font-semibold text-white">{{ __('Panier') }}</h2>
+                    <!-- Select Customer -->
+                    <button wire:click="openCustomerModal" class="btn-primary flex items-center justify-center gap-2 py-2">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        {{ __('Sélectionner un client') }}
+                    </button>
+
+                    <!-- Apply Discount -->
+                    <button wire:click="openDiscountModal" class="btn-primary flex items-center justify-center gap-2 py-2">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                        </svg>
+                        {{ __('Appliquer une remise') }}
+                    </button>
+
+                    <!-- Process Payment -->
+                    <button wire:click="openPaymentModal" class="btn-success flex items-center justify-center gap-2 py-2">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        {{ __('Procéder au paiement') }}
+                    </button>
+                </div>
             </div>
 
             <!-- Cart Items -->
-            <div class="flex-1 overflow-y-auto p-4">
-                @forelse($cart as $item)
-                <div class="flex items-center justify-between mb-4 bg-[#1B1D29] p-3 rounded-lg">
-                    <div>
-                        <h4 class="text-white font-medium">{{ $item['name'] }}</h4>
-                        <div class="flex items-center gap-4 mt-1">
-                            <div class="flex items-center gap-2">
-                                <button wire:click="decrementQuantity({{ $item['id'] }})" class="text-gray-400 hover:text-white">
-                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                    </svg>
-                                </button>
-                                <span class="text-white">{{ $item['quantity'] }}</span>
-                                <button wire:click="incrementQuantity({{ $item['id'] }})" class="text-gray-400 hover:text-white">
-                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <span class="text-gray-400">{{ number_format($item['price'], 2, ',', ' ') }} €</span>
-                        </div>
-                    </div>
-                    <button wire:click="removeFromCart({{ $item['id'] }})" class="text-gray-400 hover:text-white">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-lg font-semibold text-white">{{ __('Articles du panier') }}</h3>
                 </div>
-                @empty
-                <div class="text-center text-gray-400">
-                    {{ __('Le panier est vide') }}
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="table-header px-6 py-3">{{ __('Produit') }}</th>
+                                <th class="table-header px-6 py-3">{{ __('Prix unitaire') }}</th>
+                                <th class="table-header px-6 py-3">{{ __('Quantité') }}</th>
+                                <th class="table-header px-6 py-3">{{ __('Total') }}</th>
+                                <th class="table-header px-6 py-3">{{ __('Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            @forelse($cartItems as $item)
+                                <tr class="hover:bg-[#2E324A] transition-colors duration-150">
+                                    <td class="px-6 py-4">{{ $item->name }}</td>
+                                    <td class="px-6 py-4">{{ number_format($item->price, 2, ',', ' ') }} €</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-2">
+                                            <button wire:click="decrementQuantity('{{ $item->id }}')" class="btn-icon">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                                </svg>
+                                            </button>
+                                            <span>{{ $item->quantity }}</span>
+                                            <button wire:click="incrementQuantity('{{ $item->id }}')" class="btn-icon">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">{{ number_format($item->price * $item->quantity, 2, ',', ' ') }} €</td>
+                                    <td class="px-6 py-4">
+                                        <button wire:click="removeItem('{{ $item->id }}')" class="btn-icon text-red-500 hover:text-red-600">
+                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-400">
+                                        {{ __('Le panier est vide') }}
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-                @endforelse
-            </div>
-
-            <!-- Cart Actions -->
-            <div class="p-4 border-t border-gray-700">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-gray-400">{{ __('Total') }}</span>
-                    <span class="text-white text-xl font-semibold">{{ number_format($cartTotal, 2, ',', ' ') }} €</span>
-                </div>
-                <button wire:click="checkout" class="w-full btn-primary justify-center" @if(empty($cart)) disabled @endif>
-                    {{ __('Passer à la caisse') }}
-                </button>
             </div>
         </div>
     </div>
+
+    <!-- Modals -->
+    @include('livewire.pos.modals.customer-modal')
+    @include('livewire.pos.modals.payment-modal')
+    @include('livewire.pos.modals.discount-modal')
 </div>

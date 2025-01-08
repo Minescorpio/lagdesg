@@ -13,20 +13,15 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'description',
         'slug',
-        'active',
-        'parent_id'
+        'description',
+        'parent_id',
+        'is_active',
     ];
 
     protected $casts = [
-        'active' => 'boolean'
+        'is_active' => 'boolean',
     ];
-
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
 
     public function parent(): BelongsTo
     {
@@ -36,5 +31,20 @@ class Category extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeParents($query)
+    {
+        return $query->whereNull('parent_id');
     }
 } 

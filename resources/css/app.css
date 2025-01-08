@@ -8,34 +8,30 @@
 
 @layer components {
     .nav-link {
-        @apply flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors duration-150 ease-in-out hover:text-white;
+        @apply flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-[#2E324A] hover:text-white transition-all duration-150 ease-in-out;
+    }
+
+    .nav-link.active {
+        @apply bg-[#2E324A] text-white;
+    }
+
+    .nav-link svg {
+        @apply w-5 h-5;
     }
 
     .btn-primary {
-        @apply inline-flex items-center px-4 py-2 bg-[#2E324A] border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-[#3E4366] focus:bg-[#3E4366] active:bg-[#3E4366] focus:outline-none focus:ring-2 focus:ring-[#3E4366] focus:ring-offset-2 focus:ring-offset-[#1B1D29] transition ease-in-out duration-150;
+        @apply inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 gap-2;
     }
 
     .stats-card {
-        @apply bg-[#2E324A] rounded-lg p-4 text-white shadow-sm;
+        @apply bg-[#2E324A] p-6 rounded-lg shadow-sm;
     }
 
     .stats-label {
-        @apply text-sm text-gray-400 mb-1;
+        @apply text-gray-400 text-sm font-medium;
     }
 
     .stats-value {
-        @apply text-xl font-semibold;
-    }
-
-    .card {
-        @apply bg-[#2E324A] rounded-lg shadow-sm overflow-hidden;
-    }
-
-    .card-header {
-        @apply px-6 py-4 border-b border-gray-700;
-    }
-
-    .table-header {
-        @apply text-left text-xs font-medium text-gray-400 uppercase tracking-wider;
+        @apply text-white text-2xl font-semibold mt-1;
     }
 }
