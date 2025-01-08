@@ -7,20 +7,14 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoyaltyProgramController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SaleController;
-use App\Http\Controllers\DashboardController;
-use App\Livewire\Dashboard\Index as DashboardIndex;
-use App\Livewire\Pos\Terminal as PosTerminal;
-use App\Livewire\Categories\Index as CategoriesIndex;
-use App\Livewire\Products\Index as ProductsIndex;
-use App\Livewire\Customers\Index as CustomersIndex;
-use App\Livewire\Sales\Index as SalesIndex;
 use App\Http\Controllers\PosController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+use App\Livewire\Dashboard\Index as DashboardComponent;
+use App\Livewire\Pos\Terminal as PosTerminalComponent;
+use App\Livewire\Categories\Index as CategoriesComponent;
+use App\Livewire\Products\Index as ProductsComponent;
+use App\Livewire\Customers\Index as CustomersComponent;
+use App\Livewire\Sales\Index as SalesComponent;
+use App\Livewire\Stock\Index as StockComponent;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -32,7 +26,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     // Dashboard
-    Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
+    Route::get('/dashboard', DashboardComponent::class)->name('dashboard');
     
     // Settings
     Route::get('/settings', function() {
@@ -41,7 +35,7 @@ Route::middleware([
 
     // POS Routes
     Route::prefix('pos')->name('pos.')->group(function () {
-        Route::get('/terminal', PosTerminal::class)->name('terminal');
+        Route::get('/terminal', PosTerminalComponent::class)->name('terminal');
         Route::get('/products', [PosController::class, 'getProducts'])->name('products');
         Route::post('/add-to-cart', [PosController::class, 'addToCart'])->name('add-to-cart');
         Route::post('/update-cart', [PosController::class, 'updateCart'])->name('update-cart');
@@ -52,7 +46,7 @@ Route::middleware([
     });
 
     // Categories Routes
-    Route::get('/categories', CategoriesIndex::class)->name('categories.index');
+    Route::get('/categories', CategoriesComponent::class)->name('categories.index');
     Route::prefix('categories')->name('categories.')->group(function () {
         Route::post('/reorder', [CategoryController::class, 'reorder'])->name('reorder');
         Route::get('/create', [CategoryController::class, 'create'])->name('create');
@@ -62,10 +56,10 @@ Route::middleware([
     });
 
     // Products Routes
-    Route::get('/products', ProductsIndex::class)->name('products.index');
+    Route::get('/products', ProductsComponent::class)->name('products.index');
     Route::prefix('products')->name('products.')->group(function () {
         Route::get('/search', [ProductController::class, 'search'])->name('search');
-        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::get('/create', \App\Livewire\Products\Create::class)->name('create');
         Route::post('/', [ProductController::class, 'store'])->name('store');
         Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
         Route::put('/{product}', [ProductController::class, 'update'])->name('update');
@@ -73,7 +67,7 @@ Route::middleware([
     });
 
     // Customers Routes
-    Route::get('/customers', CustomersIndex::class)->name('customers.index');
+    Route::get('/customers', CustomersComponent::class)->name('customers.index');
     Route::prefix('customers')->name('customers.')->group(function () {
         Route::get('/search', [CustomerController::class, 'search'])->name('search');
         Route::get('/create', [CustomerController::class, 'create'])->name('create');
@@ -86,7 +80,7 @@ Route::middleware([
     });
 
     // Sales Routes
-    Route::get('/sales', SalesIndex::class)->name('sales.index');
+    Route::get('/sales', SalesComponent::class)->name('sales.index');
     Route::prefix('sales')->name('sales.')->group(function () {
         Route::get('/{sale}/receipt', [SaleController::class, 'receipt'])->name('receipt');
         Route::post('/{sale}/void', [SaleController::class, 'void'])->name('void');
@@ -104,12 +98,12 @@ Route::middleware([
     });
 
     // Stock Routes
+    Route::get('/stock', StockComponent::class)->name('stock.index');
     Route::prefix('stock')->name('stock.')->group(function () {
         Route::get('/low-stock', [StockController::class, 'lowStock'])->name('low');
         Route::get('/history/{product}', [StockController::class, 'stockHistory'])->name('history');
         Route::post('/bulk-adjustment', [StockController::class, 'bulkAdjustment'])->name('bulk-adjustment');
         Route::get('/export', [StockController::class, 'export'])->name('export');
-        Route::get('/', [StockController::class, 'index'])->name('index');
         Route::get('/create', [StockController::class, 'create'])->name('create');
         Route::post('/', [StockController::class, 'store'])->name('store');
         Route::get('/{stock}/edit', [StockController::class, 'edit'])->name('edit');
