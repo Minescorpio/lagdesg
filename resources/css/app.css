@@ -1,7 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-[x-cloak] {
-    display: none;
+/* Custom Theme Colors */
+:root {
+    --primary: #8B8FE5;
+    --primary-dark: #6A6DB3;
+    --accent: #FFD700;
+    --success: #50C878;
+    --background: #1A1B26;
+    --card: #24273A;
+}
+
+/* Custom Components */
+.btn-primary {
+    @apply bg-[#8B8FE5] hover:bg-[#6A6DB3] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-success {
+    @apply bg-[#50C878] hover:bg-[#3DA65E] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.btn-accent {
+    @apply bg-[#FFD700] hover:bg-[#E6C200] text-gray-900 font-bold py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.card {
+    @apply bg-white dark:bg-[#24273A] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700;
+}
+
+.card-header {
+    @apply p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#2E324A] rounded-t-lg;
+}
+
+.input-primary {
+    @apply border-gray-300 dark:border-gray-600 focus:border-[#8B8FE5] focus:ring-[#8B8FE5] rounded-lg shadow-sm dark:bg-[#2E324A] dark:text-white;
+}
+
+.table-header {
+    @apply bg-gray-50 dark:bg-[#2E324A] text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider;
+}
+
+/* Dark Mode Overrides */
+.dark {
+    @apply bg-[#1A1B26] text-white;
+}
+
+/* Custom Animations */
+.hover-glow {
+    @apply transition-all duration-300;
+}
+
+.hover-glow:hover {
+    @apply shadow-lg;
+    filter: drop-shadow(0 0 0.5rem var(--accent));
+}
+
+/* Custom Gradients */
+.gradient-primary {
+    @apply bg-gradient-to-r from-[#8B8FE5] to-[#6A6DB3];
+}
+
+.gradient-accent {
+    @apply bg-gradient-to-r from-[#FFD700] to-[#E6C200];
+}
+
+/* Custom Icons */
+.icon-primary {
+    @apply text-[#8B8FE5] hover:text-[#6A6DB3] transition-colors duration-200;
+}
+
+.icon-accent {
+    @apply text-[#FFD700] hover:text-[#E6C200] transition-colors duration-200;
+}
+
+/* Custom Badges */
+.badge-primary {
+    @apply bg-[#8B8FE5] text-white text-xs font-semibold px-2.5 py-0.5 rounded-full;
+}
+
+.badge-accent {
+    @apply bg-[#FFD700] text-gray-900 text-xs font-semibold px-2.5 py-0.5 rounded-full;
+}
+
+/* Custom Borders */
+.border-primary {
+    @apply border-[#8B8FE5];
+}
+
+.border-accent {
+    @apply border-[#FFD700];
+}
+
+/* Custom Shadows */
+.shadow-primary {
+    box-shadow: 0 0 15px rgba(139, 143, 229, 0.3);
+}
+
+.shadow-accent {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
