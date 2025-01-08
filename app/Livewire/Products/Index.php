@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Products;
 
+use App\Helpers\CurrencyHelper;
 use App\Models\Product;
 use App\Models\Category;
 use Livewire\Component;
@@ -85,6 +86,13 @@ class Index extends Component
             ->paginate($this->perPage);
 
         $categories = Category::where('active', true)->orderBy('name')->get();
+
+        // Format currency for each product
+        $products->getCollection()->transform(function ($product) {
+            $product->formatted_price = CurrencyHelper::format($product->price);
+            $product->formatted_cost = CurrencyHelper::format($product->cost_price);
+            return $product;
+        });
 
         return view('products.index', [
             'products' => $products,

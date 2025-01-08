@@ -2,38 +2,34 @@
 
 namespace App\Livewire\Products;
 
+use App\Helpers\CurrencyHelper;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Stock;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
     use WithFileUploads;
 
-    // Propriétés de base
-    public $name = '';
-    public $description = '';
-    public $barcode = '';
-    public $category_id = '';
+    // Basic Information
+    public $name;
+    public $description;
+    public $barcode;
+    public $category_id;
     
-    // Prix et TVA
+    // Price & Stock
     public $price = 0;
     public $cost_price = 0;
     public $vat_rate = 20;
-    
-    // Stock
     public $track_stock = true;
-    public $min_stock_alert = 0;
+    public $alert_quantity = 5;
     public $initial_stock = 0;
     
-    // Options
-    public $is_weighable = false;
-    public $has_free_price = false;
+    // Additional Options
+    public $weighable = false;
+    public $free_price = false;
     public $active = true;
     
     // Image
@@ -45,23 +41,29 @@ class Create extends Component
         'barcode' => 'nullable|string|max:50|unique:products,barcode',
         'category_id' => 'nullable|exists:categories,id',
         'price' => 'required|numeric|min:0',
-        'cost_price' => 'nullable|numeric|min:0',
-        'vat_rate' => 'required|numeric|in:0,2.1,5.5,10,20',
-        'min_stock_alert' => 'nullable|numeric|min:0',
-        'initial_stock' => 'nullable|numeric|min:0',
-        'image' => 'nullable|image|max:1024', // Max 1MB
+        'cost_price' => 'required|numeric|min:0',
+        'vat_rate' => 'required|numeric|min:0|max:100',
+        'track_stock' => 'boolean',
+        'alert_quantity' => 'required_if:track_stock,true|numeric|min:0',
+        'initial_stock' => 'required_if:track_stock,true|numeric|min:0',
+        'weighable' => 'boolean',
+        'free_price' => 'boolean',
+        'active' => 'boolean',
+        'image' => 'nullable|image|max:1024'
     ];
 
-    public function mount()
+    public function formatPrice($value)
     {
-        // Initialisation si nécessaire
+        return CurrencyHelper::format($value);
     }
 
     #[Layout('components.layouts.app')]
     public function render()
     {
         return view('products.create', [
-            'categories' => Category::where('active', true)->orderBy('name')->get()
+            'categories' => Category::where('active', true)->orderBy('name')->get(),
+            'formatted_price' => $this->formatPrice($this->price),
+            'formatted_cost_price' => $this->formatPrice($this->cost_price)
         ]);
     }
 
@@ -70,50 +72,39 @@ class Create extends Component
         $this->validate();
 
         try {
-            DB::beginTransaction();
-
-            // Création du produit
-            $product = new Product([
+            $product = Product::create([
                 'name' => $this->name,
                 'description' => $this->description,
                 'barcode' => $this->barcode,
-                'category_id' => $this->category_id ?: null,
+                'category_id' => $this->category_id,
                 'price' => $this->price,
                 'cost_price' => $this->cost_price,
                 'vat_rate' => $this->vat_rate,
-                'min_stock_alert' => $this->min_stock_alert,
                 'track_stock' => $this->track_stock,
-                'is_weighable' => $this->is_weighable,
-                'has_free_price' => $this->has_free_price,
-                'active' => $this->active,
+                'alert_quantity' => $this->alert_quantity,
+                'weighable' => $this->weighable,
+                'free_price' => $this->free_price,
+                'active' => $this->active
             ]);
 
-            // Gestion de l'image
-            if ($this->image) {
-                $imagePath = $this->image->store('products', 'public');
-                $product->image_path = $imagePath;
-            }
-
-            $product->save();
-
-            // Création du stock initial si nécessaire
             if ($this->track_stock && $this->initial_stock > 0) {
                 $product->stocks()->create([
                     'type' => 'in',
                     'quantity' => $this->initial_stock,
                     'unit_price' => $this->cost_price,
-                    'reference' => 'Initial stock',
-                    'user_id' => auth()->id(),
+                    'reference' => 'Initial Stock',
+                    'user_id' => auth()->id()
                 ]);
             }
 
-            DB::commit();
+            if ($this->image) {
+                $product->addMedia($this->image)->toMediaCollection('product_images');
+            }
 
             session()->flash('success', __('Product created successfully.'));
             return redirect()->route('products.index');
 
         } catch (\Exception $e) {
-            DB::rollBack();
             session()->flash('error', __('Error creating product: ') . $e->getMessage());
         }
     }
@@ -121,17 +112,5 @@ class Create extends Component
     public function cancel()
     {
         return redirect()->route('products.index');
-    }
-
-    public function updatedBarcode($value)
-    {
-        if (!$value) {
-            $this->barcode = strtoupper(Str::random(10));
-        }
-    }
-
-    public function generateBarcode()
-    {
-        $this->barcode = strtoupper(Str::random(10));
     }
 } 
