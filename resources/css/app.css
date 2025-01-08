@@ -1,6 +1,55 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+/* Stats Cards */
+.stats-card {
+    @apply bg-[#24273A] rounded-xl p-6 border border-gray-700 hover:border-[#FFD700] transition-all duration-300 shadow-lg;
+}
+
+.stats-label {
+    @apply text-sm text-gray-400 mb-1;
+}
+
+.stats-value {
+    @apply text-2xl font-bold text-white;
+}
+
+.stats-icon {
+    @apply w-12 h-12 text-[#FFD700];
+}
+
+/* Cards */
+.card {
+    @apply bg-[#24273A] rounded-xl shadow-lg border border-gray-700;
+}
+
+.card-header {
+    @apply px-6 py-4 border-b border-gray-700 bg-[#2E324A];
+}
+
+/* Tables */
+.table {
+    @apply min-w-full;
+}
+
+.table-header {
+    @apply bg-[#2E324A] text-left text-xs font-medium text-gray-400 uppercase tracking-wider;
+}
+
+/* Buttons */
+.btn-primary {
+    @apply bg-[#8B8FE5] hover:bg-[#6A6DB3] text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg;
+}
+
+/* Dark Mode */
+.dark {
+    @apply bg-[#1A1B26] text-white;
+}
 
 /* Custom Theme Colors */
 :root {
@@ -12,41 +61,12 @@
     --card: #24273A;
 }
 
-/* Custom Components */
-.btn-primary {
-    @apply bg-[#8B8FE5] hover:bg-[#6A6DB3] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200;
+/* Custom Gradients */
+.gradient-primary {
+    @apply bg-gradient-to-r from-[#8B8FE5] to-[#6A6DB3];
 }
 
-.btn-success {
-    @apply bg-[#50C878] hover:bg-[#3DA65E] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200;
-}
-
-.btn-accent {
-    @apply bg-[#FFD700] hover:bg-[#E6C200] text-gray-900 font-bold py-2 px-4 rounded-lg transition-colors duration-200;
-}
-
-.card {
-    @apply bg-white dark:bg-[#24273A] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700;
-}
-
-.card-header {
-    @apply p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#2E324A] rounded-t-lg;
-}
-
-.input-primary {
-    @apply border-gray-300 dark:border-gray-600 focus:border-[#8B8FE5] focus:ring-[#8B8FE5] rounded-lg shadow-sm dark:bg-[#2E324A] dark:text-white;
-}
-
-.table-header {
-    @apply bg-gray-50 dark:bg-[#2E324A] text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider;
-}
-
-/* Dark Mode Overrides */
-.dark {
-    @apply bg-[#1A1B26] text-white;
-}
-
-/* Custom Animations */
+/* Hover Effects */
 .hover-glow {
     @apply transition-all duration-300;
 }
@@ -56,47 +76,29 @@
     filter: drop-shadow(0 0 0.5rem var(--accent));
 }
 
-/* Custom Gradients */
-.gradient-primary {
-    @apply bg-gradient-to-r from-[#8B8FE5] to-[#6A6DB3];
+/* Custom Animations */
+@keyframes pulse-accent {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
 }
 
-.gradient-accent {
-    @apply bg-gradient-to-r from-[#FFD700] to-[#E6C200];
+.animate-pulse-accent {
+    animation: pulse-accent 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Custom Icons */
-.icon-primary {
-    @apply text-[#8B8FE5] hover:text-[#6A6DB3] transition-colors duration-200;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    @apply w-2;
 }
 
-.icon-accent {
-    @apply text-[#FFD700] hover:text-[#E6C200] transition-colors duration-200;
+::-webkit-scrollbar-track {
+    @apply bg-[#1A1B26];
 }
 
-/* Custom Badges */
-.badge-primary {
-    @apply bg-[#8B8FE5] text-white text-xs font-semibold px-2.5 py-0.5 rounded-full;
-}
-
-.badge-accent {
-    @apply bg-[#FFD700] text-gray-900 text-xs font-semibold px-2.5 py-0.5 rounded-full;
-}
-
-/* Custom Borders */
-.border-primary {
-    @apply border-[#8B8FE5];
-}
-
-.border-accent {
-    @apply border-[#FFD700];
-}
-
-/* Custom Shadows */
-.shadow-primary {
-    box-shadow: 0 0 15px rgba(139, 143, 229, 0.3);
-}
-
-.shadow-accent {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+::-webkit-scrollbar-thumb {
+    @apply bg-[#2E324A] rounded-full hover:bg-[#FFD700] transition-colors duration-200;
 }
