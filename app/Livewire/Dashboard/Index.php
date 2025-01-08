@@ -5,46 +5,44 @@ namespace App\Livewire\Dashboard;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Helpers\CurrencyHelper;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Carbon\Carbon;
 
 class Index extends Component
 {
-    public $todaySales;
-    public $totalOrders;
-    public $lowStockItems;
-    public $totalCustomers;
-    public $recentSales;
-
-    public function mount()
+    #[Layout('components.layouts.app')]
+    public function render()
     {
-        $this->loadDashboardData();
-    }
+        $today = Carbon::today();
 
-    public function loadDashboardData()
-    {
-        // Calculate today's sales
-        $this->todaySales = Sale::whereDate('created_at', today())
-            ->sum('total_amount');
+        $totalSalesToday = CurrencyHelper::format(
+            Sale::whereDate('created_at', $today)
+                ->where('status', 'completed')
+                ->sum('total_amount') ?? 0
+        );
 
-        // Get total orders count
-        $this->totalOrders = Sale::count();
+        $totalOrders = Sale::whereDate('created_at', $today)
+            ->where('status', 'completed')
+            ->count();
 
-        // Get low stock items count
-        $this->lowStockItems = Product::lowStock()->count();
+        $lowStockItems = Product::lowStock()->count();
 
-        // Get total customers
-        $this->totalCustomers = Customer::count();
+        $totalCustomers = Customer::count();
 
-        // Get recent sales
-        $this->recentSales = Sale::with('customer')
+        $recentSales = Sale::with('customer')
+            ->where('status', 'completed')
             ->latest()
             ->take(5)
             ->get();
-    }
 
-    public function render()
-    {
-        return view('livewire.dashboard.index');
+        return view('dashboard.index', compact(
+            'totalSalesToday',
+            'totalOrders',
+            'lowStockItems',
+            'totalCustomers',
+            'recentSales'
+        ));
     }
 } 
