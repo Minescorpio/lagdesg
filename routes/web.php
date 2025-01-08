@@ -48,11 +48,11 @@ Route::middleware([
     // Categories Routes
     Route::get('/categories', CategoriesComponent::class)->name('categories.index');
     Route::prefix('categories')->name('categories.')->group(function () {
-        Route::post('/reorder', [CategoryController::class, 'reorder'])->name('reorder');
-        Route::get('/create', [CategoryController::class, 'create'])->name('create');
+        Route::get('/create', \App\Livewire\Categories\Create::class)->name('create');
         Route::post('/', [CategoryController::class, 'store'])->name('store');
         Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('edit');
         Route::put('/{category}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
     // Products Routes
