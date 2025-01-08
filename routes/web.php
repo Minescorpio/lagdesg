@@ -70,7 +70,7 @@ Route::middleware([
     Route::get('/customers', CustomersComponent::class)->name('customers.index');
     Route::prefix('customers')->name('customers.')->group(function () {
         Route::get('/search', [CustomerController::class, 'search'])->name('search');
-        Route::get('/create', [CustomerController::class, 'create'])->name('create');
+        Route::get('/create', \App\Livewire\Customers\Create::class)->name('create');
         Route::post('/', [CustomerController::class, 'store'])->name('store');
         Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('edit');
         Route::put('/{customer}', [CustomerController::class, 'update'])->name('update');
