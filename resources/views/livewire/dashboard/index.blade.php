@@ -170,11 +170,11 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>{{ __('Receipt No') }}</th>
-                                        <th>{{ __('Customer') }}</th>
-                                        <th class="text-right">{{ __('Total') }}</th>
-                                        <th class="text-center">{{ __('Payment Method') }}</th>
-                                        <th>{{ __('Date') }}</th>
+                                        <th class="table-header px-6 py-3 text-white text-left">{{ __('N° de Reçu') }}</th>
+                                        <th class="table-header px-6 py-3 text-white text-left">{{ __('Client') }}</th>
+                                        <th class="table-header px-6 py-3 text-white text-right">{{ __('Total') }}</th>
+                                        <th class="table-header px-6 py-3 text-white text-center">{{ __('Mode de Paiement') }}</th>
+                                        <th class="table-header px-6 py-3 text-white text-left">{{ __('Date') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
