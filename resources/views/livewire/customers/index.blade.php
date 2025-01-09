@@ -34,12 +34,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>{{ __('Name') }}</th>
-                                    <th>{{ __('Email') }}</th>
-                                    <th>{{ __('Phone') }}</th>
-                                    <th class="text-right">{{ __('Total Orders') }}</th>
-                                    <th class="text-right">{{ __('Total Spent') }}</th>
-                                    <th class="text-right">{{ __('Actions') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Name') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Email') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Phone') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Total Orders') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Total Spent') }}</th>
+                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">

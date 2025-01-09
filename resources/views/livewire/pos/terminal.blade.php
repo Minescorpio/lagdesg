@@ -109,11 +109,11 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="table-header px-6 py-3">{{ __('Produit') }}</th>
-                                <th class="table-header px-6 py-3">{{ __('Prix unitaire') }}</th>
-                                <th class="table-header px-6 py-3">{{ __('Quantité') }}</th>
-                                <th class="table-header px-6 py-3">{{ __('Total') }}</th>
-                                <th class="table-header px-6 py-3">{{ __('Actions') }}</th>
+                                <th class="table-header px-6 py-3 text-white">{{ __('Produit') }}</th>
+                                <th class="table-header px-6 py-3 text-white">{{ __('Prix unitaire') }}</th>
+                                <th class="table-header px-6 py-3 text-white">{{ __('Quantité') }}</th>
+                                <th class="table-header px-6 py-3 text-white">{{ __('Total') }}</th>
+                                <th class="table-header px-6 py-3 text-white">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-700">

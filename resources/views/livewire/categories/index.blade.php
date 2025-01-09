@@ -34,11 +34,11 @@
                         <table class="w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-left">Nom</th>
-                                    <th class="text-left">Description</th>
-                                    <th class="text-right">Produits</th>
-                                    <th class="text-center">Statut</th>
-                                    <th class="text-right">Actions</th>
+                                    <th class="text-left text-white">Nom</th>
+                                    <th class="text-left text-white">Description</th>
+                                    <th class="text-right text-white">Produits</th>
+                                    <th class="text-center text-white">Statut</th>
+                                    <th class="text-right text-white">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
