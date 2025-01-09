@@ -2,13 +2,13 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-white leading-tight">
-                {{ __('Produits') }}
+                {{ __('Customers') }}
             </h2>
-            <a href="{{ route('products.create') }}" class="btn-primary">
+            <a href="{{ route('customers.create') }}" class="btn-primary">
                 <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                {{ __('Nouveau produit') }}
+                {{ __('New Customer') }}
             </a>
         </div>
     </x-slot>
@@ -17,93 +17,52 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="card">
                 <div class="card-body">
-                    <!-- Search and Filters -->
-                    <div class="flex flex-col md:flex-row gap-4 mb-6">
-                        <div class="flex-1">
-                            <div class="relative">
-                                <input type="search" wire:model.live="search" placeholder="{{ __('Rechercher des produits...') }}" class="search-input" />
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
+                    <!-- Search -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="search" wire:model.live="search" placeholder="{{ __('Search customers...') }}" class="search-input" />
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
                             </div>
-                        </div>
-                        <div class="w-full md:w-64">
-                            <select wire:model.live="categoryFilter" class="form-select">
-                                <option value="">{{ __('Toutes les catégories') }}</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="w-full md:w-48">
-                            <select wire:model.live="stockFilter" class="form-select">
-                                <option value="">{{ __('Tous les stocks') }}</option>
-                                <option value="in_stock">{{ __('En stock') }}</option>
-                                <option value="low_stock">{{ __('Stock bas') }}</option>
-                                <option value="out_of_stock">{{ __('Rupture') }}</option>
-                            </select>
                         </div>
                     </div>
 
-                    <!-- Products Table -->
+                    <!-- Customers Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th class="text-left">{{ __('Produit') }}</th>
-                                    <th class="text-left">{{ __('Catégorie') }}</th>
-                                    <th class="text-right">{{ __('Prix') }}</th>
-                                    <th class="text-right">{{ __('Stock') }}</th>
-                                    <th class="text-center">{{ __('Statut') }}</th>
-                                    <th class="text-right">{{ __('Actions') }}</th>
+                                    <th class="text-left text-white">{{ __('Client') }}</th>
+                                    <th class="text-left text-white">{{ __('Contact') }}</th>
+                                    <th class="text-right text-white">{{ __('Achats') }}</th>
+                                    <th class="text-right text-white">{{ __('Total dépensé') }}</th>
+                                    <th class="text-center text-white">{{ __('Statut') }}</th>
+                                    <th class="text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
-                                @forelse($products as $product)
+                                @forelse($customers as $customer)
                                     <tr class="hover:bg-[#2E324A] transition-colors duration-200">
                                         <td class="py-4">
-                                            <div class="flex items-center">
-                                                @if($product->image_path)
-                                                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded-lg object-cover mr-3">
-                                                @else
-                                                    <div class="w-10 h-10 rounded-lg bg-[#2E324A] flex items-center justify-center mr-3">
-                                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                        </svg>
-                                                    </div>
-                                                @endif
-                                                <div>
-                                                    <div class="font-medium text-white">{{ $product->name }}</div>
-                                                    <div class="text-sm text-gray-400">{{ $product->barcode }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-gray-400">{{ $product->category?->name }}</td>
-                                        <td class="text-right text-[#FFD700] font-medium">{{ $product->formatted_price }}</td>
-                                        <td class="text-right">
-                                            @if($product->track_stock)
-                                                <span class="text-white">{{ $product->current_stock }}</span>
-                                            @else
-                                                <span class="text-gray-400">-</span>
+                                            <div class="font-medium text-white">{{ $customer->first_name }} {{ $customer->last_name }}</div>
+                                            @if($customer->customer_code)
+                                                <div class="text-sm text-gray-400">{{ $customer->customer_code }}</div>
                                             @endif
                                         </td>
-                                        <td class="text-center">
-                                            @if($product->active)
-                                                <span class="badge badge-success">{{ __('Actif') }}</span>
-                                            @else
-                                                <span class="badge badge-danger">{{ __('Inactif') }}</span>
-                                            @endif
-                                        </td>
+                                        <td class="text-gray-400">{{ $customer->email }}</td>
+                                        <td class="text-gray-400">{{ $customer->phone }}</td>
+                                        <td class="text-right text-white">{{ $customer->sales_count }}</td>
+                                        <td class="text-right text-white">{{ number_format($customer->total_spent, 2) }} €</td>
                                         <td class="text-right">
-                                            <div class="flex items-center justify-end space-x-2">
-                                                <a href="{{ route('products.edit', $product) }}" class="btn-secondary btn-sm">
+                                            <div class="flex items-center justify-end space-x-3">
+                                                <a href="{{ route('customers.edit', $customer) }}" class="btn-secondary btn-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
                                                 </a>
-                                                <button wire:click="confirmProductDeletion({{ $product->id }})" class="btn-danger btn-sm">
+                                                <button wire:click="confirmDelete({{ $customer->id }})" class="btn-danger btn-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
@@ -116,9 +75,9 @@
                                         <td colspan="6" class="text-center py-12">
                                             <div class="flex flex-col items-center">
                                                 <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
-                                                <h3 class="mt-2 text-sm font-medium text-gray-400">{{ __('Aucun produit trouvé') }}</h3>
+                                                <h3 class="mt-2 text-sm font-medium text-gray-400">{{ __('No customers found') }}</h3>
                                             </div>
                                         </td>
                                     </tr>
@@ -129,7 +88,7 @@
 
                     <!-- Pagination -->
                     <div class="mt-6">
-                        {{ $products->links() }}
+                        {{ $customers->links() }}
                     </div>
                 </div>
             </div>
@@ -137,8 +96,8 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div x-data="{ open: @entangle('showDeleteModal') }"
-         x-show="open"
+    <div x-data="{ show: @entangle('showDeleteModal') }"
+         x-show="show"
          x-cloak
          class="fixed inset-0 z-50 overflow-y-auto"
          x-transition:enter="transition ease-out duration-300"
@@ -165,26 +124,99 @@
                         </svg>
                     </div>
                     <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <h3 class="text-lg font-semibold text-white">{{ __('Supprimer le produit') }}</h3>
+                        <h3 class="text-lg font-semibold text-white">{{ __('Delete Customer') }}</h3>
                         <div class="mt-2">
-                            <p class="text-sm text-gray-400">{{ __('Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.') }}</p>
+                            <p class="text-sm text-gray-400">{{ __('Are you sure you want to delete this customer? This action cannot be undone.') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button type="button"
-                            wire:click="deleteProduct"
+                            wire:click="deleteCustomer"
                             class="btn-danger w-full sm:w-auto sm:ml-3">
-                        {{ __('Supprimer') }}
+                        {{ __('Delete') }}
                     </button>
                     <button type="button"
-                            @click="open = false"
+                            wire:click="$set('showDeleteModal', false)"
                             class="btn-secondary w-full sm:w-auto mt-3 sm:mt-0">
-                        {{ __('Annuler') }}
+                        {{ __('Cancel') }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
+
+@push('styles')
+<style>
+    /* Table Styles */
+    .table-container {
+        @apply overflow-x-auto bg-[#1F2937] rounded-lg shadow-sm;
+    }
+    
+    table {
+        @apply min-w-full divide-y divide-gray-700;
+    }
+    
+    thead {
+        @apply bg-[#2E324A];
+    }
+    
+    thead th {
+        @apply px-6 py-3 text-left text-white font-medium;
+    }
+    
+    tbody {
+        @apply bg-[#1F2937] divide-y divide-gray-700;
+    }
+    
+    tbody tr {
+        @apply hover:bg-[#374151] transition-colors duration-150;
+    }
+    
+    tbody tr:nth-child(even) {
+        @apply bg-[#2E324A];
+    }
+    
+    td {
+        @apply px-6 py-4 whitespace-nowrap text-sm text-white;
+    }
+    
+    /* Search Input */
+    .search-input {
+        @apply block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm;
+    }
+    
+    /* Card Styles */
+    .card {
+        @apply bg-[#1F2937] overflow-hidden shadow-xl rounded-lg;
+    }
+    
+    .card-body {
+        @apply px-4 py-5 sm:p-6;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    .btn-secondary {
+        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    /* Badge Styles */
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+    
+    .badge-success {
+        @apply bg-green-100 text-green-800;
+    }
+    
+    .badge-danger {
+        @apply bg-red-100 text-red-800;
+    }
+</style>
+@endpush

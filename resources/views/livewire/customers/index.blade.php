@@ -32,14 +32,14 @@
                     <!-- Customers Table -->
                     <div class="overflow-x-auto">
                         <table>
-                            <thead class="bg-[#2E324A]">
+                            <thead>
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-white font-medium">{{ __('Client') }}</th>
-                                    <th class="px-6 py-3 text-left text-white font-medium">{{ __('Contact') }}</th>
-                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Achats') }}</th>
-                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Total dépensé') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium">{{ __('Statut') }}</th>
-                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Actions') }}</th>
+                                    <th class="text-left text-white">{{ __('Client') }}</th>
+                                    <th class="text-left text-white">{{ __('Contact') }}</th>
+                                    <th class="text-right text-white">{{ __('Achats') }}</th>
+                                    <th class="text-right text-white">{{ __('Total dépensé') }}</th>
+                                    <th class="text-center text-white">{{ __('Statut') }}</th>
+                                    <th class="text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
