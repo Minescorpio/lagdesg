@@ -8,7 +8,7 @@
 
 @layer components {
     .nav-link {
-        @apply flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-[#2E324A] hover:text-white transition-all duration-150 ease-in-out;
+        @apply flex items-center gap-1 px-2.5 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-[#2E324A] hover:text-white transition-all duration-150 ease-in-out whitespace-nowrap;
     }
 
     .nav-link.active {
@@ -17,6 +17,14 @@
 
     .nav-link svg {
         @apply w-5 h-5;
+    }
+
+    .mobile-nav-link {
+        @apply flex items-center px-4 py-3 text-base font-medium text-gray-300 hover:bg-[#1B1D29] hover:text-white transition-all duration-150 ease-in-out;
+    }
+
+    .mobile-nav-link.active {
+        @apply bg-[#1B1D29] text-white border-l-4 border-indigo-500;
     }
 
     .btn-primary {
