@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $programId ? __('Edit Program') : __('New Program') }}
                     </h3>
                     <div class="flex items-center space-x-3">
@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <!-- Basic Information -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Basic Information') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Basic Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Name -->
                             <div class="sm:col-span-2">
@@ -47,7 +47,7 @@
                                         <input type="radio" wire:model="type" value="points" class="sr-only" aria-labelledby="type-points-label">
                                         <span class="flex flex-1">
                                             <span class="flex flex-col">
-                                                <span id="type-points-label" class="block text-sm font-medium text-gray-900">{{ __('Points Based') }}</span>
+                                                <span id="type-points-label" class="block text-sm font-medium text-white">{{ __('Points Based') }}</span>
                                                 <span class="mt-1 flex items-center text-sm text-gray-500">{{ __('Earn points for purchases') }}</span>
                                             </span>
                                         </span>
@@ -60,7 +60,7 @@
                                         <input type="radio" wire:model="type" value="amount" class="sr-only" aria-labelledby="type-amount-label">
                                         <span class="flex flex-1">
                                             <span class="flex flex-col">
-                                                <span id="type-amount-label" class="block text-sm font-medium text-gray-900">{{ __('Amount Based') }}</span>
+                                                <span id="type-amount-label" class="block text-sm font-medium text-white">{{ __('Amount Based') }}</span>
                                                 <span class="mt-1 flex items-center text-sm text-gray-500">{{ __('Spend to get rewards') }}</span>
                                             </span>
                                         </span>
@@ -73,7 +73,7 @@
                                         <input type="radio" wire:model="type" value="visits" class="sr-only" aria-labelledby="type-visits-label">
                                         <span class="flex flex-1">
                                             <span class="flex flex-col">
-                                                <span id="type-visits-label" class="block text-sm font-medium text-gray-900">{{ __('Visits Based') }}</span>
+                                                <span id="type-visits-label" class="block text-sm font-medium text-white">{{ __('Visits Based') }}</span>
                                                 <span class="mt-1 flex items-center text-sm text-gray-500">{{ __('Visit to get rewards') }}</span>
                                             </span>
                                         </span>
@@ -89,7 +89,7 @@
 
                     <!-- Program Rules -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Program Rules') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Program Rules') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             @if($type === 'points')
                                 <!-- Points per Currency -->
@@ -160,7 +160,7 @@
 
                     <!-- Program Period -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Program Period') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Program Period') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Start Date -->
                             <div>
@@ -181,7 +181,7 @@
 
                     <!-- Additional Settings -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Additional Settings') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Additional Settings') }}</h4>
                         <div class="space-y-4">
                             <!-- Conditions -->
                             <div>
@@ -198,7 +198,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $active ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Active') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Active') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Program is available for customers') }}</span>
                                 </span>
                             </div>

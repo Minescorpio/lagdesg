@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $productId ? __('Edit Product') : __('New Product') }}
                     </h3>
                     <div class="flex items-center space-x-3">
@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <!-- Basic Information -->
                     <div class="sm:col-span-2">
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Basic Information') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Basic Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Name -->
                             <div>
@@ -69,7 +69,7 @@
 
                     <!-- Pricing -->
                     <div class="sm:col-span-2">
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Pricing') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Pricing') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
                             <!-- Price -->
                             <div>
@@ -114,7 +114,7 @@
 
                     <!-- Stock Management -->
                     <div class="sm:col-span-2">
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Stock Management') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Stock Management') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Track Stock Toggle -->
                             <div class="flex items-center">
@@ -124,7 +124,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $track_stock ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Track Stock') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Track Stock') }}</span>
                                 </span>
                             </div>
 
@@ -140,7 +140,7 @@
 
                     <!-- Product Options -->
                     <div class="sm:col-span-2">
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Product Options') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Product Options') }}</h4>
                         <div class="space-y-4">
                             <!-- Weighable Product -->
                             <div class="flex items-center">
@@ -150,7 +150,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $is_weighable ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Weighable Product') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Weighable Product') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Product is sold by weight') }}</span>
                                 </span>
                             </div>
@@ -163,7 +163,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $has_free_price ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Free Price') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Free Price') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Price can be changed at checkout') }}</span>
                                 </span>
                             </div>
@@ -176,7 +176,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $active ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Active') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Active') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Product is available for sale') }}</span>
                                 </span>
                             </div>
@@ -185,7 +185,7 @@
 
                     <!-- Product Image -->
                     <div class="sm:col-span-2">
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Product Image') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Product Image') }}</h4>
                         <div class="flex items-start space-x-4">
                             <!-- Preview -->
                             <div class="flex-shrink-0">

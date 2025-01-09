@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $customerId ? __('Edit Customer') : __('New Customer') }}
                     </h3>
                     <div class="flex items-center space-x-3">
@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <!-- Personal Information -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Personal Information') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Personal Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- First Name -->
                             <div>
@@ -79,7 +79,7 @@
 
                     <!-- Address -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Address') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Address') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Address -->
                             <div class="sm:col-span-2">
@@ -118,7 +118,7 @@
 
                     <!-- Loyalty & Credit -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Loyalty & Credit') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Loyalty & Credit') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Loyalty Points -->
                             <div>
@@ -145,7 +145,7 @@
 
                     <!-- Additional Information -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Additional Information') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Additional Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6">
                             <!-- Notes -->
                             <div>
@@ -162,7 +162,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $active ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Active') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Active') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Customer can make purchases and earn points') }}</span>
                                 </span>
                             </div>

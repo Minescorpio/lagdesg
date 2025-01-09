@@ -4,7 +4,7 @@
         <div class="max-w-2xl mx-auto">
             <!-- Actions -->
             <div class="mb-6 px-4 flex items-center justify-between">
-                <h1 class="text-2xl font-bold text-gray-900">{{ __('Sale Receipt') }}</h1>
+                <h1 class="text-2xl font-bold text-white">{{ __('Sale Receipt') }}</h1>
                 <div class="flex items-center space-x-2">
                     <button onclick="window.print()" class="btn-secondary">
                         <i class="fas fa-print mr-2"></i>{{ __('Print') }}
@@ -24,7 +24,7 @@
                 <div class="p-6 text-center border-b border-gray-200">
                     <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" 
                         class="h-12 mx-auto mb-4">
-                    <h2 class="text-xl font-bold text-gray-900">{{ config('app.name') }}</h2>
+                    <h2 class="text-xl font-bold text-white">{{ config('app.name') }}</h2>
                     <p class="text-gray-600">{{ config('pos.address') }}</p>
                     <p class="text-gray-600">{{ config('pos.phone') }}</p>
                     <p class="text-gray-600">{{ config('pos.email') }}</p>

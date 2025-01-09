@@ -1,7 +1,7 @@
 <div>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div class="flex-1 min-w-0">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                 {{ __('Products') }}
             </h2>
         </div>
@@ -99,7 +99,7 @@
                                         </div>
                                     @endif
                                     <div class="ml-4">
-                                        <div class="font-medium text-gray-900">{{ $product->name }}</div>
+                                        <div class="font-medium text-white">{{ $product->name }}</div>
                                         @if($product->barcode)
                                             <div class="text-sm text-gray-500">{{ $product->barcode }}</div>
                                         @endif
@@ -113,7 +113,7 @@
                                 </span>
                             </td>
                             <td class="table-td">
-                                <div class="text-sm text-gray-900">{{ money($product->price) }}</div>
+                                <div class="text-sm text-white">{{ money($product->price) }}</div>
                                 <div class="text-xs text-gray-500">{{ __('Cost') }}: {{ money($product->cost_price) }}</div>
                             </td>
                             <td class="table-td">

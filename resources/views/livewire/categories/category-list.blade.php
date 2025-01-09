@@ -64,7 +64,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($categories as $category)
                         <tr>
-                            <td class="table-td font-medium text-gray-900">
+                            <td class="table-td font-medium text-white">
                                 {{ $category->name }}
                             </td>
                             <td class="table-td">
@@ -147,7 +147,7 @@
                         <i class="fas fa-exclamation-triangle text-red-600"></i>
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        <h3 class="text-lg leading-6 font-medium text-white" id="modal-title">
                             Supprimer la catégorie
                         </h3>
                         <div class="mt-2">

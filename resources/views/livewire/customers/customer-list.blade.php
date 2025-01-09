@@ -1,7 +1,7 @@
 <div>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div class="flex-1 min-w-0">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                 {{ __('Customers') }}
             </h2>
         </div>
@@ -97,7 +97,7 @@
                                         </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ $customer->first_name }} {{ $customer->last_name }}
                                         </div>
                                         <div class="text-sm text-gray-500">
@@ -108,7 +108,7 @@
                             </td>
                             <td class="table-td">
                                 <div class="text-sm">
-                                    <div class="font-medium text-gray-900">{{ $customer->email }}</div>
+                                    <div class="font-medium text-white">{{ $customer->email }}</div>
                                     <div class="text-gray-500">{{ $customer->phone }}</div>
                                 </div>
                             </td>
@@ -119,7 +119,7 @@
                                 </div>
                             </td>
                             <td class="table-td">
-                                <span class="font-medium {{ $customer->credit_balance > 0 ? 'text-green-600' : 'text-gray-900' }}">
+                                <span class="font-medium {{ $customer->credit_balance > 0 ? 'text-green-600' : 'text-white' }}">
                                     {{ money($customer->credit_balance) }}
                                 </span>
                             </td>
@@ -210,7 +210,7 @@
     <!-- Add Points Modal -->
     <x-modal name="add-points" :show="$showAddPoints">
         <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">
+            <h2 class="text-lg font-medium text-white mb-4">
                 {{ __('Add Loyalty Points') }}
             </h2>
             <div class="space-y-4">
@@ -241,7 +241,7 @@
     <!-- Add Credit Modal -->
     <x-modal name="add-credit" :show="$showAddCredit">
         <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">
+            <h2 class="text-lg font-medium text-white mb-4">
                 {{ __('Add Credit Balance') }}
             </h2>
             <div class="space-y-4">

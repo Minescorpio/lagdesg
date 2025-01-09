@@ -1,7 +1,7 @@
 <div>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div class="flex-1 min-w-0">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                 {{ __('Loyalty Programs') }}
             </h2>
         </div>
@@ -96,7 +96,7 @@
                                         </div>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="font-medium text-gray-900">{{ $program->name }}</div>
+                                        <div class="font-medium text-white">{{ $program->name }}</div>
                                         <div class="text-sm text-gray-500">{{ Str::limit($program->description, 50) }}</div>
                                     </div>
                                 </div>
@@ -113,15 +113,15 @@
                             <td class="table-td">
                                 <div class="text-sm">
                                     @if($program->type === 'points')
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ $program->points_per_currency }} {{ __('points') }} / $
                                         </div>
                                     @elseif($program->type === 'amount')
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ money($program->reward_value) }}
                                         </div>
                                     @else
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ money($program->reward_value) }}
                                         </div>
                                     @endif
@@ -130,15 +130,15 @@
                             <td class="table-td">
                                 <div class="text-sm">
                                     @if($program->type === 'points')
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ number_format($program->points_required) }} {{ __('points') }}
                                         </div>
                                     @elseif($program->type === 'amount')
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ money($program->minimum_purchase) }}
                                         </div>
                                     @else
-                                        <div class="font-medium text-gray-900">
+                                        <div class="font-medium text-white">
                                             {{ $program->visits_required }} {{ __('visits') }}
                                         </div>
                                     @endif

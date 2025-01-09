@@ -1,7 +1,7 @@
 <div>
     <div class="sm:flex sm:items-center sm:justify-between">
         <div class="flex-1 min-w-0">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                 {{ __('Stock Management') }}
             </h2>
         </div>
@@ -107,7 +107,7 @@
                                         </div>
                                     @endif
                                     <div class="ml-4">
-                                        <div class="font-medium text-gray-900">{{ $stock->product->name }}</div>
+                                        <div class="font-medium text-white">{{ $stock->product->name }}</div>
                                         <div class="text-sm text-gray-500">SKU: {{ $stock->product->sku }}</div>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@
                                 </span>
                             </td>
                             <td class="table-td">
-                                <div class="text-sm font-medium text-gray-900">{{ $stock->quantity }}</div>
+                                <div class="text-sm font-medium text-white">{{ $stock->quantity }}</div>
                             </td>
                             <td class="table-td">
                                 <div class="text-sm text-gray-500">{{ $stock->alert_level }}</div>

@@ -60,14 +60,14 @@
                             @endif
                         </div>
                         <div class="p-4">
-                            <h3 class="text-sm font-medium text-gray-900 truncate">{{ $product->name }}</h3>
+                            <h3 class="text-sm font-medium text-white truncate">{{ $product->name }}</h3>
                             <p class="mt-1 text-sm text-gray-500">{{ money($product->price) }}</p>
                         </div>
                     </button>
                 @empty
                     <div class="col-span-full flex flex-col items-center justify-center py-12">
                         <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
-                        <h3 class="text-lg font-medium text-gray-900">{{ __('No products found') }}</h3>
+                        <h3 class="text-lg font-medium text-white">{{ __('No products found') }}</h3>
                         <p class="mt-1 text-sm text-gray-500">{{ __('Try adjusting your search or filters') }}</p>
                     </div>
                 @endforelse
@@ -87,7 +87,7 @@
         <!-- Customer Selection -->
         <div class="p-4 border-b border-gray-200">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-medium text-gray-900">{{ __('Current Sale') }}</h2>
+                <h2 class="text-lg font-medium text-white">{{ __('Current Sale') }}</h2>
                 @if($customer)
                     <button type="button" wire:click="setCustomer(null)"
                         class="text-sm text-red-600 hover:text-red-800">
@@ -128,7 +128,7 @@
             @forelse($cart as $index => $item)
                 <div class="flex items-center">
                     <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-medium text-gray-900 truncate">{{ $item['name'] }}</h4>
+                        <h4 class="text-sm font-medium text-white truncate">{{ $item['name'] }}</h4>
                         <div class="mt-1 flex items-center text-sm text-gray-500">
                             <span>{{ money($item['unit_price']) }} × </span>
                             <input type="number" wire:model.live="cart.{{ $index }}.quantity"
@@ -144,7 +144,7 @@
             @empty
                 <div class="text-center py-12">
                     <i class="fas fa-shopping-cart text-4xl text-gray-400 mb-4"></i>
-                    <h3 class="text-sm font-medium text-gray-900">{{ __('Cart is empty') }}</h3>
+                    <h3 class="text-sm font-medium text-white">{{ __('Cart is empty') }}</h3>
                     <p class="mt-1 text-sm text-gray-500">{{ __('Add some products to get started') }}</p>
                 </div>
             @endforelse
@@ -188,7 +188,7 @@
                 <!-- Total -->
                 <div class="border-t border-gray-200 pt-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-base font-medium text-gray-900">{{ __('Total') }}</span>
+                        <span class="text-base font-medium text-white">{{ __('Total') }}</span>
                         <span class="text-2xl font-bold text-blue-600">{{ money($totalAmount) }}</span>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
     <!-- Customer Selection Modal -->
     <x-modal name="select-customer">
         <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">{{ __('Select Customer') }}</h2>
+            <h2 class="text-lg font-medium text-white mb-4">{{ __('Select Customer') }}</h2>
             <div class="space-y-4">
                 <!-- Customer Search -->
                 <div>
@@ -259,7 +259,7 @@
                                 <i class="fas fa-user-circle text-2xl text-gray-400"></i>
                             </div>
                             <div class="ml-4 flex-1">
-                                <div class="text-sm font-medium text-gray-900">
+                                <div class="text-sm font-medium text-white">
                                     {{ $searchedCustomer->first_name }} {{ $searchedCustomer->last_name }}
                                 </div>
                                 <div class="text-sm text-gray-500">

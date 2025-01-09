@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $stockId ? __('Edit Stock Record') : __('New Stock Record') }}
                     </h3>
                     <div class="flex items-center space-x-3">
@@ -40,15 +40,15 @@
                     <!-- Current Stock Information -->
                     @if($stockId && $currentStock)
                     <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="text-sm font-medium text-gray-900 mb-3">{{ __('Current Stock Information') }}</h4>
+                        <h4 class="text-sm font-medium text-white mb-3">{{ __('Current Stock Information') }}</h4>
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                             <div>
                                 <span class="block text-sm text-gray-500">{{ __('Current Quantity') }}</span>
-                                <span class="block mt-1 text-lg font-medium text-gray-900">{{ $currentStock->quantity }}</span>
+                                <span class="block mt-1 text-lg font-medium text-white">{{ $currentStock->quantity }}</span>
                             </div>
                             <div>
                                 <span class="block text-sm text-gray-500">{{ __('Alert Level') }}</span>
-                                <span class="block mt-1 text-lg font-medium text-gray-900">{{ $currentStock->alert_level }}</span>
+                                <span class="block mt-1 text-lg font-medium text-white">{{ $currentStock->alert_level }}</span>
                             </div>
                             <div>
                                 <span class="block text-sm text-gray-500">{{ __('Status') }}</span>

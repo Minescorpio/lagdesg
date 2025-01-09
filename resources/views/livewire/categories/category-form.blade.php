@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $categoryId ? __('Edit Category') : __('New Category') }}
                     </h3>
                     <div class="flex items-center space-x-3">
@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <!-- Basic Information -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Basic Information') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Basic Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Name -->
                             <div>
@@ -58,7 +58,7 @@
 
                     <!-- Appearance -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">{{ __('Appearance') }}</h4>
+                        <h4 class="text-lg font-medium text-white mb-4">{{ __('Appearance') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Color -->
                             <div>
@@ -108,7 +108,7 @@
                                     <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $active ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                 </button>
                                 <span class="ml-3">
-                                    <span class="text-sm font-medium text-gray-900">{{ __('Active') }}</span>
+                                    <span class="text-sm font-medium text-white">{{ __('Active') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('Category is visible and can be used') }}</span>
                                 </span>
                             </div>

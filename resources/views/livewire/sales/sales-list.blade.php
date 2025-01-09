@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div class="flex-1 min-w-0">
-                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                    <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                         {{ __('Sales History') }}
                     </h2>
                     <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
@@ -172,7 +172,7 @@
                                                     <i class="fas fa-user text-blue-600"></i>
                                                 </div>
                                                 <div class="ml-3">
-                                                    <div class="font-medium text-gray-900">{{ $sale->customer->name }}</div>
+                                                    <div class="font-medium text-white">{{ $sale->customer->name }}</div>
                                                     @if($sale->loyalty_points_earned)
                                                         <div class="text-sm text-blue-600">+{{ $sale->loyalty_points_earned }} {{ __('points') }}</div>
                                                     @endif
@@ -260,7 +260,7 @@
             <div class="relative bg-white rounded-lg max-w-2xl w-full">
                 <div class="p-4">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-medium text-gray-900">{{ __('Sale Items') }}</h3>
+                        <h3 class="text-lg font-medium text-white">{{ __('Sale Items') }}</h3>
                         <button x-on:click="show = false" class="text-gray-400 hover:text-gray-500">
                             <i class="fas fa-times"></i>
                         </button>
@@ -283,12 +283,12 @@
                                             @endif
                                         </div>
                                         <div>
-                                            <p class="font-medium text-gray-900">{{ $item->product->name }}</p>
+                                            <p class="font-medium text-white">{{ $item->product->name }}</p>
                                             <p class="text-sm text-gray-500">SKU: {{ $item->product->sku }}</p>
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <p class="font-medium text-gray-900">{{ money($item->total_price) }}</p>
+                                        <p class="font-medium text-white">{{ money($item->total_price) }}</p>
                                         <p class="text-sm text-gray-500">
                                             {{ money($item->unit_price) }} × {{ $item->quantity }}
                                         </p>

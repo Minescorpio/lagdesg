@@ -4,7 +4,7 @@
             <!-- Header -->
             <div class="md:flex md:items-center md:justify-between">
                 <div class="flex-1 min-w-0">
-                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                    <h2 class="text-2xl font-bold leading-7 text-white sm:text-3xl sm:truncate">
                         {{ __('Settings') }}
                     </h2>
                 </div>
@@ -80,7 +80,7 @@
                         <form wire:submit="saveGeneralSettings" class="space-y-6">
                             <!-- Business Information -->
                             <div>
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Business Information') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Business Information') }}</h3>
                                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label class="form-label required">{{ __('Business Name') }}</label>
@@ -112,7 +112,7 @@
 
                             <!-- Localization -->
                             <div class="pt-6 border-t border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Localization') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Localization') }}</h3>
                                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label class="form-label required">{{ __('Default Language') }}</label>
@@ -158,7 +158,7 @@
 
                             <!-- Logo -->
                             <div class="pt-6 border-t border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Logo') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Logo') }}</h3>
                                 <div class="flex items-center space-x-6">
                                     <div class="flex-shrink-0">
                                         @if($logo)
@@ -198,7 +198,7 @@
                         <form wire:submit="savePosSettings" class="space-y-6">
                             <!-- Receipt Settings -->
                             <div>
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Receipt Settings') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Receipt Settings') }}</h3>
                                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label class="form-label required">{{ __('Receipt Prefix') }}</label>
@@ -220,7 +220,7 @@
 
                             <!-- Display Settings -->
                             <div class="pt-6 border-t border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Display Settings') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Display Settings') }}</h3>
                                 <div class="space-y-4">
                                     <div class="flex items-center">
                                         <input type="checkbox" wire:model="settings.show_stock_alert" class="form-checkbox" id="show_stock_alert">
@@ -245,7 +245,7 @@
 
                             <!-- Default Values -->
                             <div class="pt-6 border-t border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Default Values') }}</h3>
+                                <h3 class="text-lg font-medium text-white mb-4">{{ __('Default Values') }}</h3>
                                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                     <div>
                                         <label class="form-label required">{{ __('Default Payment Method') }}</label>
