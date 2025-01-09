@@ -67,7 +67,7 @@
                                     <input type="text" wire:model="customer_code" id="customer_code" 
                                         class="form-input flex-1 rounded-r-none">
                                     <button type="button" wire:click="generateCustomerCode"
-                                        class="relative -ml-px inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        class="relative -ml-px inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-r-md text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                                         <i class="fas fa-random mr-2"></i>
                                         {{ __('Generate') }}
                                     </button>

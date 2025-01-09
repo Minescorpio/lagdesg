@@ -34,25 +34,25 @@
                 <div class="p-6 border-b border-gray-200">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p class="text-sm text-gray-600">{{ __('Receipt No') }}:</p>
-                            <p class="font-medium text-white">{{ $sale->receipt_number }}</p>
+                            <p class="receipt-label">{{ __('Receipt No') }}:</p>
+                            <p class="receipt-value">{{ $sale->receipt_number }}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-gray-600">{{ __('Date') }}:</p>
-                            <p class="font-medium text-white">{{ $sale->created_at->format('d M Y H:i') }}</p>
+                            <p class="receipt-label">{{ __('Date') }}:</p>
+                            <p class="receipt-value">{{ $sale->created_at->format('d M Y H:i') }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600">{{ __('Cashier') }}:</p>
-                            <p class="font-medium text-white">{{ $sale->cashier->name }}</p>
+                            <p class="receipt-label">{{ __('Cashier') }}:</p>
+                            <p class="receipt-value">{{ $sale->cashier->name }}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-gray-600">{{ __('Payment Method') }}:</p>
-                            <p class="font-medium text-white">{{ ucfirst($sale->payment_method) }}</p>
+                            <p class="receipt-label">{{ __('Payment Method') }}:</p>
+                            <p class="receipt-value">{{ ucfirst($sale->payment_method) }}</p>
                         </div>
                         @if($sale->customer)
                         <div class="col-span-2">
-                            <p class="text-sm text-gray-600">{{ __('Customer') }}:</p>
-                            <p class="font-medium text-white">{{ $sale->customer->name }}</p>
+                            <p class="receipt-label">{{ __('Customer') }}:</p>
+                            <p class="receipt-value">{{ $sale->customer->name }}</p>
                             @if($sale->customer->loyalty_points)
                             <p class="text-sm text-blue-600 mt-1">
                                 {{ __('Points Earned') }}: +{{ $sale->loyalty_points_earned }}
@@ -67,7 +67,7 @@
                 <div class="p-6 border-b border-gray-200">
                     <table class="w-full">
                         <thead>
-                            <tr class="text-sm text-gray-600 border-b border-gray-200">
+                            <tr class="table-header border-b border-gray-200">
                                 <th class="pb-3 text-left">{{ __('Item') }}</th>
                                 <th class="pb-3 text-right">{{ __('Qty') }}</th>
                                 <th class="pb-3 text-right">{{ __('Price') }}</th>
@@ -94,16 +94,16 @@
                 <div class="p-6 bg-gray-50">
                     <div class="space-y-2">
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">{{ __('Subtotal') }}</span>
+                            <span class="text-white">{{ __('Subtotal') }}</span>
                             <span class="font-medium">{{ money($sale->subtotal) }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">{{ __('Tax') }} ({{ $sale->tax_rate }}%)</span>
+                            <span class="text-white">{{ __('Tax') }} ({{ $sale->tax_rate }}%)</span>
                             <span class="font-medium">{{ money($sale->tax_amount) }}</span>
                         </div>
                         @if($sale->discount_amount > 0)
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">
+                            <span class="text-white">
                                 {{ __('Discount') }} 
                                 @if($sale->discount_type === 'percentage')
                                     ({{ $sale->discount_percentage }}%)
@@ -118,11 +118,11 @@
                         </div>
                         @if($sale->payment_method === 'cash')
                         <div class="flex justify-between text-sm pt-2">
-                            <span class="text-gray-600">{{ __('Cash Received') }}</span>
+                            <span class="text-white">{{ __('Cash Received') }}</span>
                             <span class="font-medium">{{ money($sale->cash_received) }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">{{ __('Change') }}</span>
+                            <span class="text-white">{{ __('Change') }}</span>
                             <span class="font-medium">{{ money($sale->change_amount) }}</span>
                         </div>
                         @endif
@@ -281,7 +281,16 @@
         @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
     }
     .btn-secondary {
-        @apply inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    .receipt-label {
+        @apply text-sm text-white;
+    }
+    .receipt-value {
+        @apply font-medium text-white;
+    }
+    .table-header {
+        @apply text-sm text-white;
     }
 </style>
 @endpush 

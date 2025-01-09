@@ -12,9 +12,9 @@
         </div>
     </div>
 
-    <div class="mt-6 bg-white shadow-sm rounded-lg">
+    <div class="mt-6 bg-[#1F2937] shadow-sm rounded-lg">
         <!-- Filters -->
-        <div class="p-4 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+        <div class="p-4 border-b border-gray-700 sm:flex sm:items-center sm:justify-between">
             <div class="flex-1 min-w-0 space-y-3 sm:space-y-0 sm:flex sm:items-center sm:space-x-4">
                 <!-- Search -->
                 <div class="flex-1">
@@ -24,7 +24,7 @@
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
                         <input type="search" wire:model.live.debounce.300ms="search" 
-                            class="form-input pl-10" 
+                            class="form-input pl-10 bg-[#374151] border-gray-600 text-white placeholder-gray-400" 
                             placeholder="{{ __('Search products...') }}">
                     </div>
                 </div>
@@ -64,29 +64,29 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-700">
+                <thead class="bg-[#2E324A]">
                     <tr>
-                        <th scope="col" class="table-th">
-                            <button wire:click="sortBy('name')" class="group flex items-center space-x-1">
+                        <th class="px-6 py-3 text-left text-white">
+                            <button wire:click="sortBy('name')" class="group flex items-center space-x-1 text-white">
                                 <span>{{ __('Name') }}</span>
                                 @if($sortField === 'name')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-blue-500"></i>
                                 @else
-                                    <i class="fas fa-sort text-gray-400 group-hover:text-gray-500"></i>
+                                    <i class="fas fa-sort text-gray-400 group-hover:text-white"></i>
                                 @endif
                             </button>
                         </th>
-                        <th scope="col" class="table-th">{{ __('Category') }}</th>
-                        <th scope="col" class="table-th">{{ __('Price') }}</th>
-                        <th scope="col" class="table-th">{{ __('Stock') }}</th>
-                        <th scope="col" class="table-th">{{ __('Status') }}</th>
-                        <th scope="col" class="table-th">{{ __('Actions') }}</th>
+                        <th class="px-6 py-3 text-left text-white">{{ __('Category') }}</th>
+                        <th class="px-6 py-3 text-right text-white">{{ __('Price') }}</th>
+                        <th class="px-6 py-3 text-right text-white">{{ __('Stock') }}</th>
+                        <th class="px-6 py-3 text-center text-white">{{ __('Status') }}</th>
+                        <th class="px-6 py-3 text-right text-white">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-[#1F2937] divide-y divide-gray-700">
                     @forelse($products as $product)
-                        <tr class="{{ $loop->even ? 'bg-gray-50' : '' }}">
+                        <tr class="{{ $loop->even ? 'bg-[#374151]' : '' }}">
                             <td class="table-td">
                                 <div class="flex items-center">
                                     @if($product->image_path)
@@ -150,11 +150,11 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                            <td colspan="6" class="px-6 py-10 text-center">
                                 <div class="flex flex-col items-center">
-                                    <i class="fas fa-box-open text-4xl mb-4"></i>
-                                    <span class="text-xl font-medium">{{ __('No products found') }}</span>
-                                    <span class="text-sm mt-2">{{ __('Try adjusting your search or filters') }}</span>
+                                    <i class="fas fa-box-open text-4xl mb-4 text-white"></i>
+                                    <span class="text-xl font-medium text-white">{{ __('No products found') }}</span>
+                                    <span class="text-sm mt-2 text-white">{{ __('Try adjusting your search or filters') }}</span>
                                 </div>
                             </td>
                         </tr>
@@ -174,14 +174,17 @@
 
 @push('styles')
 <style>
-    .table-th {
-        @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    thead tr {
+        @apply text-white bg-[#2E324A];
+    }
+    thead th {
+        @apply text-white font-medium;
     }
     .table-td {
-        @apply px-6 py-4 whitespace-nowrap text-sm;
+        @apply px-6 py-4 whitespace-nowrap text-sm text-white;
     }
     .action-button {
-        @apply p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+        @apply p-2 rounded-full hover:bg-[#2E324A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-white;
     }
     .status-badge {
         @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium focus:outline-none;
@@ -191,6 +194,25 @@
     }
     .status-badge-danger {
         @apply bg-red-100 text-red-800;
+    }
+    .btn-primary {
+        @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    /* Ajout des styles pour le fond sombre */
+    .min-w-full {
+        @apply bg-[#1F2937];
+    }
+    thead {
+        @apply bg-[#2E324A] text-white;
+    }
+    tbody tr:nth-child(even) {
+        @apply bg-[#374151];
+    }
+    tbody tr {
+        @apply text-white hover:bg-[#4B5563] transition-colors duration-150;
     }
 </style>
 @endpush 
