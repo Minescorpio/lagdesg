@@ -134,32 +134,38 @@
 
                     <!-- Sales Table -->
                     <div class="overflow-x-auto">
-                        <table>
+                        <table class="w-full">
                             <thead>
                                 <tr>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('N° de Reçu') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Client') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Articles') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Total') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-center">{{ __('Mode de Paiement') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Date') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Actions') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Reference') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Customer') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Items') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Total') }}</th>
+                                    <th class="px-10 py-8 text-center text-white">{{ __('Status') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
                                 @forelse($sales as $sale)
                                     <tr class="hover:bg-[#2E324A] transition-colors duration-200">
-                                        <td class="py-4">
-                                            <div class="font-medium text-white">{{ $sale->receipt_no }}</div>
+                                        <td class="px-10 py-6">
+                                            <div class="font-medium text-white">{{ $sale->reference }}</div>
+                                            <div class="text-sm text-gray-400">{{ $sale->created_at->format('d/m/Y H:i') }}</div>
                                         </td>
-                                        <td class="text-gray-400">{{ $sale->customer->full_name ?? 'Guest' }}</td>
-                                        <td class="text-right text-white">{{ $sale->items_count }}</td>
-                                        <td class="text-right text-white">{{ number_format($sale->total_amount, 2) }} €</td>
-                                        <td class="text-center">
-                                            <span class="badge badge-success">{{ $sale->payment_method }}</span>
+                                        <td class="px-10 py-6">
+                                            <div class="text-white">{{ $sale->customer->name }}</div>
+                                            @if($sale->customer->company)
+                                                <div class="text-sm text-gray-400">{{ $sale->customer->company }}</div>
+                                            @endif
                                         </td>
-                                        <td class="text-gray-400">{{ $sale->created_at->format('d/m/Y H:i') }}</td>
-                                        <td class="text-right">
+                                        <td class="px-10 py-6 text-right text-white">{{ $sale->items_count }}</td>
+                                        <td class="px-10 py-6 text-right text-white">{{ money($sale->total) }}</td>
+                                        <td class="px-10 py-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $sale->status_color }}">
+                                                {{ $sale->status_label }}
+                                            </span>
+                                        </td>
+                                        <td class="px-10 py-6 text-right">
                                             <div class="flex items-center justify-end space-x-3">
                                                 <button wire:click="showReceipt({{ $sale->id }})" class="btn-secondary btn-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
