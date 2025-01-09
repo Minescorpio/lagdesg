@@ -18,12 +18,12 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Search -->
-                    <div class="mb-4">
+                    <div class="mb-6">
                         <div class="relative">
-                            <input type="search" wire:model.live="search" placeholder="{{ __('Search products...') }}" class="search-input" />
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            <input type="search" wire:model.live="search" placeholder="{{ __('Search products...') }}" class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                         </div>
@@ -31,43 +31,42 @@
 
                     <!-- Products Table -->
                     <div class="overflow-x-auto">
-                        <table>
+                        <table class="w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-left text-white">{{ __('Name') }}</th>
-                                    <th class="text-left text-white">{{ __('Category') }}</th>
-                                    <th class="text-right text-white">{{ __('Price') }}</th>
-                                    <th class="text-right text-white">{{ __('Stock') }}</th>
-                                    <th class="text-center text-white">{{ __('Status') }}</th>
-                                    <th class="text-right text-white">{{ __('Actions') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Name') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Category') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Price') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Stock') }}</th>
+                                    <th class="px-10 py-8 text-center text-white">{{ __('Status') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="divide-y divide-gray-700">
                                 @forelse($products as $product)
-                                    <tr>
-                                        <td>
+                                    <tr class="hover:bg-[#2E324A] transition-colors duration-200">
+                                        <td class="px-10 py-6">
                                             <div class="font-medium text-white">{{ $product->name }}</div>
                                             <div class="text-sm text-gray-400">{{ $product->barcode }}</div>
                                         </td>
-                                        <td class="text-gray-400">
-                                            {{ $product->category?->name ?? __('Uncategorized') }}
-                                        </td>
-                                        <td class="text-right text-white">
-                                            {{ number_format($product->price, 2) }} €
-                                        </td>
-                                        <td class="text-right">
-                                            <span class="@if($product->current_stock <= $product->min_stock_alert) text-red-400 @else text-gray-400 @endif">
-                                                {{ $product->current_stock }}
+                                        <td class="px-10 py-6">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                {{ $product->category->name }}
                                             </span>
                                         </td>
-                                        <td class="text-center">
-                                            @if($product->active)
-                                                <span class="badge badge-success">{{ __('Active') }}</span>
-                                            @else
-                                                <span class="badge badge-danger">{{ __('Inactive') }}</span>
-                                            @endif
+                                        <td class="px-10 py-6 text-right">
+                                            <div class="text-sm text-white">{{ money($product->price) }}</div>
+                                            <div class="text-xs text-gray-500">{{ __('Cost') }}: {{ money($product->cost_price) }}</div>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="px-10 py-6 text-right">
+                                            <div class="text-sm text-white">{{ $product->stock }}</div>
+                                        </td>
+                                        <td class="px-10 py-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $product->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $product->active ? __('Active') : __('Inactive') }}
+                                            </span>
+                                        </td>
+                                        <td class="px-10 py-6 text-right">
                                             <div class="flex items-center justify-end space-x-2">
                                                 <a href="{{ route('products.edit', $product) }}" class="btn-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
