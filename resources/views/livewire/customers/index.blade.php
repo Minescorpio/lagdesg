@@ -32,14 +32,14 @@
                     <!-- Customers Table -->
                     <div class="overflow-x-auto">
                         <table>
-                            <thead>
+                            <thead class="bg-[#2E324A]">
                                 <tr>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Name') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Email') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-left">{{ __('Phone') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Total Orders') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Total Spent') }}</th>
-                                    <th class="table-header px-6 py-3 text-white text-right">{{ __('Actions') }}</th>
+                                    <th class="px-6 py-3 text-left text-white font-medium">{{ __('Client') }}</th>
+                                    <th class="px-6 py-3 text-left text-white font-medium">{{ __('Contact') }}</th>
+                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Achats') }}</th>
+                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Total dépensé') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium">{{ __('Statut') }}</th>
+                                    <th class="px-6 py-3 text-right text-white font-medium">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
@@ -147,3 +147,76 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    /* Table Styles */
+    .table-container {
+        @apply overflow-x-auto bg-[#1F2937] rounded-lg shadow-sm;
+    }
+    
+    table {
+        @apply min-w-full divide-y divide-gray-700;
+    }
+    
+    thead {
+        @apply bg-[#2E324A];
+    }
+    
+    thead th {
+        @apply px-6 py-3 text-left text-white font-medium;
+    }
+    
+    tbody {
+        @apply bg-[#1F2937] divide-y divide-gray-700;
+    }
+    
+    tbody tr {
+        @apply hover:bg-[#374151] transition-colors duration-150;
+    }
+    
+    tbody tr:nth-child(even) {
+        @apply bg-[#2E324A];
+    }
+    
+    td {
+        @apply px-6 py-4 whitespace-nowrap text-sm text-white;
+    }
+    
+    /* Search Input */
+    .search-input {
+        @apply block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm;
+    }
+    
+    /* Card Styles */
+    .card {
+        @apply bg-[#1F2937] overflow-hidden shadow-xl rounded-lg;
+    }
+    
+    .card-body {
+        @apply px-4 py-5 sm:p-6;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    .btn-secondary {
+        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    /* Badge Styles */
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+    
+    .badge-success {
+        @apply bg-green-100 text-green-800;
+    }
+    
+    .badge-danger {
+        @apply bg-red-100 text-red-800;
+    }
+</style>
+@endpush

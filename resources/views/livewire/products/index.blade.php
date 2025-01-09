@@ -32,14 +32,14 @@
                     <!-- Products Table -->
                     <div class="overflow-x-auto">
                         <table>
-                            <thead>
+                            <thead class="bg-[#1E2235]">
                                 <tr>
-                                    <th>{{ __('Name') }}</th>
-                                    <th>{{ __('Category') }}</th>
-                                    <th class="text-right">{{ __('Price') }}</th>
-                                    <th class="text-right">{{ __('Stock') }}</th>
-                                    <th class="text-center">{{ __('Status') }}</th>
-                                    <th class="text-right">{{ __('Actions') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Name') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Category') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Price') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Stock') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Status') }}</th>
+                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -159,3 +159,54 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    /* Table Styles */
+    .table-container {
+        @apply overflow-x-auto bg-[#1F2937] rounded-lg shadow-sm;
+    }
+    
+    table {
+        @apply min-w-full divide-y divide-gray-700;
+    }
+    
+    thead {
+        @apply bg-[#2E324A];
+    }
+    
+    thead th {
+        @apply px-6 py-3 text-left text-white font-medium;
+    }
+    
+    tbody {
+        @apply bg-[#1F2937] divide-y divide-gray-700;
+    }
+    
+    tbody tr {
+        @apply hover:bg-[#374151] transition-colors duration-150;
+    }
+    
+    tbody tr:nth-child(even) {
+        @apply bg-[#2E324A];
+    }
+    
+    td {
+        @apply px-6 py-4 whitespace-nowrap text-sm text-white;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    .btn-secondary {
+        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    }
+    
+    /* Action Buttons */
+    .action-button {
+        @apply p-2 rounded-full text-white hover:bg-[#2E324A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150;
+    }
+</style>
+@endpush
