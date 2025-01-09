@@ -1,171 +1,125 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">
-                {{ __('Nouveau produit') }}
-            </h2>
-            <a href="{{ route('products.index') }}" class="btn-secondary">
-                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-                </svg>
-                {{ __('Retour à la liste') }}
-            </a>
-        </div>
-    </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="card">
-                <div class="card-body">
-                    <form wire:submit="save" class="space-y-8">
-                        <!-- Basic Information -->
-                        <div>
-                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Informations de base') }}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="form-group">
-                                    <label for="name" class="form-label">{{ __('Nom') }} <span class="text-red-500">*</span></label>
-                                    <input type="text" id="name" wire:model="name" class="form-input" required>
-                                    @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="barcode" class="form-label">{{ __('Code-barres') }}</label>
-                                    <input type="text" id="barcode" wire:model="barcode" class="form-input">
-                                    @error('barcode') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="category_id" class="form-label">{{ __('Catégorie') }}</label>
-                                    <select id="category_id" wire:model="category_id" class="form-select">
-                                        <option value="">{{ __('Sélectionner une catégorie') }}</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description" class="form-label">{{ __('Description') }}</label>
-                                    <textarea id="description" wire:model="description" class="form-input" rows="3"></textarea>
-                                    @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Price & Stock -->
-                        <div>
-                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Prix & Stock') }}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="form-group">
-                                    <label for="price" class="form-label">{{ __('Prix de vente') }} <span class="text-red-500">*</span></label>
-                                    <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">€</span>
-                                        <input type="number" id="price" wire:model="price" class="form-input pl-8" step="0.01" min="0" required>
-                                    </div>
-                                    @error('price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="cost_price" class="form-label">{{ __('Prix de revient') }}</label>
-                                    <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">€</span>
-                                        <input type="number" id="cost_price" wire:model="cost_price" class="form-input pl-8" step="0.01" min="0">
-                                    </div>
-                                    @error('cost_price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="vat_rate" class="form-label">{{ __('Taux de TVA') }} <span class="text-red-500">*</span></label>
-                                    <div class="relative">
-                                        <input type="number" id="vat_rate" wire:model="vat_rate" class="form-input pr-8" step="0.1" min="0" required>
-                                        <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">%</span>
-                                    </div>
-                                    @error('vat_rate') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="initial_stock" class="form-label">{{ __('Stock initial') }}</label>
-                                    <input type="number" id="initial_stock" wire:model="initial_stock" class="form-input" min="0">
-                                    @error('initial_stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="alert_stock" class="form-label">{{ __('Alerte stock bas') }}</label>
-                                    <input type="number" id="alert_stock" wire:model="alert_stock" class="form-input" min="0">
-                                    @error('alert_stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Additional Options -->
-                        <div>
-                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Options supplémentaires') }}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="track_stock" wire:model="track_stock" class="form-checkbox">
-                                    <label for="track_stock" class="ml-2 text-gray-300">{{ __('Suivre le stock') }}</label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="is_weighable" wire:model="is_weighable" class="form-checkbox">
-                                    <label for="is_weighable" class="ml-2 text-gray-300">{{ __('Produit pesable') }}</label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="has_free_price" wire:model="has_free_price" class="form-checkbox">
-                                    <label for="has_free_price" class="ml-2 text-gray-300">{{ __('Prix libre') }}</label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input type="checkbox" id="active" wire:model="active" class="form-checkbox">
-                                    <label for="active" class="ml-2 text-gray-300">{{ __('Actif') }}</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product Image -->
-                        <div>
-                            <h3 class="text-lg font-medium text-white mb-4">{{ __('Image du produit') }}</h3>
-                            <div class="form-group">
-                                <div class="flex items-center justify-center w-full">
-                                    <label for="image" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-[#2E324A] hover:bg-[#374151] transition-colors duration-200">
-                                        @if ($image)
-                                            @if(is_string($image))
-                                                <img src="{{ $image }}" class="w-auto h-full object-contain">
-                                            @else
-                                                <img src="{{ $image->temporaryUrl() }}" class="w-auto h-full object-contain">
-                                            @endif
-                                        @else
-                                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <svg class="w-8 h-8 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                                </svg>
-                                                <p class="mb-2 text-sm text-gray-400">
-                                                    <span class="font-semibold">{{ __('Cliquer pour télécharger') }}</span>
-                                                    {{ __('ou glisser-déposer') }}
-                                                </p>
-                                                <p class="text-xs text-gray-400">PNG, JPG ou GIF (MAX. 2MB)</p>
-                                            </div>
-                                        @endif
-                                        <input id="image" type="file" wire:model="image" class="hidden" accept="image/*" />
-                                    </label>
-                                </div>
-                                @error('image') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-end">
-                            <button type="submit" class="btn-primary">
-                                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                {{ __('Créer le produit') }}
-                            </button>
-                        </div>
-                    </form>
+            <div class="space-y-8">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-white">{{ __('Créer un nouveau produit') }}</h2>
+                    <a href="{{ route('products.index') }}" class="btn-secondary">
+                        {{ __('Retour à la liste') }}
+                    </a>
                 </div>
+
+                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                    @csrf
+                    
+                    <!-- Informations de base -->
+                    <div class="bg-[#1F2337] rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-white mb-6">{{ __('Informations de base') }}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nom -->
+                            <div class="col-span-2">
+                                <label for="name" class="block text-sm font-medium text-white mb-2">{{ __('Nom du produit') }} <span class="text-red-500">*</span></label>
+                                <input type="text" name="name" id="name" class="form-input w-full text-white" required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-span-2">
+                                <label for="description" class="block text-sm font-medium text-white mb-2">{{ __('Description') }}</label>
+                                <textarea name="description" id="description" rows="4" class="form-textarea w-full text-white"></textarea>
+                            </div>
+
+                            <!-- Prix -->
+                            <div>
+                                <label for="price" class="block text-sm font-medium text-white mb-2">{{ __('Prix') }} <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <input type="number" step="0.01" name="price" id="price" class="form-input w-full pr-8 text-white" required>
+                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white">€</span>
+                                </div>
+                            </div>
+
+                            <!-- Catégorie -->
+                            <div>
+                                <label for="category_id" class="block text-sm font-medium text-white mb-2">{{ __('Catégorie') }} <span class="text-red-500">*</span></label>
+                                <select name="category_id" id="category_id" class="form-select w-full text-white" required>
+                                    <option value="" class="text-white">{{ __('Sélectionner une catégorie') }}</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" class="text-white">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gestion du stock -->
+                    <div class="bg-[#1F2337] rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-white mb-6">{{ __('Gestion du stock') }}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Quantité -->
+                            <div>
+                                <label for="quantity" class="block text-sm font-medium text-white mb-2">{{ __('Quantité en stock') }} <span class="text-red-500">*</span></label>
+                                <input type="number" name="quantity" id="quantity" class="form-input w-full text-white" required>
+                            </div>
+
+                            <!-- Seuil d'alerte -->
+                            <div>
+                                <label for="alert_threshold" class="block text-sm font-medium text-white mb-2">{{ __('Seuil d\'alerte') }}</label>
+                                <input type="number" name="alert_threshold" id="alert_threshold" class="form-input w-full text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statut et options -->
+                    <div class="bg-[#1F2337] rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-white mb-6">{{ __('Statut et options') }}</h3>
+                        <div class="space-y-4">
+                            <!-- Statut -->
+                            <div>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="is_active" id="is_active" class="form-checkbox" checked>
+                                    <span class="text-sm text-white">{{ __('Produit actif') }}</span>
+                                </label>
+                            </div>
+
+                            <!-- Featured -->
+                            <div>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="is_featured" id="is_featured" class="form-checkbox">
+                                    <span class="text-sm text-white">{{ __('Produit mis en avant') }}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="bg-[#1F2337] rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-white mb-6">{{ __('Images') }}</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center w-full">
+                                <label for="image" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-[#2E324A] hover:bg-[#363B56] transition-colors duration-150">
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <svg class="w-8 h-8 mb-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        <p class="mb-2 text-sm text-white">{{ __('Cliquez ou glissez-déposez') }}</p>
+                                        <p class="text-xs text-white">PNG, JPG, GIF (MAX. 2MB)</p>
+                                    </div>
+                                    <input type="file" name="image" id="image" class="hidden" accept="image/*">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="flex justify-end space-x-4">
+                        <a href="{{ route('products.index') }}" class="btn-secondary">
+                            {{ __('Annuler') }}
+                        </a>
+                        <button type="submit" class="btn-primary">
+                            {{ __('Créer le produit') }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
