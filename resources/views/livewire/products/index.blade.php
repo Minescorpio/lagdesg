@@ -32,14 +32,14 @@
                     <!-- Products Table -->
                     <div class="overflow-x-auto">
                         <table>
-                            <thead class="bg-[#1E2235]">
+                            <thead>
                                 <tr>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Name') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Category') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Price') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Stock') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Status') }}</th>
-                                    <th class="px-6 py-3 text-center text-white font-medium uppercase tracking-wider">{{ __('Actions') }}</th>
+                                    <th class="text-left text-white">{{ __('Name') }}</th>
+                                    <th class="text-left text-white">{{ __('Category') }}</th>
+                                    <th class="text-right text-white">{{ __('Price') }}</th>
+                                    <th class="text-right text-white">{{ __('Stock') }}</th>
+                                    <th class="text-center text-white">{{ __('Status') }}</th>
+                                    <th class="text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
