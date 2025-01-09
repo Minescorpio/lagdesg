@@ -206,7 +206,7 @@
                                 <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                     <div class="space-y-1 text-center">
                                         <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
-                                        <div class="flex text-sm text-gray-600">
+                                        <div class="flex text-sm text-white">
                                             <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                                                 <span>{{ __('Upload a file') }}</span>
                                                 <input id="image" wire:model="image" type="file" class="sr-only" accept="image/*">
@@ -241,7 +241,7 @@
 @push('styles')
 <style>
     .form-label {
-        @apply block text-sm font-medium text-gray-700;
+        @apply block text-sm font-medium text-white;
     }
     .form-label.required::after {
         content: "*";
@@ -263,7 +263,7 @@
         @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
     }
     .btn-secondary {
-        @apply inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+        @apply inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
     }
 </style>
 @endpush 

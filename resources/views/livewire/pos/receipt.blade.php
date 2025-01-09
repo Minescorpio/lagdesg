@@ -25,9 +25,9 @@
                     <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" 
                         class="h-12 mx-auto mb-4">
                     <h2 class="text-xl font-bold text-white">{{ config('app.name') }}</h2>
-                    <p class="text-gray-600">{{ config('pos.address') }}</p>
-                    <p class="text-gray-600">{{ config('pos.phone') }}</p>
-                    <p class="text-gray-600">{{ config('pos.email') }}</p>
+                    <p class="text-white">{{ config('pos.address') }}</p>
+                    <p class="text-white">{{ config('pos.phone') }}</p>
+                    <p class="text-white">{{ config('pos.email') }}</p>
                 </div>
 
                 <!-- Receipt Details -->
@@ -35,24 +35,24 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-sm text-gray-600">{{ __('Receipt No') }}:</p>
-                            <p class="font-medium">{{ $sale->receipt_number }}</p>
+                            <p class="font-medium text-white">{{ $sale->receipt_number }}</p>
                         </div>
                         <div class="text-right">
                             <p class="text-sm text-gray-600">{{ __('Date') }}:</p>
-                            <p class="font-medium">{{ $sale->created_at->format('d M Y H:i') }}</p>
+                            <p class="font-medium text-white">{{ $sale->created_at->format('d M Y H:i') }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">{{ __('Cashier') }}:</p>
-                            <p class="font-medium">{{ $sale->cashier->name }}</p>
+                            <p class="font-medium text-white">{{ $sale->cashier->name }}</p>
                         </div>
                         <div class="text-right">
                             <p class="text-sm text-gray-600">{{ __('Payment Method') }}:</p>
-                            <p class="font-medium">{{ ucfirst($sale->payment_method) }}</p>
+                            <p class="font-medium text-white">{{ ucfirst($sale->payment_method) }}</p>
                         </div>
                         @if($sale->customer)
                         <div class="col-span-2">
                             <p class="text-sm text-gray-600">{{ __('Customer') }}:</p>
-                            <p class="font-medium">{{ $sale->customer->name }}</p>
+                            <p class="font-medium text-white">{{ $sale->customer->name }}</p>
                             @if($sale->customer->loyalty_points)
                             <p class="text-sm text-blue-600 mt-1">
                                 {{ __('Points Earned') }}: +{{ $sale->loyalty_points_earned }}
@@ -78,12 +78,12 @@
                             @foreach($sale->items as $item)
                             <tr>
                                 <td class="py-3">
-                                    <p class="font-medium">{{ $item->product->name }}</p>
+                                    <p class="font-medium text-white">{{ $item->product->name }}</p>
                                     <p class="text-sm text-gray-500">SKU: {{ $item->product->sku }}</p>
                                 </td>
-                                <td class="py-3 text-right">{{ $item->quantity }}</td>
-                                <td class="py-3 text-right">{{ money($item->unit_price) }}</td>
-                                <td class="py-3 text-right">{{ money($item->total_price) }}</td>
+                                <td class="py-3 text-right text-white">{{ $item->quantity }}</td>
+                                <td class="py-3 text-right text-white">{{ money($item->unit_price) }}</td>
+                                <td class="py-3 text-right text-white">{{ money($item->total_price) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
