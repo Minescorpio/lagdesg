@@ -18,20 +18,20 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Search and Filters -->
-                    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 items-center">
                         <!-- Search -->
-                        <div class="relative">
-                            <input type="search" wire:model.live="search" placeholder="{{ __('Search sales...') }}" class="search-input" />
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        <div class="relative sm:col-span-2">
+                            <input type="search" wire:model.live="search" placeholder="{{ __('Search sales...') }}" class="search-input pl-16 pr-4 py-4 w-full" />
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                         </div>
 
                         <!-- Date Range -->
                         <div class="relative">
-                            <select wire:model.live="dateRange" class="form-input">
+                            <select wire:model.live="dateRange" class="form-input pl-4 pr-8 py-4 w-full appearance-none">
                                 <option value="today">{{ __('Today') }}</option>
                                 <option value="yesterday">{{ __('Yesterday') }}</option>
                                 <option value="last7days">{{ __('Last 7 Days') }}</option>
@@ -40,16 +40,26 @@
                                 <option value="lastMonth">{{ __('Last Month') }}</option>
                                 <option value="all">{{ __('All Time') }}</option>
                             </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                </svg>
+                            </div>
                         </div>
 
                         <!-- Payment Method -->
                         <div class="relative">
-                            <select wire:model.live="paymentMethod" class="form-input">
+                            <select wire:model.live="paymentMethod" class="form-input pl-4 pr-8 py-4 w-full appearance-none">
                                 <option value="">{{ __('All Payment Methods') }}</option>
                                 <option value="cash">{{ __('Cash') }}</option>
                                 <option value="card">{{ __('Card') }}</option>
                                 <option value="bank_transfer">{{ __('Bank Transfer') }}</option>
                             </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
