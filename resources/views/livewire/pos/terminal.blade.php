@@ -89,6 +89,9 @@
                         </svg>
                         {{ __('Appliquer une remise') }}
                     </button>
+                    @error('cart')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
 
                     <!-- Process Payment -->
                     <button wire:click="openPaymentModal" class="btn-primary flex items-center justify-center gap-2 py-3 px-4 text-base">

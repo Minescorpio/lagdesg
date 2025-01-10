@@ -15,6 +15,7 @@ use App\Livewire\Products\Index as ProductsComponent;
 use App\Livewire\Customers\Index as CustomersComponent;
 use App\Livewire\Sales\Index as SalesComponent;
 use App\Livewire\Stock\Index as StockComponent;
+use App\Http\Controllers\PurchaseController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -115,6 +116,10 @@ Route::middleware([
         Route::put('/{stock}', [StockController::class, 'update'])->name('update');
         Route::delete('/{stock}', [StockController::class, 'destroy'])->name('destroy');
     });
+
+    Route::resource('purchases', PurchaseController::class);
+    Route::post('/purchases/{purchase}/sign', [PurchaseController::class, 'sign'])->name('purchases.sign');
+    Route::get('/purchases/{purchase}/document', [PurchaseController::class, 'generateDocument'])->name('purchases.document');
 });
 
 // Error Pages
