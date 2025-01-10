@@ -23,6 +23,7 @@ class Product extends Model
         'price',
         'cost_price',
         'category_id',
+        'fournisseur_id',
         'track_stock',
         'active',
         'is_weighable',
@@ -60,6 +61,11 @@ class Product extends Model
     public function stocks(): HasMany
     {
         return $this->hasMany(Stock::class);
+    }
+
+    public function fournisseur(): BelongsTo
+    {
+        return $this->belongsTo(Fournisseur::class);
     }
 
     public function getFormattedPriceAttribute()

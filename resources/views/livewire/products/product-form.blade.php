@@ -64,6 +64,18 @@
                                 <textarea wire:model="description" id="description" rows="3" class="form-textarea"></textarea>
                                 @error('description') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
+
+                            <!-- Fournisseur -->
+                            <div>
+                                <label for="fournisseur_id" class="form-label">{{ __('Fournisseur') }}</label>
+                                <select wire:model="fournisseur_id" id="fournisseur_id" class="form-select">
+                                    <option value="">{{ __('Select Fournisseur') }}</option>
+                                    @foreach($fournisseurs as $fournisseur)
+                                        <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
+                                    @endforeach
+                                </select>
+                                @error('fournisseur_id') <span class="form-error">{{ $message }}</span> @enderror
+                            </div>
                         </div>
                     </div>
 

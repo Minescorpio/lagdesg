@@ -5,6 +5,7 @@ namespace App\Livewire\Products;
 use App\Helpers\CurrencyHelper;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Fournisseur;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
@@ -35,6 +36,9 @@ class Create extends Component
     // Image
     public $image;
 
+    // Fournisseur
+    public $fournisseur_id;
+
     protected $rules = [
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
@@ -49,7 +53,8 @@ class Create extends Component
         'weighable' => 'boolean',
         'free_price' => 'boolean',
         'active' => 'boolean',
-        'image' => 'nullable|image|max:1024'
+        'image' => 'nullable|image|max:1024',
+        'fournisseur_id' => 'nullable|exists:fournisseurs,id',
     ];
 
     public function formatPrice($value)
@@ -62,6 +67,7 @@ class Create extends Component
     {
         return view('products.create', [
             'categories' => Category::where('active', true)->orderBy('name')->get(),
+            'fournisseurs' => Fournisseur::orderBy('nom')->get(),
             'formatted_price' => $this->formatPrice($this->price),
             'formatted_cost_price' => $this->formatPrice($this->cost_price)
         ]);
@@ -84,7 +90,8 @@ class Create extends Component
                 'alert_quantity' => $this->alert_quantity,
                 'weighable' => $this->weighable,
                 'free_price' => $this->free_price,
-                'active' => $this->active
+                'active' => $this->active,
+                'fournisseur_id' => $this->fournisseur_id,
             ];
 
             if ($this->image) {

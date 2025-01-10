@@ -1,9 +1,9 @@
 <div>
     <!-- Header -->
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-white">{{ __('Products') }}</h2>
+        <h2 class="text-xl font-semibold text-white">{{ __('Produits') }}</h2>
         <a href="{{ route('products.create') }}" class="btn-primary">
-            <i class="fas fa-plus mr-2"></i>{{ __('Add Product') }}
+            <i class="fas fa-plus mr-2"></i>{{ __('NOUVEAU PRODUIT') }}
         </a>
     </div>
 
@@ -15,7 +15,7 @@
             </div>
             <input type="search" wire:model.live.debounce.300ms="search"
                 class="form-input block w-full pl-10 text-white bg-[#374151] border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="{{ __('Search products...') }}">
+                placeholder="{{ __('Rechercher des produits...') }}">
         </div>
     </div>
 
@@ -37,8 +37,8 @@
                     <tr class="hover:bg-[#2E324A] transition-colors duration-200">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                @if($product->image_path)
-                                    <img src="{{ Storage::url($product->image_path) }}" 
+                                @if($product->image)
+                                    <img src="{{ Storage::url($product->image) }}" 
                                         alt="{{ $product->name }}"
                                         class="h-10 w-10 rounded-full object-cover">
                                 @else
@@ -62,7 +62,7 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="text-sm text-white">{{ money($product->price) }}</div>
-                            <div class="text-xs text-gray-500">{{ __('Cost') }}: {{ money($product->cost_price) }}</div>
+                            <div class="text-xs text-gray-500">{{ __('Coût') }}: {{ money($product->cost_price) }}</div>
                         </td>
                         <td class="px-6 py-4 text-right">
                             @if($product->track_stock)
@@ -73,13 +73,13 @@
                                     <span class="text-white">{{ $product->current_stock }}</span>
                                 </div>
                             @else
-                                <span class="text-gray-500">{{ __('Not tracked') }}</span>
+                                <span class="text-gray-500">{{ __('Non suivi') }}</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button wire:click="toggleActive({{ $product->id }})" 
                                 class="status-badge {{ $product->active ? 'status-badge-success' : 'status-badge-danger' }}">
-                                {{ $product->active ? __('Active') : __('Inactive') }}
+                                {{ $product->active ? __('Actif') : __('Inactif') }}
                             </button>
                         </td>
                         <td class="px-6 py-4 text-right">
@@ -89,7 +89,7 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button wire:click="delete({{ $product->id }})"
-                                    wire:confirm="{{ __('Are you sure you want to delete this product?') }}"
+                                    wire:confirm="{{ __('Êtes-vous sûr de vouloir supprimer ce produit ?') }}"
                                     class="action-button text-red-600 hover:text-red-800">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -101,8 +101,8 @@
                         <td colspan="6" class="px-6 py-10 text-center">
                             <div class="flex flex-col items-center">
                                 <i class="fas fa-box-open text-4xl mb-4 text-white"></i>
-                                <span class="text-xl font-medium text-white">{{ __('No products found') }}</span>
-                                <span class="text-sm mt-2 text-white">{{ __('Try adjusting your search') }}</span>
+                                <span class="text-xl font-medium text-white">{{ __('Aucun produit trouvé') }}</span>
+                                <span class="text-sm mt-2 text-white">{{ __('Essayez d\'ajuster votre recherche') }}</span>
                             </div>
                         </td>
                     </tr>

@@ -44,6 +44,16 @@ class Terminal extends Component
     public $finalAmount = 0;
     public $savings = 0;
 
+    public $search = '';
+    public $selectedCategory = '';
+    public $showReceiptModal = false;
+    public $barcodeInput = '';
+
+    protected $listeners = [
+        'productSelected' => 'addToCart',
+        'customerSelected' => 'selectCustomer'
+    ];
+
     #[On('customerSelected')]
     public function onCustomerSelected($customerId)
     {
@@ -227,6 +237,29 @@ class Terminal extends Component
 
         } catch (\Exception $e) {
             $this->addError('payment', __('Une erreur est survenue lors du traitement du paiement'));
+        }
+    }
+
+    public function handleBarcodeScan()
+    {
+        if (empty($this->barcodeInput)) {
+            return;
+        }
+
+        // Recherche du produit par code-barres
+        $product = Product::where('barcode', $this->barcodeInput)->first();
+
+        if ($product) {
+            // Ajouter le produit au panier
+            $this->addToCart($product->id);
+            // Réinitialiser le champ de saisie
+            $this->barcodeInput = '';
+        } else {
+            // Produit non trouvé
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => __('Produit non trouvé pour ce code-barres')
+            ]);
         }
     }
 

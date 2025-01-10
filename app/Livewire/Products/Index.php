@@ -3,6 +3,7 @@
 namespace App\Livewire\Products;
 
 use App\Models\Product;
+use App\Models\Fournisseur;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -15,6 +16,8 @@ class Index extends Component
     public $perPage = 10;
     public $showDeleteModal = false;
     public $productToDelete;
+    public $barcodeInput = '';
+    public $fournisseurFilter = '';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -55,11 +58,31 @@ class Index extends Component
         }
     }
 
+    public function handleBarcodeScan()
+    {
+        if (empty($this->barcodeInput)) {
+            return;
+        }
+
+        $product = Product::where('barcode', $this->barcodeInput)->first();
+
+        if ($product) {
+            return redirect()->route('products.show', $product);
+        } else {
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => __('Produit non trouvé pour ce code-barres')  
+            ]);
+        }
+
+        $this->barcodeInput = '';
+    }
+
     #[Layout('components.layouts.app')]
     public function render()
     {
         $query = Product::query()
-            ->with('category')
+            ->with(['category', 'fournisseur'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')
@@ -67,10 +90,17 @@ class Index extends Component
                         ->orWhere('description', 'like', '%' . $this->search . '%');
                 });
             })
+            ->when($this->barcodeInput, function ($query) {
+                $query->where('barcode', $this->barcodeInput);  
+            })
+            ->when($this->fournisseurFilter, function ($query) {
+                $query->where('fournisseur_id', $this->fournisseurFilter);
+            })
             ->orderBy('name');
 
         return view('livewire.products.index', [
             'products' => $query->paginate($this->perPage),
+            'fournisseurs' => Fournisseur::orderBy('nom')->get(),
         ]);
     }
 } 

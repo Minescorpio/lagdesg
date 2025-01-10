@@ -48,6 +48,17 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <!-- Fournisseur -->
+                            <div>
+                                <label for="fournisseur_id" class="block text-sm font-medium text-white mb-2">{{ __('Fournisseur') }}</label>
+                                <select name="fournisseur_id" id="fournisseur_id" class="form-select w-full text-white" wire:model="fournisseur_id">
+                                    <option value="" class="text-white">{{ __('Sélectionner un fournisseur') }}</option>
+                                    @foreach($fournisseurs as $fournisseur)
+                                        <option value="{{ $fournisseur->id }}" class="text-white">{{ $fournisseur->nom }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
 

@@ -33,6 +33,15 @@ Route::middleware([
         return view('settings.index');
     })->name('settings');
 
+    // Fournisseurs Routes
+    Route::get('/fournisseurs', [App\Http\Controllers\FournisseurController::class, 'index'])->name('fournisseurs.index');
+    Route::get('/fournisseurs/create', [App\Http\Controllers\FournisseurController::class, 'create'])->name('fournisseurs.create');
+    Route::post('/fournisseurs', [App\Http\Controllers\FournisseurController::class, 'store'])->name('fournisseurs.store');
+    Route::get('/fournisseurs/{fournisseur}', [App\Http\Controllers\FournisseurController::class, 'show'])->name('fournisseurs.show');
+    Route::get('/fournisseurs/{fournisseur}/edit', [App\Http\Controllers\FournisseurController::class, 'edit'])->name('fournisseurs.edit');
+    Route::put('/fournisseurs/{fournisseur}', [App\Http\Controllers\FournisseurController::class, 'update'])->name('fournisseurs.update');
+    Route::delete('/fournisseurs/{fournisseur}', [App\Http\Controllers\FournisseurController::class, 'destroy'])->name('fournisseurs.destroy');
+
     // POS Routes
     Route::prefix('pos')->name('pos.')->group(function () {
         Route::get('/terminal', PosTerminalComponent::class)->name('terminal');

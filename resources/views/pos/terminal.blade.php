@@ -89,6 +89,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="mt-4">
+                                <a href="{{ route('customers.create') }}" class="btn-primary w-full flex items-center justify-center">
+                                    <i class="fas fa-user-plus mr-2"></i>
+                                    {{ __('NOUVEAU CLIENT') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
 

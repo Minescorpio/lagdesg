@@ -2,13 +2,13 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-white leading-tight">
-                Catégories
+                {{ __('Categories') }}
             </h2>
             <a href="{{ route('categories.create') }}" class="btn-primary">
                 <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Nouvelle catégorie
+                {{ __('Add Category') }}
             </a>
         </div>
     </x-slot>
@@ -20,7 +20,9 @@
                     <!-- Search -->
                     <div class="mb-6">
                         <div class="relative">
-                            <input type="search" wire:model.live="search" placeholder="Rechercher des catégories..." class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                            <input type="search" wire:model.live="search" 
+                                   placeholder="{{ __('Search categories...') }}" 
+                                   class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -34,11 +36,11 @@
                         <table class="w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-left text-white">Nom</th>
-                                    <th class="text-left text-white">Description</th>
-                                    <th class="text-right text-white">Produits</th>
-                                    <th class="text-center text-white">Statut</th>
-                                    <th class="text-right text-white">Actions</th>
+                                    <th class="text-left text-white">{{ __('Name') }}</th>
+                                    <th class="text-left text-white">{{ __('Description') }}</th>
+                                    <th class="text-right text-white">{{ __('Products') }}</th>
+                                    <th class="text-center text-white">{{ __('Status') }}</th>
+                                    <th class="text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
@@ -51,9 +53,9 @@
                                         <td class="text-right text-white">{{ $category->products_count }}</td>
                                         <td class="text-center">
                                             @if($category->active)
-                                                <span class="text-red-500 font-medium">{{ __('Active') }}</span>
+                                                <span class="text-green-500 font-medium">{{ __('Active') }}</span>
                                             @else
-                                                <span class="text-green-500 font-medium">{{ __('Inactive') }}</span>
+                                                <span class="text-red-500 font-medium">{{ __('Inactive') }}</span>
                                             @endif
                                         </td>
                                         <td class="text-right">
@@ -78,7 +80,7 @@
                                                 <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                                 </svg>
-                                                <h3 class="mt-2 text-sm font-medium text-gray-400">Aucune catégorie trouvée</h3>
+                                                <h3 class="mt-2 text-sm font-medium text-gray-400">{{ __('No categories found') }}</h3>
                                             </div>
                                         </td>
                                     </tr>
@@ -96,7 +98,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmation de suppression -->
+    <!-- Delete Confirmation Modal -->
     <div x-data="{ show: @entangle('showDeleteModal') }"
          x-show="show"
          x-cloak
@@ -125,23 +127,19 @@
                         </svg>
                     </div>
                     <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <h3 class="text-lg font-semibold text-white">Supprimer la catégorie</h3>
+                        <h3 class="text-lg font-semibold text-white">{{ __('Delete Category') }}</h3>
                         <div class="mt-2">
-                            <p class="text-sm text-gray-400">Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible.</p>
+                            <p class="text-sm text-gray-400">{{ __('Are you sure you want to delete this category? This action cannot be undone.') }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <button type="button"
-                            wire:click="deleteCategory"
-                            class="btn-danger w-full sm:w-auto sm:ml-3">
-                        Supprimer
+                    <button wire:click="deleteCategory" class="btn-danger w-full sm:w-auto sm:ml-3">
+                        {{ __('Delete') }}
                     </button>
-                    <button type="button"
-                            wire:click="$set('showDeleteModal', false)"
-                            class="btn-secondary w-full sm:w-auto mt-3 sm:mt-0">
-                        Annuler
+                    <button @click="show = false" class="btn-secondary w-full sm:w-auto mt-3 sm:mt-0">
+                        {{ __('Cancel') }}
                     </button>
                 </div>
             </div>

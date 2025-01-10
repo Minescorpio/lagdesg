@@ -2,13 +2,13 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-white leading-tight">
-                {{ __('Products') }}
+                {{ __('Produits') }}
             </h2>
             <a href="{{ route('products.create') }}" class="btn-primary">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                {{ __('New Product') }}
+                {{ __('NOUVEAU PRODUIT') }}
             </a>
         </div>
     </x-slot>
@@ -29,6 +29,28 @@
                         </div>
                     </div>
 
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="search" wire:model.lazy="barcodeInput" wire:change="handleBarcodeScan" placeholder="{{ __('Scan barcode...') }}" class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fournisseur Filter -->
+                    <div class="mb-6">
+                        <label for="fournisseur_filter" class="block text-sm font-medium text-white">{{ __('Filter by Fournisseur') }}</label>
+                        <select wire:model="fournisseurFilter" id="fournisseur_filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-600 rounded-md leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                            <option value="">{{ __('All Fournisseurs') }}</option>
+                            @foreach($fournisseurs as $fournisseur)
+                                <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Products Table -->
                     <div class="overflow-x-auto">
                         <table class="w-full">
@@ -36,6 +58,7 @@
                                 <tr>
                                     <th class="px-10 py-8 text-left text-white">{{ __('Name') }}</th>
                                     <th class="px-10 py-8 text-left text-white">{{ __('Category') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Fournisseur') }}</th>
                                     <th class="px-10 py-8 text-right text-white">{{ __('Price') }}</th>
                                     <th class="px-10 py-8 text-right text-white">{{ __('Stock') }}</th>
                                     <th class="px-10 py-8 text-center text-white">{{ __('Status') }}</th>
@@ -52,6 +75,11 @@
                                         <td class="px-10 py-6">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                 {{ $product->category->name }}
+                                            </span>
+                                        </td>
+                                        <td class="px-10 py-6">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                {{ $product->fournisseur->nom }}
                                             </span>
                                         </td>
                                         <td class="px-10 py-6 text-right">
@@ -83,7 +111,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-12">
+                                        <td colspan="7" class="text-center py-12">
                                             <div class="flex flex-col items-center">
                                                 <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />

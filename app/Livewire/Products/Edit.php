@@ -5,6 +5,7 @@ namespace App\Livewire\Products;
 use App\Helpers\CurrencyHelper;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Fournisseur;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
@@ -37,6 +38,9 @@ class Edit extends Component
     // Image
     public $image;
     public $current_image;
+    
+    // Fournisseur
+    public $fournisseur_id;
 
     protected function rules()
     {
@@ -53,7 +57,8 @@ class Edit extends Component
             'weighable' => 'boolean',
             'free_price' => 'boolean',
             'active' => 'boolean',
-            'image' => 'nullable|image|max:1024'
+            'image' => 'nullable|image|max:1024',
+            'fournisseur_id' => 'nullable|exists:fournisseurs,id',
         ];
     }
 
@@ -73,6 +78,7 @@ class Edit extends Component
         $this->free_price = $product->free_price;
         $this->active = $product->active;
         $this->current_image = $product->image_path ? asset('storage/' . $product->image_path) : null;
+        $this->fournisseur_id = $product->fournisseur_id;
     }
 
     public function formatPrice($value)
@@ -85,6 +91,7 @@ class Edit extends Component
     {
         return view('products.edit', [
             'categories' => Category::where('active', true)->orderBy('name')->get(),
+            'fournisseurs' => Fournisseur::orderBy('nom')->get(),
             'formatted_price' => $this->formatPrice($this->price),
             'formatted_cost_price' => $this->formatPrice($this->cost_price)
         ]);
@@ -107,7 +114,8 @@ class Edit extends Component
                 'alert_quantity' => $this->alert_quantity,
                 'weighable' => $this->weighable,
                 'free_price' => $this->free_price,
-                'active' => $this->active
+                'active' => $this->active,
+                'fournisseur_id' => $this->fournisseur_id,
             ];
 
             if ($this->image) {

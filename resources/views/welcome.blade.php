@@ -27,12 +27,12 @@
                                 @if (Route::has('login'))
                                     <div class="space-x-4">
                                         @auth
-                                            <a href="{{ url('/dashboard') }}" class="font-medium text-blue-600 hover:text-blue-500">Dashboard</a>
+                                            <a href="{{ route('dashboard') }}" class="font-medium text-blue-600 hover:text-blue-500">{{ __('Dashboard') }}</a>
                                         @else
-                                            <a href="{{ route('login') }}" class="font-medium text-gray-500 hover:text-gray-900">Login</a>
+                                            <a href="{{ route('login') }}" class="font-medium text-gray-500 hover:text-gray-900">{{ __('Login') }}</a>
 
                                             @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">Register</a>
+                                                <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">{{ __('Register') }}</a>
                                             @endif
                                         @endauth
                                     </div>
@@ -44,8 +44,8 @@
                     <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8">
                         <div class="sm:text-center lg:text-left">
                             <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                                <span class="block">Modern Point of Sale</span>
-                                <span class="block text-blue-600">for Your Business</span>
+                                <span class="block">{{ __('Modern Point of Sale') }}</span>
+                                <span class="block text-blue-600">{{ __('for Your Business') }}</span>
                             </h1>
                             <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                                 Streamline your business operations with our advanced POS system. Manage sales, inventory, and customers all in one place.
@@ -53,12 +53,12 @@
                             <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                                 <div class="rounded-md shadow">
                                     <a href="{{ route('register') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-                                        Get Started
+                                        {{ __('Get started') }}
                                     </a>
                                 </div>
                                 <div class="mt-3 sm:mt-0 sm:ml-3">
                                     <a href="#features" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10">
-                                        Learn More
+                                        {{ __('Learn more') }}
                                     </a>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
         <div id="features" class="py-12 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="lg:text-center">
-                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
+                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">{{ __('Features') }}</h2>
                     <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                         Everything you need to run your business
                     </p>
@@ -91,9 +91,9 @@
                             <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                 <i class="fas fa-cash-register text-xl"></i>
                             </div>
-                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Sales Management</p>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">{{ __('Sales Management') }}</p>
                             <p class="mt-2 ml-16 text-base text-gray-500">
-                                Process sales quickly and efficiently. Accept multiple payment methods and manage refunds easily.
+                                {{ __('Process sales quickly and efficiently. Accept multiple payment methods and manage refunds easily.') }}
                             </p>
                         </div>
 
@@ -102,9 +102,9 @@
                             <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                 <i class="fas fa-boxes text-xl"></i>
                             </div>
-                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Inventory Management</p>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">{{ __('Inventory Management') }}</p>
                             <p class="mt-2 ml-16 text-base text-gray-500">
-                                Track stock levels in real-time. Get alerts for low stock and manage multiple locations.
+                                {{ __('Track stock levels in real-time. Get alerts for low stock and manage multiple locations.') }}
                             </p>
                         </div>
 
@@ -113,9 +113,9 @@
                             <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                 <i class="fas fa-users text-xl"></i>
                             </div>
-                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Customer Management</p>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">{{ __('Customer Management') }}</p>
                             <p class="mt-2 ml-16 text-base text-gray-500">
-                                Build customer loyalty with profiles, purchase history, and reward programs.
+                                {{ __('Build customer loyalty with profiles, purchase history, and reward programs.') }}
                             </p>
                         </div>
 
@@ -124,9 +124,9 @@
                             <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                 <i class="fas fa-chart-line text-xl"></i>
                             </div>
-                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Reporting & Analytics</p>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">{{ __('Reporting & Analytics') }}</p>
                             <p class="mt-2 ml-16 text-base text-gray-500">
-                                Get insights into your business with detailed reports and real-time analytics.
+                                {{ __('Get insights into your business with detailed reports and real-time analytics.') }}
                             </p>
                         </div>
                     </div>
@@ -138,9 +138,9 @@
         <div class="bg-gray-50 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="lg:text-center">
-                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Testimonials</h2>
+                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">{{ __('Testimonials') }}</h2>
                     <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                        Trusted by businesses everywhere
+                        {{ __('Trusted by businesses everywhere') }}
                     </p>
                 </div>
                 <div class="mt-10">
@@ -152,12 +152,12 @@
                                     <i class="fas fa-quote-left text-3xl text-blue-500"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-lg font-medium text-gray-900">Sarah Johnson</div>
-                                    <div class="text-base text-gray-500">Retail Store Owner</div>
+                                    <div class="text-lg font-medium text-gray-900">{{ __('Retail Store Owner') }}</div>
+                                    <div class="text-base text-gray-500">{{ __('Retail Store Owner') }}</div>
                                 </div>
                             </div>
                             <p class="mt-4 text-gray-500">
-                                "This POS system has transformed how we run our business. The inventory management is exceptional."
+                                {{ __('This POS system has transformed how we run our business. The inventory management is exceptional.') }}
                             </p>
                         </div>
 
@@ -168,12 +168,12 @@
                                     <i class="fas fa-quote-left text-3xl text-blue-500"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-lg font-medium text-gray-900">Michael Chen</div>
-                                    <div class="text-base text-gray-500">Restaurant Manager</div>
+                                    <div class="text-lg font-medium text-gray-900">{{ __('Restaurant Manager') }}</div>
+                                    <div class="text-base text-gray-500">{{ __('Restaurant Manager') }}</div>
                                 </div>
                             </div>
                             <p class="mt-4 text-gray-500">
-                                "Fast, reliable, and easy to use. The customer support is outstanding."
+                                {{ __('Fast, reliable, and easy to use. The customer support is outstanding.') }}
                             </p>
                         </div>
 
@@ -184,12 +184,12 @@
                                     <i class="fas fa-quote-left text-3xl text-blue-500"></i>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-lg font-medium text-gray-900">Emma Davis</div>
-                                    <div class="text-base text-gray-500">Boutique Owner</div>
+                                    <div class="text-lg font-medium text-gray-900">{{ __('Boutique Owner') }}</div>
+                                    <div class="text-base text-gray-500">{{ __('Boutique Owner') }}</div>
                                 </div>
                             </div>
                             <p class="mt-4 text-gray-500">
-                                "The reporting features help me make better business decisions. Highly recommended!"
+                                {{ __('The reporting features help me make better business decisions. Highly recommended!') }}
                             </p>
                         </div>
                     </div>
@@ -201,18 +201,18 @@
         <div class="bg-blue-600">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
                 <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                    <span class="block">Ready to get started?</span>
-                    <span class="block text-blue-200">Start your free trial today.</span>
+                    <span class="block">{{ __('Ready to get started?') }}</span>
+                    <span class="block text-blue-200">{{ __('Start your free trial today.') }}</span>
                 </h2>
                 <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                     <div class="inline-flex rounded-md shadow">
                         <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50">
-                            Get started
+                            {{ __('Get started') }}
                         </a>
                     </div>
                     <div class="ml-3 inline-flex rounded-md shadow">
                         <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800">
-                            Learn more
+                            {{ __('Learn more') }}
                         </a>
                     </div>
                 </div>
@@ -224,45 +224,45 @@
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
                 <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Solutions') }}</h3>
                         <ul class="mt-4 space-y-4">
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Point of Sale</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Inventory</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Customer Management</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Analytics</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Point of Sale') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Inventory') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Customer Management') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Analytics') }}</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Support') }}</h3>
                         <ul class="mt-4 space-y-4">
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Documentation</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Guides</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">API Status</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Contact</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Documentation') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Guides') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('API Status') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Contact') }}</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Company') }}</h3>
                         <ul class="mt-4 space-y-4">
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">About</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Blog</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Careers</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Press</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('About') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Blog') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Careers') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Press') }}</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">{{ __('Legal') }}</h3>
                         <ul class="mt-4 space-y-4">
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Privacy</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Terms</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Cookie Policy</a></li>
-                            <li><a href="#" class="text-base text-gray-300 hover:text-white">Licenses</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Privacy') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Terms') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Cookie Policy') }}</a></li>
+                            <li><a href="#" class="text-base text-gray-300 hover:text-white">{{ __('Licenses') }}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="mt-12 border-t border-gray-700 pt-8">
                     <p class="text-base text-gray-400 xl:text-center">
-                        &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+                        &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}
                     </p>
                 </div>
             </div>
