@@ -73,7 +73,7 @@
                             </label>
                             <div class="mt-1">
                                 <input type="number" wire:model="quantity" id="quantity" 
-                                    class="form-input" min="0" step="1" required>
+                                    class="form-input text-gray-900" min="0" step="1" required>
                                 @if($stockId)
                                     <p class="mt-1 text-sm text-gray-500">
                                         {{ __('Enter a positive number to add stock or a negative number to remove stock') }}
@@ -88,7 +88,7 @@
                             <label for="alert_level" class="form-label required">{{ __('Alert Level') }}</label>
                             <div class="mt-1">
                                 <input type="number" wire:model="alert_level" id="alert_level" 
-                                    class="form-input" min="0" step="1" required>
+                                    class="form-input text-gray-900" min="0" step="1" required>
                                 <p class="mt-1 text-sm text-gray-500">
                                     {{ __('You will be notified when stock falls below this level') }}
                                 </p>
@@ -114,7 +114,7 @@
                         <div>
                             <label for="location" class="form-label">{{ __('Storage Location') }}</label>
                             <div class="mt-1">
-                                <input type="text" wire:model="location" id="location" class="form-input">
+                                <input type="text" wire:model="location" id="location" class="form-input text-gray-900">
                             </div>
                             @error('location') <span class="form-error">{{ $message }}</span> @enderror
                         </div>
@@ -122,7 +122,7 @@
                         <div>
                             <label for="batch_number" class="form-label">{{ __('Batch Number') }}</label>
                             <div class="mt-1">
-                                <input type="text" wire:model="batch_number" id="batch_number" class="form-input">
+                                <input type="text" wire:model="batch_number" id="batch_number" class="form-input text-gray-900">
                             </div>
                             @error('batch_number') <span class="form-error">{{ $message }}</span> @enderror
                         </div>

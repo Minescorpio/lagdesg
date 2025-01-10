@@ -28,7 +28,7 @@
                             <!-- Name -->
                             <div class="sm:col-span-2">
                                 <label for="name" class="form-label required">{{ __('Name') }}</label>
-                                <input type="text" wire:model="name" id="name" class="form-input" required>
+                                <input type="text" wire:model="name" id="name" class="form-input text-gray-900" required>
                                 @error('name') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
@@ -96,7 +96,7 @@
                                 <div>
                                     <label for="points_per_currency" class="form-label required">{{ __('Points per Dollar') }}</label>
                                     <input type="number" wire:model="points_per_currency" id="points_per_currency"
-                                        class="form-input" min="0" step="1" required>
+                                        class="form-input text-gray-900" min="0" step="1" required>
                                     @error('points_per_currency') <span class="form-error">{{ $message }}</span> @enderror
                                 </div>
 
@@ -104,7 +104,7 @@
                                 <div>
                                     <label for="points_required" class="form-label required">{{ __('Points Required for Reward') }}</label>
                                     <input type="number" wire:model="points_required" id="points_required"
-                                        class="form-input" min="0" step="1" required>
+                                        class="form-input text-gray-900" min="0" step="1" required>
                                     @error('points_required') <span class="form-error">{{ $message }}</span> @enderror
                                 </div>
                             @elseif($type === 'amount')
@@ -138,7 +138,7 @@
                                 <div>
                                     <label for="visits_required" class="form-label required">{{ __('Visits Required') }}</label>
                                     <input type="number" wire:model="visits_required" id="visits_required"
-                                        class="form-input" min="0" step="1" required>
+                                        class="form-input text-gray-900" min="0" step="1" required>
                                     @error('visits_required') <span class="form-error">{{ $message }}</span> @enderror
                                 </div>
 

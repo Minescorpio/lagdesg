@@ -28,7 +28,7 @@
                             <!-- Name -->
                             <div>
                                 <label for="name" class="form-label required">{{ __('Name') }}</label>
-                                <input type="text" wire:model="name" id="name" class="form-input" required>
+                                <input type="text" wire:model="name" id="name" class="form-input text-gray-900" required>
                                 @error('name') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 

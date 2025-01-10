@@ -62,4 +62,25 @@
     .search-input {
         @apply block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500;
     }
+
+    /* Form Styles */
+    .form-input {
+        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+    }
+
+    .form-textarea {
+        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+    }
+
+    .form-select {
+        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+    }
+
+    .form-select option {
+        @apply bg-white text-gray-900;
+    }
+
+    .form-checkbox {
+        @apply rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 bg-white;
+    }
 }

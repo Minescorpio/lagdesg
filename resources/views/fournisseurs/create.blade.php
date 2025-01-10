@@ -27,7 +27,7 @@
                                 {{ __('Name') }} <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
-                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             @error('nom')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -39,7 +39,7 @@
                                 {{ __('Email') }}
                             </label>
                             <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             @error('email')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -51,7 +51,7 @@
                                 {{ __('Phone') }}
                             </label>
                             <input type="tel" name="telephone" id="telephone" value="{{ old('telephone') }}"
-                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             @error('telephone')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
@@ -63,7 +63,7 @@
                                 {{ __('Address') }}
                             </label>
                             <textarea name="adresse" id="adresse" rows="3"
-                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('adresse') }}</textarea>
+                                class="mt-1 block w-full border border-gray-600 rounded-md shadow-sm py-2 px-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('adresse') }}</textarea>
                             @error('adresse')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror

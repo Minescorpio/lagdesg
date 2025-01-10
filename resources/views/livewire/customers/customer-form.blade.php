@@ -28,35 +28,35 @@
                             <!-- First Name -->
                             <div>
                                 <label for="first_name" class="form-label required">{{ __('First Name') }}</label>
-                                <input type="text" wire:model="first_name" id="first_name" class="form-input" required>
+                                <input type="text" wire:model="first_name" id="first_name" class="form-input text-gray-900" required>
                                 @error('first_name') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Last Name -->
                             <div>
                                 <label for="last_name" class="form-label required">{{ __('Last Name') }}</label>
-                                <input type="text" wire:model="last_name" id="last_name" class="form-input" required>
+                                <input type="text" wire:model="last_name" id="last_name" class="form-input text-gray-900" required>
                                 @error('last_name') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Email -->
                             <div>
                                 <label for="email" class="form-label">{{ __('Email') }}</label>
-                                <input type="email" wire:model="email" id="email" class="form-input">
+                                <input type="email" wire:model="email" id="email" class="form-input text-gray-900">
                                 @error('email') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Phone -->
                             <div>
                                 <label for="phone" class="form-label">{{ __('Phone') }}</label>
-                                <input type="tel" wire:model="phone" id="phone" class="form-input">
+                                <input type="tel" wire:model="phone" id="phone" class="form-input text-gray-900">
                                 @error('phone') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Birth Date -->
                             <div>
                                 <label for="birth_date" class="form-label">{{ __('Birth Date') }}</label>
-                                <input type="date" wire:model="birth_date" id="birth_date" class="form-input">
+                                <input type="date" wire:model="birth_date" id="birth_date" class="form-input text-gray-900">
                                 @error('birth_date') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
@@ -65,7 +65,7 @@
                                 <label for="customer_code" class="form-label">{{ __('Customer Code') }}</label>
                                 <div class="mt-1 flex rounded-md shadow-sm">
                                     <input type="text" wire:model="customer_code" id="customer_code" 
-                                        class="form-input flex-1 rounded-r-none">
+                                        class="form-input flex-1 rounded-r-none text-gray-900">
                                     <button type="button" wire:click="generateCustomerCode"
                                         class="relative -ml-px inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-r-md text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                                         <i class="fas fa-random mr-2"></i>
@@ -84,21 +84,21 @@
                             <!-- Address -->
                             <div class="sm:col-span-2">
                                 <label for="address" class="form-label">{{ __('Street Address') }}</label>
-                                <input type="text" wire:model="address" id="address" class="form-input">
+                                <input type="text" wire:model="address" id="address" class="form-input text-gray-900">
                                 @error('address') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- City -->
                             <div>
                                 <label for="city" class="form-label">{{ __('City') }}</label>
-                                <input type="text" wire:model="city" id="city" class="form-input">
+                                <input type="text" wire:model="city" id="city" class="form-input text-gray-900">
                                 @error('city') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Postal Code -->
                             <div>
                                 <label for="postal_code" class="form-label">{{ __('Postal Code') }}</label>
-                                <input type="text" wire:model="postal_code" id="postal_code" class="form-input">
+                                <input type="text" wire:model="postal_code" id="postal_code" class="form-input text-gray-900">
                                 @error('postal_code') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
@@ -124,7 +124,7 @@
                             <div>
                                 <label for="loyalty_points" class="form-label">{{ __('Loyalty Points') }}</label>
                                 <input type="number" wire:model="loyalty_points" id="loyalty_points"
-                                    class="form-input" min="0" step="1">
+                                    class="form-input text-gray-900" min="0" step="1">
                                 @error('loyalty_points') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
@@ -136,7 +136,7 @@
                                         <span class="text-gray-500 sm:text-sm">$</span>
                                     </div>
                                     <input type="number" wire:model="credit_balance" id="credit_balance"
-                                        class="form-input pl-7" step="0.01" min="0">
+                                        class="form-input pl-7 text-gray-900" step="0.01" min="0">
                                 </div>
                                 @error('credit_balance') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
@@ -150,7 +150,7 @@
                             <!-- Notes -->
                             <div>
                                 <label for="notes" class="form-label">{{ __('Notes') }}</label>
-                                <textarea wire:model="notes" id="notes" rows="3" class="form-textarea"></textarea>
+                                <textarea wire:model="notes" id="notes" rows="3" class="form-textarea text-gray-900"></textarea>
                                 @error('notes') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 

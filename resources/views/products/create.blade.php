@@ -20,31 +20,31 @@
                             <!-- Nom -->
                             <div class="col-span-2">
                                 <label for="name" class="block text-sm font-medium text-white mb-2">{{ __('Nom du produit') }} <span class="text-red-500">*</span></label>
-                                <input type="text" name="name" id="name" class="form-input w-full text-white" required>
+                                <input type="text" name="name" id="name" class="form-input w-full text-gray-900" required>
                             </div>
 
                             <!-- Description -->
                             <div class="col-span-2">
                                 <label for="description" class="block text-sm font-medium text-white mb-2">{{ __('Description') }}</label>
-                                <textarea name="description" id="description" rows="4" class="form-textarea w-full text-white"></textarea>
+                                <textarea name="description" id="description" rows="4" class="form-textarea w-full"></textarea>
                             </div>
 
                             <!-- Prix -->
                             <div>
                                 <label for="price" class="block text-sm font-medium text-white mb-2">{{ __('Prix') }} <span class="text-red-500">*</span></label>
                                 <div class="relative">
-                                    <input type="number" step="0.01" name="price" id="price" class="form-input w-full pr-8 text-white" required>
-                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white">€</span>
+                                    <input type="number" step="0.01" name="price" id="price" class="form-input w-full pr-8 text-gray-900" required>
+                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-900">€</span>
                                 </div>
                             </div>
 
                             <!-- Catégorie -->
                             <div>
                                 <label for="category_id" class="block text-sm font-medium text-white mb-2">{{ __('Catégorie') }} <span class="text-red-500">*</span></label>
-                                <select name="category_id" id="category_id" class="form-select w-full text-white" required>
-                                    <option value="" class="text-white">{{ __('Sélectionner une catégorie') }}</option>
+                                <select name="category_id" id="category_id" class="form-select w-full" required>
+                                    <option value="">{{ __('Sélectionner une catégorie') }}</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" class="text-white">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -52,10 +52,10 @@
                             <!-- Fournisseur -->
                             <div>
                                 <label for="fournisseur_id" class="block text-sm font-medium text-white mb-2">{{ __('Fournisseur') }}</label>
-                                <select name="fournisseur_id" id="fournisseur_id" class="form-select w-full text-white" wire:model="fournisseur_id">
-                                    <option value="" class="text-white">{{ __('Sélectionner un fournisseur') }}</option>
+                                <select name="fournisseur_id" id="fournisseur_id" class="form-select w-full" wire:model="fournisseur_id">
+                                    <option value="">{{ __('Sélectionner un fournisseur') }}</option>
                                     @foreach($fournisseurs as $fournisseur)
-                                        <option value="{{ $fournisseur->id }}" class="text-white">{{ $fournisseur->nom }}</option>
+                                        <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -69,13 +69,13 @@
                             <!-- Quantité -->
                             <div>
                                 <label for="quantity" class="block text-sm font-medium text-white mb-2">{{ __('Quantité en stock') }} <span class="text-red-500">*</span></label>
-                                <input type="number" name="quantity" id="quantity" class="form-input w-full text-white" required>
+                                <input type="number" name="quantity" id="quantity" class="form-input w-full text-gray-900" required>
                             </div>
 
                             <!-- Seuil d'alerte -->
                             <div>
                                 <label for="alert_threshold" class="block text-sm font-medium text-white mb-2">{{ __('Seuil d\'alerte') }}</label>
-                                <input type="number" name="alert_threshold" id="alert_threshold" class="form-input w-full text-white">
+                                <input type="number" name="alert_threshold" id="alert_threshold" class="form-input w-full text-gray-900">
                             </div>
                         </div>
                     </div>
