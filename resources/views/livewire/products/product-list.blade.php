@@ -23,13 +23,13 @@
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead>
-                <tr class="bg-[#1E2235]">
-                    <th class="text-left text-white">{{ __('Nom') }}</th>
-                    <th class="text-left text-white">{{ __('Catégorie') }}</th>
-                    <th class="text-right text-white">{{ __('Prix') }}</th>
-                    <th class="text-right text-white">{{ __('Stock') }}</th>
-                    <th class="text-center text-white">{{ __('Statut') }}</th>
-                    <th class="text-right text-white">{{ __('Actions') }}</th>
+                <tr>
+                    <th class="py-4 text-left text-white">{{ __('Nom') }}</th>
+                    <th class="py-4 text-left text-white">{{ __('Catégorie') }}</th>
+                    <th class="py-4 text-right text-white">{{ __('Prix') }}</th>
+                    <th class="py-4 text-right text-white">{{ __('Stock') }}</th>
+                    <th class="py-4 text-center text-white">{{ __('Statut') }}</th>
+                    <th class="py-4 text-right text-white">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-700">

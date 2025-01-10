@@ -31,31 +31,33 @@
 
                     <!-- Customers Table -->
                     <div class="overflow-x-auto">
-                        <table>
+                        <table class="w-full">
                             <thead>
                                 <tr>
-                                    <th class="text-left text-white">{{ __('Client') }}</th>
-                                    <th class="text-left text-white">{{ __('Contact') }}</th>
-                                    <th class="text-right text-white">{{ __('Achats') }}</th>
-                                    <th class="text-right text-white">{{ __('Total dépensé') }}</th>
-                                    <th class="text-center text-white">{{ __('Statut') }}</th>
-                                    <th class="text-right text-white">{{ __('Actions') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Name') }}</th>
+                                    <th class="px-10 py-8 text-left text-white">{{ __('Email') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Phone') }}</th>
+                                    <th class="px-10 py-8 text-center text-white">{{ __('Status') }}</th>
+                                    <th class="px-10 py-8 text-right text-white">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
                                 @forelse($customers as $customer)
                                     <tr class="hover:bg-[#2E324A] transition-colors duration-200">
-                                        <td class="py-4">
-                                            <div class="font-medium text-white">{{ $customer->first_name }} {{ $customer->last_name }}</div>
-                                            @if($customer->customer_code)
-                                                <div class="text-sm text-gray-400">{{ $customer->customer_code }}</div>
+                                        <td class="px-10 py-6">
+                                            <div class="font-medium text-white">{{ $customer->name }}</div>
+                                            @if($customer->company)
+                                                <div class="text-sm text-gray-400">{{ $customer->company }}</div>
                                             @endif
                                         </td>
-                                        <td class="text-gray-400">{{ $customer->email }}</td>
-                                        <td class="text-gray-400">{{ $customer->phone }}</td>
-                                        <td class="text-right text-white">{{ $customer->sales_count }}</td>
-                                        <td class="text-right text-white">{{ number_format($customer->total_spent, 2) }} €</td>
-                                        <td class="text-right">
+                                        <td class="px-10 py-6 text-gray-400">{{ $customer->email }}</td>
+                                        <td class="px-10 py-6 text-right text-gray-400">{{ $customer->phone }}</td>
+                                        <td class="px-10 py-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $customer->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $customer->active ? __('Active') : __('Inactive') }}
+                                            </span>
+                                        </td>
+                                        <td class="px-10 py-6 text-right">
                                             <div class="flex items-center justify-end space-x-3">
                                                 <a href="{{ route('customers.edit', $customer) }}" class="btn-secondary btn-sm">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

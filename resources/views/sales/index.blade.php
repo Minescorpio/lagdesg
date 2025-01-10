@@ -18,37 +18,16 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Search and Filters -->
-                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between">
                         <div class="flex-1">
                             <div class="relative">
-                                <input type="search" wire:model.live="search" placeholder="{{ __('Rechercher des ventes...') }}" class="search-input" />
+                                <input type="search" wire:model.live="search" placeholder="Rechercher des ventes..." class="search-input" />
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-full md:w-48">
-                            <select wire:model.live="paymentMethodFilter" class="form-select">
-                                <option value="">{{ __('Tous les paiements') }}</option>
-                                <option value="cash">{{ __('Espèces') }}</option>
-                                <option value="card">{{ __('Carte bancaire') }}</option>
-                                <option value="bank_transfer">{{ __('Virement bancaire') }}</option>
-                                <option value="mobile_payment">{{ __('Paiement mobile') }}</option>
-                                <option value="other">{{ __('Autre') }}</option>
-                            </select>
-                        </div>
-                        <div class="w-full md:w-48">
-                            <select wire:model.live="dateFilter" class="form-select">
-                                <option value="today">{{ __('Aujourd\'hui') }}</option>
-                                <option value="yesterday">{{ __('Hier') }}</option>
-                                <option value="this_week">{{ __('Cette semaine') }}</option>
-                                <option value="this_month">{{ __('Ce mois') }}</option>
-                                <option value="last_month">{{ __('Mois dernier') }}</option>
-                                <option value="this_year">{{ __('Cette année') }}</option>
-                                <option value="custom">{{ __('Personnalisé') }}</option>
-                            </select>
                         </div>
                     </div>
 
