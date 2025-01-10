@@ -6,6 +6,19 @@
     display: none;
 }
 
+@layer base {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="date"],
+    textarea,
+    select {
+        @apply text-black;
+    }
+}
+
 @layer components {
     .nav-link {
         @apply flex items-center gap-1 px-2.5 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-[#2E324A] hover:text-white transition-all duration-150 ease-in-out whitespace-nowrap;
@@ -65,19 +78,19 @@
 
     /* Form Styles */
     .form-input {
-        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+        @apply block w-full px-4 py-2.5 text-base border border-gray-600 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
     }
 
     .form-textarea {
-        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+        @apply block w-full px-4 py-2.5 text-base border border-gray-600 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
     }
 
     .form-select {
-        @apply block w-full px-4 py-2.5 text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
+        @apply block w-full px-4 py-2.5 text-base border border-gray-600 rounded-lg bg-white text-black focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors duration-200;
     }
 
     .form-select option {
-        @apply bg-white text-gray-900;
+        @apply bg-white text-black;
     }
 
     .form-checkbox {
