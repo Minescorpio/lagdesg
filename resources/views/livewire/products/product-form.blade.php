@@ -1,15 +1,15 @@
 <div>
     <form wire:submit="save" class="space-y-8">
-        <div class="bg-white shadow-sm rounded-lg">
+        <div class="bg-[#1F2937] shadow-sm rounded-lg">
             <!-- Header -->
-            <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+            <div class="px-4 py-5 border-b border-gray-600 sm:px-6">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg leading-6 font-medium text-white">
                         {{ $productId ? __('Edit Product') : __('New Product') }}
                     </h3>
                     <div class="flex items-center space-x-3">
                         <a href="{{ route('products.index') }}" class="btn-secondary">
-                            {{ __('Cancel') }}
+                            {{ __('Back to list') }}
                         </a>
                         <button type="submit" class="btn-primary">
                             {{ $productId ? __('Update') : __('Create') }}
@@ -20,42 +20,16 @@
 
             <!-- Form Content -->
             <div class="px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div class="grid grid-cols-1 gap-6">
                     <!-- Basic Information -->
-                    <div class="sm:col-span-2">
+                    <div>
                         <h4 class="text-lg font-medium text-white mb-4">{{ __('Basic Information') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Name -->
                             <div>
                                 <label for="name" class="form-label required">{{ __('Name') }}</label>
-                                <input type="text" wire:model="name" id="name" class="form-input text-gray-900" required>
+                                <input type="text" wire:model="name" id="name" class="form-input" required>
                                 @error('name') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-
-                            <!-- Category -->
-                            <div>
-                                <label for="category_id" class="form-label required">{{ __('Category') }}</label>
-                                <select wire:model="category_id" id="category_id" class="form-select" required>
-                                    <option value="">{{ __('Select Category') }}</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id') <span class="form-error">{{ $message }}</span> @enderror
-                            </div>
-
-                            <!-- Barcode -->
-                            <div class="relative">
-                                <label for="barcode" class="form-label">{{ __('Barcode') }}</label>
-                                <div class="mt-1 flex rounded-md shadow-sm">
-                                    <input type="text" wire:model="barcode" id="barcode" class="form-input flex-1 rounded-r-none">
-                                    <button type="button" wire:click="generateBarcode"
-                                        class="relative -ml-px inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-r-md text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                                        <i class="fas fa-barcode mr-2"></i>
-                                        {{ __('Generate') }}
-                                    </button>
-                                </div>
-                                @error('barcode') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Description -->
@@ -65,22 +39,36 @@
                                 @error('description') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
 
-                            <!-- Fournisseur -->
+                            <!-- Category -->
                             <div>
-                                <label for="fournisseur_id" class="form-label">{{ __('Fournisseur') }}</label>
-                                <select wire:model="fournisseur_id" id="fournisseur_id" class="form-select">
-                                    <option value="">{{ __('Select Fournisseur') }}</option>
-                                    @foreach($fournisseurs as $fournisseur)
-                                        <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
+                                <label for="category_id" class="form-label required">{{ __('Category') }}</label>
+                                <select wire:model="category_id" id="category_id" class="form-select" required>
+                                    <option value="">{{ __('Select a category') }}</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('fournisseur_id') <span class="form-error">{{ $message }}</span> @enderror
+                                @error('category_id') <span class="form-error">{{ $message }}</span> @enderror
+                            </div>
+
+                            <!-- Barcode -->
+                            <div>
+                                <label for="barcode" class="form-label">{{ __('Barcode') }}</label>
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <input type="text" wire:model="barcode" id="barcode" class="form-input flex-1 rounded-r-none">
+                                    <button type="button" wire:click="generateBarcode"
+                                        class="relative -ml-px inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-r-md text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        <i class="fas fa-random mr-2"></i>
+                                        {{ __('Generate') }}
+                                    </button>
+                                </div>
+                                @error('barcode') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
 
                     <!-- Pricing -->
-                    <div class="sm:col-span-2">
+                    <div>
                         <h4 class="text-lg font-medium text-white mb-4">{{ __('Pricing') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
                             <!-- Price -->
@@ -88,10 +76,9 @@
                                 <label for="price" class="form-label required">{{ __('Price') }}</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                        <span class="text-gray-400 sm:text-sm">€</span>
                                     </div>
-                                    <input type="number" wire:model="price" id="price" 
-                                        class="form-input pl-7" step="0.01" min="0" required>
+                                    <input type="number" wire:model="price" id="price" class="form-input pl-7" step="0.01" min="0" required>
                                 </div>
                                 @error('price') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
@@ -101,10 +88,9 @@
                                 <label for="cost_price" class="form-label required">{{ __('Cost Price') }}</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                        <span class="text-gray-400 sm:text-sm">€</span>
                                     </div>
-                                    <input type="number" wire:model="cost_price" id="cost_price" 
-                                        class="form-input pl-7" step="0.01" min="0" required>
+                                    <input type="number" wire:model="cost_price" id="cost_price" class="form-input pl-7" step="0.01" min="0" required>
                                 </div>
                                 @error('cost_price') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
@@ -113,10 +99,9 @@
                             <div>
                                 <label for="vat_rate" class="form-label required">{{ __('VAT Rate') }}</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input type="number" wire:model="vat_rate" id="vat_rate" 
-                                        class="form-input pr-12" step="0.01" min="0" max="100" required>
+                                    <input type="number" wire:model="vat_rate" id="vat_rate" class="form-input pr-12" step="0.01" min="0" max="100" required>
                                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">%</span>
+                                        <span class="text-gray-400 sm:text-sm">%</span>
                                     </div>
                                 </div>
                                 @error('vat_rate') <span class="form-error">{{ $message }}</span> @enderror
@@ -125,7 +110,7 @@
                     </div>
 
                     <!-- Stock Management -->
-                    <div class="sm:col-span-2">
+                    <div>
                         <h4 class="text-lg font-medium text-white mb-4">{{ __('Stock Management') }}</h4>
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Track Stock Toggle -->
@@ -143,15 +128,14 @@
                             <!-- Min Stock Alert -->
                             <div x-show="$wire.track_stock">
                                 <label for="min_stock_alert" class="form-label">{{ __('Min Stock Alert') }}</label>
-                                <input type="number" wire:model="min_stock_alert" id="min_stock_alert" 
-                                    class="form-input" min="0" step="1">
+                                <input type="number" wire:model="min_stock_alert" id="min_stock_alert" class="form-input" min="0" step="1">
                                 @error('min_stock_alert') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
 
                     <!-- Product Options -->
-                    <div class="sm:col-span-2">
+                    <div>
                         <h4 class="text-lg font-medium text-white mb-4">{{ __('Product Options') }}</h4>
                         <div class="space-y-4">
                             <!-- Weighable Product -->
@@ -163,7 +147,7 @@
                                 </button>
                                 <span class="ml-3">
                                     <span class="text-sm font-medium text-white">{{ __('Weighable Product') }}</span>
-                                    <span class="text-sm text-gray-500">{{ __('Product is sold by weight') }}</span>
+                                    <span class="text-sm text-gray-400">{{ __('Product is sold by weight') }}</span>
                                 </span>
                             </div>
 
@@ -176,7 +160,7 @@
                                 </button>
                                 <span class="ml-3">
                                     <span class="text-sm font-medium text-white">{{ __('Free Price') }}</span>
-                                    <span class="text-sm text-gray-500">{{ __('Price can be changed at checkout') }}</span>
+                                    <span class="text-sm text-gray-400">{{ __('Price can be changed at checkout') }}</span>
                                 </span>
                             </div>
 
@@ -189,60 +173,33 @@
                                 </button>
                                 <span class="ml-3">
                                     <span class="text-sm font-medium text-white">{{ __('Active') }}</span>
-                                    <span class="text-sm text-gray-500">{{ __('Product is available for sale') }}</span>
+                                    <span class="text-sm text-gray-400">{{ __('Product is available for sale') }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Product Image -->
-                    <div class="sm:col-span-2">
+                    <div>
                         <h4 class="text-lg font-medium text-white mb-4">{{ __('Product Image') }}</h4>
-                        <div class="flex items-start space-x-4">
-                            <!-- Preview -->
-                            <div class="flex-shrink-0">
-                                @if ($image)
-                                    <img src="{{ $image->temporaryUrl() }}" class="h-32 w-32 rounded-lg object-cover">
-                                @elseif ($currentImage)
-                                    <img src="{{ Storage::url($currentImage) }}" class="h-32 w-32 rounded-lg object-cover">
-                                @else
-                                    <div class="h-32 w-32 rounded-lg bg-gray-100 flex items-center justify-center">
-                                        <i class="fas fa-image text-4xl text-gray-400"></i>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <!-- Upload -->
-                            <div class="flex-1">
-                                <label for="image" class="form-label">{{ __('Image') }}</label>
-                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                    <div class="space-y-1 text-center">
-                                        <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
-                                        <div class="flex text-sm text-white">
-                                            <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                                                <span>{{ __('Upload a file') }}</span>
-                                                <input id="image" wire:model="image" type="file" class="sr-only" accept="image/*">
-                                            </label>
-                                            <p class="pl-1">{{ __('or drag and drop') }}</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500">
-                                            {{ __('PNG, JPG, GIF up to 2MB') }}
-                                        </p>
-                                    </div>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-gray-400">
+                                    <label for="image" class="relative cursor-pointer rounded-md font-medium text-blue-500 hover:text-blue-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                        <span>{{ __('Upload a file') }}</span>
+                                        <input id="image" wire:model="image" type="file" class="sr-only">
+                                    </label>
+                                    <p class="pl-1">{{ __('or drag and drop') }}</p>
                                 </div>
-                                @error('image') <span class="form-error">{{ $message }}</span> @enderror
-
-                                @if($currentImage)
-                                    <div class="mt-2">
-                                        <button type="button" wire:click="deleteImage" 
-                                            class="inline-flex items-center px-3 py-2 border border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fas fa-trash text-red-500 mr-2"></i>
-                                            {{ __('Delete Image') }}
-                                        </button>
-                                    </div>
-                                @endif
+                                <p class="text-xs text-gray-400">
+                                    PNG, JPG, GIF up to 2MB
+                                </p>
                             </div>
                         </div>
+                        @error('image') <span class="form-error">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
@@ -253,20 +210,20 @@
 @push('styles')
 <style>
     .form-label {
-        @apply block text-sm font-medium text-white;
+        @apply block text-sm font-medium text-gray-200;
     }
     .form-label.required::after {
         content: "*";
         @apply text-red-500 ml-1;
     }
     .form-input {
-        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+        @apply mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
     }
     .form-select {
-        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+        @apply mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
     }
     .form-textarea {
-        @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
+        @apply mt-1 block w-full rounded-md border-gray-600 bg-gray-700 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm;
     }
     .form-error {
         @apply mt-1 text-sm text-red-600;
@@ -275,7 +232,7 @@
         @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
     }
     .btn-secondary {
-        @apply inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+        @apply inline-flex items-center px-4 py-2 border border-gray-700 rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500;
     }
 </style>
 @endpush 

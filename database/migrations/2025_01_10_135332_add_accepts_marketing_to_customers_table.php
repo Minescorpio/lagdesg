@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fournisseurs', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->string('email')->nullable();
-            $table->string('telephone')->nullable();
-            $table->string('adresse')->nullable();
-            $table->timestamps();
+        Schema::table('customers', function (Blueprint $table) {
+            $table->boolean('accepts_marketing')->default(false)->after('active');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fournisseurs');
+        Schema::table('customers', function (Blueprint $table) {
+            $table->dropColumn('accepts_marketing');
+        });
     }
 };

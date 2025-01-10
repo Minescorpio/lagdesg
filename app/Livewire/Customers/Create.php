@@ -3,99 +3,82 @@
 namespace App\Livewire\Customers;
 
 use App\Models\Customer;
-use App\Models\LoyaltyProgram;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
-    // Informations personnelles
-    public $title = '';
     public $first_name = '';
     public $last_name = '';
-    public $birth_date;
-    
-    // Coordonnées
     public $email = '';
     public $phone = '';
     public $address = '';
     public $postal_code = '';
     public $city = '';
-    
-    // Options
-    public $loyalty_program = '';
     public $notes = '';
     public $active = true;
     public $accepts_marketing = false;
 
-    protected $rules = [
-        'title' => 'nullable|string|in:mr,mrs,ms',
-        'first_name' => 'required|string|max:100',
-        'last_name' => 'required|string|max:100',
-        'birth_date' => 'nullable|date',
-        'email' => 'nullable|email|max:255|unique:customers,email',
-        'phone' => 'nullable|string|max:20',
-        'address' => 'nullable|string|max:255',
-        'postal_code' => 'nullable|string|max:10',
-        'city' => 'nullable|string|max:100',
-        'loyalty_program' => 'nullable|exists:loyalty_programs,id',
-        'notes' => 'nullable|string',
-        'active' => 'boolean',
-        'accepts_marketing' => 'boolean'
-    ];
-
     public function mount()
     {
-        // Initialisation si nécessaire
+        // Initialisation des valeurs par défaut si nécessaire
     }
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     public function render()
     {
-        return view('customers.create', [
-            'loyaltyPrograms' => LoyaltyProgram::where('active', true)->get()
+        return view('livewire.customers.customer-form', [
+            'customerId' => null,
+            'countries' => [
+                'FR' => 'France',
+                'BE' => 'Belgique',
+                'CH' => 'Suisse',
+                'CA' => 'Canada',
+            ]
         ]);
     }
 
     public function save()
     {
-        $this->validate();
+        $this->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:20',
+            'city' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+            'active' => 'boolean',
+            'accepts_marketing' => 'boolean',
+        ]);
 
         try {
             DB::beginTransaction();
 
             $customer = Customer::create([
-                'title' => $this->title,
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
-                'birth_date' => $this->birth_date,
                 'email' => $this->email,
                 'phone' => $this->phone,
                 'address' => $this->address,
                 'postal_code' => $this->postal_code,
                 'city' => $this->city,
-                'loyalty_program_id' => $this->loyalty_program ?: null,
                 'notes' => $this->notes,
                 'active' => $this->active,
                 'accepts_marketing' => $this->accepts_marketing,
-                'loyalty_points' => 0
             ]);
 
             DB::commit();
 
-            session()->flash('success', __('Customer created successfully.'));
-            return redirect()->route('customers.index');
+            session()->flash('success', __('Client créé avec succès.'));
+            return $this->redirect(route('customers.index'), navigate: true);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', __('Error creating customer: ') . $e->getMessage());
+            session()->flash('error', __('Erreur lors de la création du client: ') . $e->getMessage());
         }
-    }
-
-    public function cancel()
-    {
-        return redirect()->route('customers.index');
     }
 
     public function updatedPostalCode($value)
