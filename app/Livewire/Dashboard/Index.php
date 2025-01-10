@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 #[Title('Tableau de bord')]
-#[Layout('layouts.app')]
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     public $totalSalesToday = 0;

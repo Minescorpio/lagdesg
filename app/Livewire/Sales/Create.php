@@ -37,7 +37,7 @@ class Create extends Component
         return CurrencyHelper::format(max(0, $this->payment_amount - $total));
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         return view('sales.create', [

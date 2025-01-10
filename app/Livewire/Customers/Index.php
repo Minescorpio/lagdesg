@@ -15,7 +15,7 @@ class Index extends Component
     public $showDeleteModal = false;
     public $customerToDelete;
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         $customers = Customer::query()

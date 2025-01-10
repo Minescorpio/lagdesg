@@ -7,7 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
 #[Title('Gestion du stock')]
-#[Layout('layouts.app')]
+#[Layout('components.layouts.app')]
 class Index extends Component
 {
     public function render()

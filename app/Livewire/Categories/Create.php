@@ -19,10 +19,10 @@ class Create extends Component
         'active' => 'boolean'
     ];
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('categories.create');
+        return view('livewire.categories.create');
     }
 
     public function save()

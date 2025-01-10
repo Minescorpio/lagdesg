@@ -12,7 +12,7 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
 #[Title('Terminal de vente')]
-#[Layout('layouts.app')]
+#[Layout('components.layouts.app')]
 class Terminal extends Component
 {
     use WithPagination;

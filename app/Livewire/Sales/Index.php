@@ -20,7 +20,7 @@ class Index extends Component
     public $saleToDelete;
     public $selectedSale;
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         $query = Sale::query()

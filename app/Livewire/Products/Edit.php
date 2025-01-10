@@ -80,7 +80,7 @@ class Edit extends Component
         return CurrencyHelper::format($value);
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         return view('products.edit', [

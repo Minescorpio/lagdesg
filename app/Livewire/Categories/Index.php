@@ -64,7 +64,7 @@ class Index extends Component
         }
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         $query = Category::query()

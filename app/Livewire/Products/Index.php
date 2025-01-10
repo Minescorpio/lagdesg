@@ -55,7 +55,7 @@ class Index extends Component
         }
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         $query = Product::query()

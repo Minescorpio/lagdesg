@@ -16,7 +16,7 @@ class Dashboard extends Component
         return CurrencyHelper::format(Sale::whereDate('created_at', today())->sum('total_amount'));
     }
 
-    #[Layout('layouts.app')]
+    #[Layout('components.layouts.app')]
     public function render()
     {
         return view('dashboard', [
