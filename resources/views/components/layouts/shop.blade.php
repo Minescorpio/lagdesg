@@ -136,8 +136,12 @@
                     <div class="text-gray-400">
                         <h3 class="text-lg font-semibold text-white mb-4">{{ __('Service Client') }}</h3>
                         <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-white">{{ __('Contact') }}</a></li>
-                            <li><a href="#" class="hover:text-white">{{ __('Livraison') }}</a></li>
+                            <li><a href="{{ route('contact') }}" class="hover:text-white">{{ __('Contact') }}</a></li>
+                            <li>
+                                <button type="button" @click="$dispatch('open-modal', 'delivery')" class="text-left w-full hover:text-white">
+                                    {{ __('Livraison') }}
+                                </button>
+                            </li>
                             <li><a href="#" class="hover:text-white">{{ __('Retours') }}</a></li>
                             <li><a href="#" class="hover:text-white">{{ __('FAQ') }}</a></li>
                         </ul>
@@ -530,6 +534,91 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Livraison -->
+    <div x-data="{ open: false }"
+         @open-modal.window="if ($event.detail === 'delivery') open = true"
+         @keydown.escape.window="open = false"
+         x-show="open"
+         class="fixed inset-0 z-50 overflow-y-auto"
+         x-cloak>
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="open = false"></div>
+
+        <!-- Modal panel -->
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-[#2E324A] rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh]"
+                 @click.away="open = false">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-white">{{ __('Informations de Livraison') }}</h2>
+                    <button @click="open = false" class="text-gray-400 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal content -->
+                <div class="text-gray-300 space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Délais de Livraison') }}</h3>
+                        <p>Nous expédions vos commandes du lundi au vendredi (hors jours fériés). Les délais moyens de livraison sont :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>France Métropolitaine : 2-3 jours ouvrés</li>
+                            <li>Corse : 3-4 jours ouvrés</li>
+                            <li>DOM-TOM : 5-7 jours ouvrés</li>
+                            <li>Europe : 3-5 jours ouvrés</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Modes de Livraison') }}</h3>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Colissimo : livraison à domicile ou en point relais</li>
+                            <li>Chronopost : livraison express à domicile</li>
+                            <li>Mondial Relay : livraison en point relais</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Frais de Port') }}</h3>
+                        <p>Les frais de port sont calculés en fonction :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Du poids total de votre commande</li>
+                            <li>De votre zone géographique</li>
+                            <li>Du mode de livraison choisi</li>
+                        </ul>
+                        <p class="mt-2">Livraison gratuite en France métropolitaine à partir de 69€ d'achat.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Suivi de Commande') }}</h3>
+                        <p>Dès l'expédition de votre colis :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Un email de confirmation vous est envoyé</li>
+                            <li>Un numéro de suivi vous permet de suivre votre colis</li>
+                            <li>Le suivi est accessible depuis votre compte client</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Réception de la Commande') }}</h3>
+                        <p>À la réception de votre colis :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Vérifiez l'état du colis en présence du livreur</li>
+                            <li>Signalez immédiatement toute anomalie</li>
+                            <li>Vous disposez de 14 jours pour nous signaler un problème</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+                        <p class="text-sm">Pour toute question concernant votre livraison, notre service client est à votre disposition par email à contact@lagrottedesgeeks.fr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 
     <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
