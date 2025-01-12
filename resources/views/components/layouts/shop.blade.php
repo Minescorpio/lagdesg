@@ -142,8 +142,16 @@
                                     {{ __('Livraison') }}
                                 </button>
                             </li>
-                            <li><a href="#" class="hover:text-white">{{ __('Retours') }}</a></li>
-                            <li><a href="#" class="hover:text-white">{{ __('FAQ') }}</a></li>
+                            <li>
+                                <button type="button" @click="$dispatch('open-modal', 'returns')" class="text-left w-full hover:text-white">
+                                    {{ __('Retours') }}
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" @click="$dispatch('open-modal', 'faq')" class="text-left w-full hover:text-white">
+                                    {{ __('FAQ') }}
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -618,7 +626,229 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
+
+    <!-- Modal Retours -->
+    <div x-data="{ open: false }"
+         @open-modal.window="if ($event.detail === 'returns') open = true"
+         @keydown.escape.window="open = false"
+         x-show="open"
+         class="fixed inset-0 z-50 overflow-y-auto"
+         x-cloak>
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="open = false"></div>
+
+        <!-- Modal panel -->
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-[#2E324A] rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh]"
+                 @click.away="open = false">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-white">{{ __('Politique de Retours') }}</h2>
+                    <button @click="open = false" class="text-gray-400 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal content -->
+                <div class="text-gray-300 space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Droit de Rétractation') }}</h3>
+                        <p>Conformément à l'article L221-18 du Code de la consommation, vous disposez d'un délai de 14 jours à compter de la réception de votre commande pour exercer votre droit de rétractation, sans avoir à justifier de motifs ni à payer de pénalités.</p>
+                        <p class="mt-2">Ce délai expire 14 jours après :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Le jour de la réception du bien pour les contrats de vente</li>
+                            <li>Le jour de la conclusion du contrat pour les contrats de prestation de services</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Procédure de Retour') }}</h3>
+                        <p>Pour exercer votre droit de rétractation, vous devez :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Nous informer de votre décision par email à contact@lagrottedesgeeks.fr</li>
+                            <li>Utiliser le formulaire de rétractation disponible dans votre espace client</li>
+                            <li>Retourner les produits dans leur état d'origine et complets</li>
+                            <li>Inclure une copie de la facture avec votre retour</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Conditions des Produits Retournés') }}</h3>
+                        <p>Les produits doivent être retournés :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Dans leur état d'origine</li>
+                            <li>Propres et non utilisés</li>
+                            <li>Avec tous leurs accessoires</li>
+                            <li>Dans leur emballage d'origine</li>
+                            <li>Avec les étiquettes intactes</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Frais de Retour') }}</h3>
+                        <p>Les frais de retour sont à votre charge. Le montant dépend du transporteur choisi et du poids du colis.</p>
+                        <p class="mt-2">Exception : nous prenons en charge les frais de retour en cas de :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Produit défectueux</li>
+                            <li>Erreur de livraison</li>
+                            <li>Non-conformité du produit</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Remboursement') }}</h3>
+                        <p>Conformément à l'article L221-24 du Code de la consommation :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Le remboursement est effectué dans un délai maximum de 14 jours</li>
+                            <li>Nous utilisons le même moyen de paiement que celui utilisé pour l'achat</li>
+                            <li>Le remboursement inclut les frais de livraison initiaux (au tarif standard)</li>
+                            <li>Nous pouvons différer le remboursement jusqu'à réception des biens</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Garanties Légales') }}</h3>
+                        <p>Indépendamment du droit de rétractation, vous bénéficiez de :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>La garantie légale de conformité (Article L217-4 du Code de la consommation)
+            - 24 mois pour les produits neufs
+            - 12 mois pour les produits d'occasion</li>
+                            <li>La garantie des vices cachés (Article 1641 du Code civil)</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Exclusions') }}</h3>
+                        <p>Le droit de rétractation ne s'applique pas pour :</p>
+                        <ul class="list-disc pl-6 mt-2 space-y-1">
+                            <li>Les produits descellés ne pouvant être renvoyés pour des raisons d'hygiène</li>
+                            <li>Les produits personnalisés ou sur-mesure</li>
+                            <li>Les logiciels descellés</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-blue-900/30 rounded-lg">
+                        <p class="text-sm">Pour toute question concernant un retour, notre service client est à votre disposition par email à contact@lagrottedesgeeks.fr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal FAQ -->
+    <div x-data="{ open: false }"
+         @open-modal.window="if ($event.detail === 'faq') open = true"
+         @keydown.escape.window="open = false"
+         x-show="open"
+         class="fixed inset-0 z-50 overflow-y-auto"
+         x-cloak>
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="open = false"></div>
+
+        <!-- Modal panel -->
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-[#2E324A] rounded-lg max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh]"
+                 @click.away="open = false">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-white">{{ __('Questions Fréquentes') }}</h2>
+                    <button @click="open = false" class="text-gray-400 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal content -->
+                <div class="text-gray-300 space-y-6">
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Commandes et Paiements') }}</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium text-white">Comment passer une commande ?</p>
+                                <p class="mt-1">Sélectionnez vos articles, ajoutez-les au panier, puis suivez le processus de commande. Vous devrez créer un compte ou vous connecter, choisir votre mode de livraison et procéder au paiement.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">Quels moyens de paiement acceptez-vous ?</p>
+                                <p class="mt-1">Nous acceptons les cartes bancaires (Visa, MasterCard), PayPal et les virements bancaires. Tous les paiements sont sécurisés.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">Ma commande est-elle sécurisée ?</p>
+                                <p class="mt-1">Oui, toutes nos transactions sont cryptées et sécurisées. Nous utilisons un protocole SSL pour protéger vos données.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Livraison') }}</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium text-white">Quels sont les délais de livraison ?</p>
+                                <p class="mt-1">Les délais varient selon votre localisation : 2-3 jours en France métropolitaine, 3-4 jours en Corse, 5-7 jours pour les DOM-TOM, et 3-5 jours pour l'Europe.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">La livraison est-elle gratuite ?</p>
+                                <p class="mt-1">La livraison est gratuite en France métropolitaine pour toute commande supérieure à 69€.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">Comment suivre ma commande ?</p>
+                                <p class="mt-1">Un numéro de suivi vous sera envoyé par email dès l'expédition de votre commande. Vous pourrez suivre votre colis depuis votre compte client.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Retours et Remboursements') }}</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium text-white">Comment retourner un article ?</p>
+                                <p class="mt-1">Vous disposez de 14 jours pour nous retourner un article. Contactez notre service client pour initier le retour et suivez les instructions fournies.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">Quand serai-je remboursé ?</p>
+                                <p class="mt-1">Le remboursement est effectué dans les 14 jours suivant la réception du retour, sur le même moyen de paiement que celui utilisé lors de l'achat.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Produits') }}</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium text-white">Quelle est la différence entre les produits neufs et d'occasion ?</p>
+                                <p class="mt-1">Les produits neufs sont vendus dans leur emballage d'origine avec une garantie de 24 mois. Les produits d'occasion sont vérifiés, testés et garantis 12 mois.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">Comment vendre mes produits d'occasion ?</p>
+                                <p class="mt-1">Contactez-nous avec les détails de vos produits. Nous évaluerons leur état et vous ferons une proposition de rachat.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-white">{{ __('Compte Client') }}</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-medium text-white">Comment créer un compte ?</p>
+                                <p class="mt-1">Cliquez sur "Connexion" puis "Créer un compte". Remplissez le formulaire avec vos informations personnelles.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white">J'ai oublié mon mot de passe, que faire ?</p>
+                                <p class="mt-1">Cliquez sur "Mot de passe oublié" sur la page de connexion et suivez les instructions envoyées par email.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
+                        <p class="text-sm">Une question sans réponse ? Contactez notre service client par email à contact@lagrottedesgeeks.fr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
