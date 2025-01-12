@@ -122,6 +122,19 @@ Route::middleware([
     Route::get('/purchases/{purchase}/document', [PurchaseController::class, 'generateDocument'])->name('purchases.document');
 });
 
+// E-commerce Routes
+Route::get('/Shop', function() {
+    return redirect('/shop');
+});
+
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/', [App\Http\Controllers\ShopController::class, 'index'])->name('index');
+    Route::get('/category/{category}', [App\Http\Controllers\ShopController::class, 'category'])->name('category');
+    Route::get('/product/{product}', [App\Http\Controllers\ShopController::class, 'product'])->name('product');
+    Route::post('/cart/add/{product}', [App\Http\Controllers\ShopController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart', [App\Http\Controllers\ShopController::class, 'cart'])->name('cart');
+});
+
 // Error Pages
 Route::fallback(function () {
     return view('errors.404');
