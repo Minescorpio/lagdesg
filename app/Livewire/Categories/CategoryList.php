@@ -30,7 +30,7 @@ class CategoryList extends Component
                 });
             })
             ->when(!$this->showInactive, function ($query) {
-                $query->where('active', true);
+                $query->where('is_active', true);
             })
             ->orderBy($this->sortField, $this->sortDirection);
 
@@ -42,10 +42,10 @@ class CategoryList extends Component
     public function toggleActive($categoryId)
     {
         $category = Category::findOrFail($categoryId);
-        $category->update(['active' => !$category->active]);
+        $category->update(['is_active' => !$category->is_active]);
         
         $this->dispatch('notify', [
-            'message' => 'Statut de la catégorie mis à jour avec succès',
+            'message' => __('Category status updated successfully'),
             'type' => 'success'
         ]);
     }

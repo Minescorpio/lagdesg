@@ -4,6 +4,7 @@ namespace App\View\Components\Layouts;
 
 use App\Models\Category;
 use Illuminate\View\Component;
+use Illuminate\View\View;
 
 class Shop extends Component
 {
@@ -11,10 +12,10 @@ class Shop extends Component
 
     public function __construct()
     {
-        $this->categories = Category::where('active', true)->orderBy('name')->get();
+        $this->categories = Category::active()->orderBy('name')->get();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('components.layouts.shop');
     }

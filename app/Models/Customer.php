@@ -2,46 +2,61 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'name',
         'email',
         'phone',
         'address',
-        'city',
-        'postal_code',
-        'country',
-        'loyalty_points',
-        'last_purchase_at',
-        'active'
+        'notes'
     ];
 
-    protected $casts = [
-        'loyalty_points' => 'integer',
-        'last_purchase_at' => 'datetime',
-        'active' => 'boolean'
-    ];
-
-    public function sales(): HasMany
+    // Relations
+    public function sales()
     {
         return $this->hasMany(Sale::class);
     }
 
-    public function getFullNameAttribute(): string
+    // Scopes
+    public function scopeSearch($query, $search)
     {
-        return "{$this->first_name} {$this->last_name}";
+        return $query->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+        });
     }
 
-    public function scopeOrderByName($query)
+    // Accessors & Mutators
+    public function getSalesCountAttribute()
     {
-        return $query->orderBy('first_name')->orderBy('last_name');
+        return $this->sales()->count();
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        return $this->sales()->completed()->sum('total_amount');
+    }
+
+    public function getFormattedTotalSpentAttribute()
+    {
+        return money($this->total_spent);
+    }
+
+    public function getLastPurchaseAttribute()
+    {
+        return $this->sales()->latest()->first();
+    }
+
+    public function getLastPurchaseDateAttribute()
+    {
+        return optional($this->last_purchase)->created_at;
     }
 } 

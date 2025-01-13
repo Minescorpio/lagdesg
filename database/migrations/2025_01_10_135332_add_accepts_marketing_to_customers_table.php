@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->boolean('accepts_marketing')->default(false)->after('active');
+            $table->boolean('accepts_marketing')->default(false)->after('email');
         });
     }
 

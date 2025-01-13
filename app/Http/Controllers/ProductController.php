@@ -7,12 +7,14 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index(): View
     {
         $products = Product::with('category')
+            ->withSum('sales', 'quantity')
             ->latest()
             ->paginate(10);
 
@@ -21,7 +23,7 @@ class ProductController extends Controller
 
     public function create(): View
     {
-        $categories = Category::where('active', true)
+        $categories = Category::where('is_active', true)
             ->orderBy('name')
             ->get();
 
@@ -32,22 +34,20 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'barcode' => 'nullable|string|unique:products',
+            'sku' => 'required|string|max:50|unique:products',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'is_weighable' => 'boolean',
-            'has_free_price' => 'boolean',
+            'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'required|integer|min:0',
+            'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
-            'track_stock' => 'boolean',
-            'min_stock_alert' => 'nullable|integer|min:0',
-            'vat_rate' => 'required|numeric|min:0|max:100',
-            'active' => 'boolean',
+            'barcode' => 'nullable|string|max:50|unique:products',
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
         Product::create($validated);
@@ -56,18 +56,9 @@ class ProductController extends Controller
             ->with('success', __('Product created successfully'));
     }
 
-    public function show(Product $product): View
-    {
-        $product->load(['category', 'stocks' => function ($query) {
-            $query->latest()->take(10);
-        }]);
-
-        return view('products.show', compact('product'));
-    }
-
     public function edit(Product $product): View
     {
-        $categories = Category::where('active', true)
+        $categories = Category::where('is_active', true)
             ->orderBy('name')
             ->get();
 
@@ -78,26 +69,23 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'barcode' => 'nullable|string|unique:products,barcode,' . $product->id,
+            'sku' => 'required|string|max:50|unique:products,sku,' . $product->id,
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'cost_price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'is_weighable' => 'boolean',
-            'has_free_price' => 'boolean',
+            'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'required|integer|min:0',
+            'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
-            'track_stock' => 'boolean',
-            'min_stock_alert' => 'nullable|integer|min:0',
-            'vat_rate' => 'required|numeric|min:0|max:100',
-            'active' => 'boolean',
+            'barcode' => 'nullable|string|max:50|unique:products,barcode,' . $product->id,
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image_path) {
-                Storage::disk('public')->delete($product->image_path);
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
             }
-            $validated['image_path'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
         $product->update($validated);
@@ -108,8 +96,12 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        if ($product->image_path) {
-            Storage::disk('public')->delete($product->image_path);
+        if ($product->sales()->exists()) {
+            return back()->with('error', __('Cannot delete product with associated sales'));
+        }
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
@@ -118,17 +110,10 @@ class ProductController extends Controller
             ->with('success', __('Product deleted successfully'));
     }
 
-    public function search(Request $request)
+    public function toggleStatus(Product $product): RedirectResponse
     {
-        $query = $request->get('query');
-        
-        return Product::where('active', true)
-            ->where(function($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('barcode', 'like', "%{$query}%");
-            })
-            ->with('category')
-            ->take(10)
-            ->get();
+        $product->update(['is_active' => !$product->is_active]);
+
+        return back()->with('success', __('Product status updated successfully'));
     }
 } 

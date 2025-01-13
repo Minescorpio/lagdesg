@@ -1,123 +1,120 @@
+@php
+    $columns = [
+        ['key' => 'image', 'label' => __('Image')],
+        ['key' => 'name', 'label' => __('Name'), 'sortable' => true],
+        ['key' => 'barcode', 'label' => __('Barcode')],
+        ['key' => 'category', 'label' => __('Category')],
+        ['key' => 'price', 'label' => __('Price'), 'sortable' => true],
+        ['key' => 'stock', 'label' => __('Stock'), 'sortable' => true],
+        ['key' => 'actions', 'label' => __('Actions')],
+    ];
+@endphp
+
 <div>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">
-                {{ __('Produits') }}
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold leading-tight text-white">
+                {{ __('Products') }}
             </h2>
-            <a href="{{ route('products.create') }}" class="btn-primary">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                {{ __('NOUVEAU PRODUIT') }}
+            <a href="{{ route('products.create') }}" class="px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-200 active:bg-indigo-700">
+                {{ __('Create New Product') }}
             </a>
         </div>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="card">
-                <div class="card-body">
-                    <!-- Search -->
-                    <div class="mb-6">
-                        <div class="relative">
-                            <input type="search" wire:model.live="search" placeholder="{{ __('Search products...') }}" class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
+    <div class="py-12">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-[#2E324A] shadow-xl sm:rounded-lg">
+                <div class="p-6 bg-[#2E324A]">
+                    <div class="flex flex-col gap-4 mb-4 md:flex-row md:items-center md:justify-between">
+                        <div class="flex flex-col gap-4 md:flex-row md:items-center">
+                            <div class="flex-1 md:w-64">
+                                <x-input wire:model.live="search" type="search" class="w-full" placeholder="{{ __('Search products...') }}" />
                             </div>
+                            <div class="flex-1 md:w-48">
+                                <x-select wire:model.live="fournisseurFilter" class="w-full">
+                                    <option value="">{{ __('All Suppliers') }}</option>
+                                    @foreach($fournisseurs as $fournisseur)
+                                        <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
+                                    @endforeach
+                                </x-select>
+                            </div>
+                            <div class="flex-1 md:w-48">
+                                <x-select wire:model.live="perPage" class="w-full">
+                                    <option value="10">10 {{ __('per page') }}</option>
+                                    <option value="25">25 {{ __('per page') }}</option>
+                                    <option value="50">50 {{ __('per page') }}</option>
+                                    <option value="100">100 {{ __('per page') }}</option>
+                                </x-select>
+                            </div>
+                        </div>
+                        <div class="flex-1 md:w-64">
+                            <x-input wire:model="barcodeInput" wire:keydown.enter="handleBarcodeScan" type="text" class="w-full" placeholder="{{ __('Scan barcode...') }}" />
                         </div>
                     </div>
 
-                    <div class="mb-6">
-                        <div class="relative">
-                            <input type="search" wire:model.lazy="barcodeInput" wire:change="handleBarcodeScan" placeholder="{{ __('Scan barcode...') }}" class="block w-full pl-16 pr-4 py-4 text-lg border border-gray-600 rounded-2xl leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Fournisseur Filter -->
-                    <div class="mb-6">
-                        <label for="fournisseur_filter" class="block text-sm font-medium text-white">{{ __('Filter by Fournisseur') }}</label>
-                        <select wire:model="fournisseurFilter" id="fournisseur_filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-600 rounded-md leading-6 bg-[#374151] text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                            <option value="">{{ __('All Fournisseurs') }}</option>
-                            @foreach($fournisseurs as $fournisseur)
-                                <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Products Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full">
+                        <table class="min-w-full divide-y divide-gray-700">
                             <thead>
                                 <tr>
-                                    <th class="px-10 py-8 text-left text-white">{{ __('Name') }}</th>
-                                    <th class="px-10 py-8 text-left text-white">{{ __('Category') }}</th>
-                                    <th class="px-10 py-8 text-left text-white">{{ __('Fournisseur') }}</th>
-                                    <th class="px-10 py-8 text-right text-white">{{ __('Price') }}</th>
-                                    <th class="px-10 py-8 text-right text-white">{{ __('Stock') }}</th>
-                                    <th class="px-10 py-8 text-center text-white">{{ __('Status') }}</th>
-                                    <th class="px-10 py-8 text-right text-white">{{ __('Actions') }}</th>
+                                    @foreach($columns as $column)
+                                        <th class="px-6 py-3 text-left">
+                                            <span class="text-xs font-medium tracking-wider text-gray-300 uppercase">
+                                                {{ $column['label'] }}
+                                            </span>
+                                        </th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-700">
                                 @forelse($products as $product)
-                                    <tr class="hover:bg-[#2E324A] transition-colors duration-200">
-                                        <td class="px-10 py-6">
-                                            <div class="font-medium text-white">{{ $product->name }}</div>
-                                            <div class="text-sm text-gray-400">{{ $product->barcode }}</div>
+                                    <tr class="hover:bg-[#1B1D29]">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($product->image_path)
+                                                <img src="{{ Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-12 h-12 rounded-full">
+                                            @else
+                                                <div class="w-12 h-12 bg-gray-700 rounded-full"></div>
+                                            @endif
                                         </td>
-                                        <td class="px-10 py-6">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                {{ $product->category->name }}
-                                            </span>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-white">{{ $product->name }}</div>
+                                            @if($product->description)
+                                                <div class="text-sm text-gray-400">{{ Str::limit($product->description, 50) }}</div>
+                                            @endif
                                         </td>
-                                        <td class="px-10 py-6">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                {{ $product->fournisseur->nom }}
-                                            </span>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-300">{{ $product->barcode }}</div>
                                         </td>
-                                        <td class="px-10 py-6 text-right">
-                                            <div class="text-sm text-white">{{ money($product->price) }}</div>
-                                            <div class="text-xs text-gray-500">{{ __('Cost') }}: {{ money($product->cost_price) }}</div>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-300">{{ $product->category?->name }}</div>
                                         </td>
-                                        <td class="px-10 py-6 text-right">
-                                            <div class="text-sm text-white">{{ $product->stock }}</div>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-300">{{ number_format($product->price, 2) }} €</div>
                                         </td>
-                                        <td class="px-10 py-6 text-center">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $product->active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $product->active ? __('Active') : __('Inactive') }}
-                                            </span>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($product->track_stock)
+                                                <div class="text-sm {{ $product->stock < $product->alert_quantity ? 'text-red-400' : 'text-gray-300' }}">
+                                                    {{ $product->stock }}
+                                                </div>
+                                            @else
+                                                <div class="text-sm text-gray-500">{{ __('Not tracked') }}</div>
+                                            @endif
                                         </td>
-                                        <td class="px-10 py-6 text-right">
-                                            <div class="flex items-center justify-end space-x-2">
-                                                <a href="{{ route('products.edit', $product) }}" class="btn-sm">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                    </svg>
+                                        <td class="px-6 py-4 text-sm text-gray-300 whitespace-nowrap">
+                                            <div class="flex items-center space-x-3">
+                                                <a href="{{ route('products.show', $product) }}" class="text-indigo-400 hover:text-indigo-300">
+                                                    {{ __('View') }}
                                                 </a>
-                                                <button wire:click="confirmDelete({{ $product->id }})" class="btn-sm text-red-500 hover:text-red-700">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
+                                                <button wire:click="confirmDelete({{ $product->id }})" class="text-red-400 hover:text-red-300">
+                                                    {{ __('Delete') }}
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-12">
-                                            <div class="flex flex-col items-center">
-                                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                                </svg>
-                                                <h3 class="mt-2 text-sm font-medium text-gray-400">{{ __('No products found') }}</h3>
-                                            </div>
+                                        <td colspan="{{ count($columns) }}" class="px-6 py-4 text-sm text-center text-gray-400 whitespace-nowrap">
+                                            {{ __('No products found.') }}
                                         </td>
                                     </tr>
                                 @endforelse
@@ -125,8 +122,7 @@
                         </table>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-6">
+                    <div class="mt-4">
                         {{ $products->links() }}
                     </div>
                 </div>
@@ -135,105 +131,165 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div x-data="{ show: @entangle('showDeleteModal') }"
-         x-show="show"
-         x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0">
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"></div>
+    <x-dialog-modal wire:model.live="showDeleteModal">
+        <x-slot name="title">
+            {{ __('Delete Product') }}
+        </x-slot>
 
-        <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-lg bg-[#1F2937] px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-600 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
+        <x-slot name="content">
+            {{ __('Are you sure you want to delete this product? This action cannot be undone.') }}
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showDeleteModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-danger-button class="ml-3" wire:click="deleteProduct" wire:loading.attr="disabled">
+                {{ __('Delete Product') }}
+            </x-danger-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <!-- Create Product Modal -->
+    <x-dialog-modal wire:model.live="showCreateForm" maxWidth="4xl">
+        <x-slot name="title">
+            {{ __('Create New Product') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
+                <!-- Basic Information -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-white">{{ __('Basic Information') }}</h3>
+                    
+                    <div>
+                        <x-label for="name" value="{{ __('Name') }}" />
+                        <x-input id="name" type="text" class="block w-full mt-1" wire:model="name" />
+                        <x-input-error for="name" class="mt-2" />
                     </div>
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <h3 class="text-lg font-semibold text-white">{{ __('Delete Product') }}</h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-400">{{ __('Are you sure you want to delete this product? This action cannot be undone.') }}</p>
+
+                    <div>
+                        <x-label for="description" value="{{ __('Description') }}" />
+                        <x-textarea id="description" class="block w-full mt-1" wire:model="description" />
+                        <x-input-error for="description" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="barcode" value="{{ __('Barcode') }}" />
+                        <x-input id="barcode" type="text" class="block w-full mt-1" wire:model="barcode" />
+                        <x-input-error for="barcode" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="category_id" value="{{ __('Category') }}" />
+                        <x-select id="category_id" class="block w-full mt-1" wire:model="category_id">
+                            <option value="">{{ __('Select a category') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-input-error for="category_id" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="fournisseur_id" value="{{ __('Supplier') }}" />
+                        <x-select id="fournisseur_id" class="block w-full mt-1" wire:model="fournisseur_id">
+                            <option value="">{{ __('Select a supplier') }}</option>
+                            @foreach($fournisseurs as $fournisseur)
+                                <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
+                            @endforeach
+                        </x-select>
+                        <x-input-error for="fournisseur_id" class="mt-2" />
+                    </div>
+                </div>
+
+                <!-- Price & Stock -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium text-white">{{ __('Price & Stock') }}</h3>
+                    
+                    <div>
+                        <x-label for="price" value="{{ __('Selling Price') }}" />
+                        <x-input id="price" type="number" step="0.01" class="block w-full mt-1" wire:model="price" />
+                        <x-input-error for="price" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="cost_price" value="{{ __('Cost Price') }}" />
+                        <x-input id="cost_price" type="number" step="0.01" class="block w-full mt-1" wire:model="cost_price" />
+                        <x-input-error for="cost_price" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="vat_rate" value="{{ __('VAT Rate') }}" />
+                        <x-input id="vat_rate" type="number" step="0.01" class="block w-full mt-1" wire:model="vat_rate" />
+                        <x-input-error for="vat_rate" class="mt-2" />
+                    </div>
+
+                    <div class="flex items-center mt-4">
+                        <x-checkbox id="track_stock" wire:model="track_stock" />
+                        <x-label for="track_stock" class="ml-2" value="{{ __('Track Stock') }}" />
+                    </div>
+
+                    @if($track_stock)
+                        <div>
+                            <x-label for="alert_quantity" value="{{ __('Alert Quantity') }}" />
+                            <x-input id="alert_quantity" type="number" class="block w-full mt-1" wire:model="alert_quantity" />
+                            <x-input-error for="alert_quantity" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <x-label for="initial_stock" value="{{ __('Initial Stock') }}" />
+                            <x-input id="initial_stock" type="number" class="block w-full mt-1" wire:model="initial_stock" />
+                            <x-input-error for="initial_stock" class="mt-2" />
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Additional Options -->
+                <div class="space-y-4 md:col-span-2">
+                    <h3 class="text-lg font-medium text-white">{{ __('Additional Options') }}</h3>
+                    
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div class="flex items-center">
+                            <x-checkbox id="weighable" wire:model="weighable" />
+                            <x-label for="weighable" class="ml-2" value="{{ __('Weighable Product') }}" />
+                        </div>
+
+                        <div class="flex items-center">
+                            <x-checkbox id="free_price" wire:model="free_price" />
+                            <x-label for="free_price" class="ml-2" value="{{ __('Free Price') }}" />
+                        </div>
+
+                        <div class="flex items-center">
+                            <x-checkbox id="active" wire:model="active" />
+                            <x-label for="active" class="ml-2" value="{{ __('Active') }}" />
                         </div>
                     </div>
-                </div>
 
-                <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <button type="button"
-                            wire:click="deleteProduct"
-                            class="btn-danger w-full sm:w-auto sm:ml-3">
-                        {{ __('Delete') }}
-                    </button>
-                    <button type="button"
-                            wire:click="$set('showDeleteModal', false)"
-                            class="btn-secondary w-full sm:w-auto mt-3 sm:mt-0">
-                        {{ __('Cancel') }}
-                    </button>
+                    <div>
+                        <x-label for="image" value="{{ __('Product Image') }}" />
+                        <input type="file" id="image" wire:model="image" class="block w-full mt-1 text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+                        <x-input-error for="image" class="mt-2" />
+                        
+                        @if ($image)
+                            <div class="mt-2">
+                                <img src="{{ $image->temporaryUrl() }}" class="w-32 h-32 rounded-lg">
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </x-slot>
 
-@push('styles')
-<style>
-    /* Table Styles */
-    .table-container {
-        @apply overflow-x-auto bg-[#1F2937] rounded-lg shadow-sm;
-    }
-    
-    table {
-        @apply min-w-full divide-y divide-gray-700;
-    }
-    
-    thead {
-        @apply bg-[#2E324A];
-    }
-    
-    thead th {
-        @apply px-6 py-3 text-left text-white font-medium;
-    }
-    
-    tbody {
-        @apply bg-[#1F2937] divide-y divide-gray-700;
-    }
-    
-    tbody tr {
-        @apply hover:bg-[#374151] transition-colors duration-150;
-    }
-    
-    tbody tr:nth-child(even) {
-        @apply bg-[#2E324A];
-    }
-    
-    td {
-        @apply px-6 py-4 whitespace-nowrap text-sm text-white;
-    }
-    
-    /* Button Styles */
-    .btn-primary {
-        @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
-    }
-    
-    .btn-secondary {
-        @apply inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-[#2E324A] hover:bg-[#373B56] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
-    }
-    
-    /* Action Buttons */
-    .action-button {
-        @apply p-2 rounded-full text-white hover:bg-[#2E324A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150;
-    }
-</style>
-@endpush
+        <x-slot name="footer">
+            <x-secondary-button wire:click="cancelCreate" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button class="ml-3" wire:click="save" wire:loading.attr="disabled">
+                {{ __('Create Product') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+</div>

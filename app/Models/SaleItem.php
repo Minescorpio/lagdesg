@@ -2,40 +2,57 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SaleItem extends Model
 {
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'sale_id',
         'product_id',
         'quantity',
-        'unit_price',
-        'discount_amount',
-        'tax_rate',
-        'tax_amount',
-        'total_amount',
-        'product_data'
+        'price',
+        'subtotal'
     ];
 
     protected $casts = [
-        'quantity' => 'decimal:3',
-        'unit_price' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
-        'tax_rate' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'total_amount' => 'decimal:2',
-        'product_data' => 'json'
+        'quantity' => 'integer',
+        'price' => 'decimal:2',
+        'subtotal' => 'decimal:2',
     ];
 
-    public function sale(): BelongsTo
+    // Relations
+    public function sale()
     {
         return $this->belongsTo(Sale::class);
     }
 
-    public function product(): BelongsTo
+    public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    // Accessors & Mutators
+    public function getFormattedPriceAttribute()
+    {
+        return money($this->price);
+    }
+
+    public function getFormattedSubtotalAttribute()
+    {
+        return money($this->subtotal);
+    }
+
+    // Boot method to set subtotal before saving
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($saleItem) {
+            $saleItem->subtotal = $saleItem->quantity * $saleItem->price;
+        });
     }
 }

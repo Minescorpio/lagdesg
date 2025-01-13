@@ -59,7 +59,7 @@ class ProductList extends Component
                 $query->where('category_id', $this->selectedCategory);
             })
             ->when(!$this->showInactive, function ($query) {
-                $query->where('active', true);
+                $query->where('is_active', true);
             })
             ->orderBy($this->sortField, $this->sortDirection);
 
@@ -76,7 +76,7 @@ class ProductList extends Component
     public function toggleActive($productId)
     {
         $product = Product::findOrFail($productId);
-        $product->update(['active' => !$product->active]);
+        $product->update(['is_active' => !$product->is_active]);
         $this->dispatch('notify', [
             'message' => __('Product status updated successfully'),
             'type' => 'success'

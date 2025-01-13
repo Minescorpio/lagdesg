@@ -2,53 +2,108 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sale extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'invoice_number',
         'customer_id',
         'user_id',
-        'subtotal',
-        'tax_amount',
-        'discount_amount',
-        'total_amount',
-        'payment_status',
         'payment_method',
-        'payment_details',
-        'loyalty_points_earned',
-        'loyalty_points_used',
+        'total_amount',
+        'tax_amount',
+        'amount_received',
+        'change_amount',
         'notes',
-        'completed_at'
+        'status'
     ];
 
     protected $casts = [
-        'payment_details' => 'json',
-        'completed_at' => 'datetime',
-        'subtotal' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'amount_received' => 'decimal:2',
+        'change_amount' => 'decimal:2',
     ];
 
-    public function customer(): BelongsTo
+    // Relations
+    public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function items(): HasMany
+    public function items()
     {
         return $this->hasMany(SaleItem::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'sale_items')
+            ->withPivot('quantity', 'price', 'subtotal')
+            ->withTimestamps();
+    }
+
+    // Scopes
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
+    }
+
+    public function scopeVoided($query)
+    {
+        return $query->where('status', 'voided');
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereDate('created_at', today());
+    }
+
+    // Accessors & Mutators
+    public function getFormattedTotalAttribute()
+    {
+        return money($this->total_amount);
+    }
+
+    public function getFormattedTaxAttribute()
+    {
+        return money($this->tax_amount);
+    }
+
+    public function getFormattedAmountReceivedAttribute()
+    {
+        return money($this->amount_received);
+    }
+
+    public function getFormattedChangeAttribute()
+    {
+        return money($this->change_amount);
+    }
+
+    public function getStatusColorAttribute()
+    {
+        return [
+            'completed' => 'green',
+            'voided' => 'red',
+            'pending' => 'yellow',
+        ][$this->status] ?? 'gray';
+    }
+
+    public function getPaymentMethodLabelAttribute()
+    {
+        return [
+            'cash' => __('Cash'),
+            'card' => __('Card'),
+            'transfer' => __('Bank Transfer'),
+        ][$this->payment_method] ?? $this->payment_method;
     }
 }

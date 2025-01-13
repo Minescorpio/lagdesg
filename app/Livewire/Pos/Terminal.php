@@ -1,287 +1,214 @@
 <?php
 
-namespace App\Livewire\Pos;
+namespace App\Livewire\POS;
 
-use App\Models\Sale;
-use App\Models\Product;
+use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Sale;
+use App\Models\SaleItem;
 use Livewire\Component;
-use Livewire\Attributes\Title;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
-#[Title('Terminal de vente')]
-#[Layout('components.layouts.app')]
 class Terminal extends Component
 {
     use WithPagination;
 
-    public $cartItems = [];
-    public $selectedCustomer = null;
-    public $lastSale = null;
-    public $cartTotal = 0;
-    public $cartItemsCount = 0;
-
-    // Modal states
-    public $showCustomerModal = false;
-    public $showPaymentModal = false;
-    public $showDiscountModal = false;
-
-    // Customer search
-    public $customerSearch = '';
-    
-    // Payment related
-    public $paymentMethod = '';
-    public $receivedAmount = 0;
-    public $notes = '';
-    public $discount = 0;
-    public $taxRate = 20;
-
-    // Discount related
-    public $discountType = 'fixed';
-    public $discountAmount = 0;
-    public $finalAmount = 0;
-    public $savings = 0;
-
     public $search = '';
-    public $selectedCategory = '';
-    public $showReceiptModal = false;
-    public $barcodeInput = '';
+    public $categoryFilter = '';
+    public $customerId = '';
+    public $paymentMethod = 'cash';
+    public $amountReceived = 0;
+    public $notes = '';
+    public $showSuccessModal = false;
+    public $lastSaleId = null;
+    public $taxRate = 10; // 10% tax rate
 
-    protected $listeners = [
-        'productSelected' => 'addToCart',
-        'customerSelected' => 'selectCustomer'
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'categoryFilter' => ['except' => ''],
     ];
 
-    #[On('customerSelected')]
-    public function onCustomerSelected($customerId)
+    public function getSubtotalProperty()
     {
-        $this->selectedCustomer = Customer::find($customerId);
-        $this->showCustomerModal = false;
-    }
-
-    #[On('discountApplied')]
-    public function onDiscountApplied()
-    {
-        $this->calculateDiscountAndFinal();
-    }
-
-    public function mount()
-    {
-        $this->lastSale = Sale::latest()->first();
-        $this->calculateCartTotals();
-    }
-
-    public function calculateCartTotals()
-    {
-        $this->cartTotal = collect($this->cartItems)->sum(function($item) {
-            return $item->price * $item->quantity;
+        return collect(session('cart', []))->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
         });
-        $this->cartItemsCount = collect($this->cartItems)->sum('quantity');
-        $this->calculateDiscountAndFinal();
     }
 
-    public function calculateDiscountAndFinal()
+    public function getTaxProperty()
     {
-        $subtotal = $this->getSubtotal();
-        $tax = $this->getTax();
-        $total = $subtotal + $tax;
-
-        if ($this->discountType === 'percentage') {
-            $this->discount = ($subtotal * $this->discountAmount) / 100;
-        } else {
-            $this->discount = $this->discountAmount;
-        }
-
-        $this->finalAmount = $total - $this->discount;
-        $this->savings = $this->discount;
+        return $this->subtotal * ($this->taxRate / 100);
     }
 
-    public function getSubtotal()
+    public function getTotalProperty()
     {
-        return $this->cartTotal;
+        return $this->subtotal + $this->tax;
     }
 
-    public function getTax()
+    public function getChangeProperty()
     {
-        return $this->getSubtotal() * ($this->taxRate / 100);
-    }
-
-    public function getTotal()
-    {
-        return $this->getSubtotal() + $this->getTax() - $this->discount;
-    }
-
-    public function getChange()
-    {
-        if ($this->paymentMethod !== 'cash' || !$this->receivedAmount) {
+        if ($this->paymentMethod !== 'cash' || !is_numeric($this->amountReceived)) {
             return 0;
         }
-        return max(0, $this->receivedAmount - $this->getTotal());
+        return max(0, $this->amountReceived - $this->total);
+    }
+
+    public function addToCart($productId)
+    {
+        $product = Product::findOrFail($productId);
+        
+        if ($product->stock < 1) {
+            $this->dispatch('error', ['message' => __('Product is out of stock.')]);
+            return;
+        }
+
+        $cart = session()->get('cart', []);
+        
+        if (isset($cart[$product->id])) {
+            if ($cart[$product->id]['quantity'] + 1 > $product->stock) {
+                $this->dispatch('error', ['message' => __('Not enough stock available.')]);
+                return;
+            }
+            $cart[$product->id]['quantity']++;
+        } else {
+            $cart[$product->id] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1
+            ];
+        }
+
+        session()->put('cart', $cart);
+        $this->dispatch('success', ['message' => __('Product added to cart successfully.')]);
+    }
+
+    public function removeFromCart($productId)
+    {
+        $cart = session()->get('cart', []);
+        
+        if (isset($cart[$productId])) {
+            unset($cart[$productId]);
+            session()->put('cart', $cart);
+            $this->dispatch('success', ['message' => __('Product removed from cart successfully.')]);
+        }
+    }
+
+    public function updateQuantity($productId, $quantity)
+    {
+        if ($quantity < 1) {
+            $this->removeFromCart($productId);
+            return;
+        }
+
+        $product = Product::findOrFail($productId);
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            if ($quantity > $product->stock) {
+                $this->dispatch('error', ['message' => __('Not enough stock available.')]);
+                return;
+            }
+
+            $cart[$productId]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+            $this->dispatch('success', ['message' => __('Cart updated successfully.')]);
+        }
     }
 
     public function clearCart()
     {
-        $this->cartItems = [];
-        $this->calculateCartTotals();
-        $this->dispatch('cart-updated');
+        session()->forget('cart');
+        $this->dispatch('success', ['message' => __('Cart cleared successfully.')]);
     }
 
-    public function incrementQuantity($itemId)
+    public function processSale()
     {
-        if (isset($this->cartItems[$itemId])) {
-            $this->cartItems[$itemId]->quantity++;
-            $this->calculateCartTotals();
-        }
-    }
-
-    public function decrementQuantity($itemId)
-    {
-        if (isset($this->cartItems[$itemId]) && $this->cartItems[$itemId]->quantity > 1) {
-            $this->cartItems[$itemId]->quantity--;
-            $this->calculateCartTotals();
-        }
-    }
-
-    public function removeItem($itemId)
-    {
-        if (isset($this->cartItems[$itemId])) {
-            unset($this->cartItems[$itemId]);
-            $this->calculateCartTotals();
-        }
-    }
-
-    public function openCustomerModal()
-    {
-        $this->showCustomerModal = true;
-    }
-
-    public function openPaymentModal()
-    {
-        if (empty($this->cartItems)) {
-            $this->addError('cart', __('Le panier est vide'));
+        if ($this->paymentMethod === 'cash' && $this->amountReceived < $this->total) {
+            $this->dispatch('error', ['message' => __('Insufficient amount received.')]);
             return;
         }
-        $this->showPaymentModal = true;
-    }
 
-    public function openDiscountModal()
-    {
-        if (empty($this->cartItems)) {
-            $this->addError('cart', __('Le panier est vide'));
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            $this->dispatch('error', ['message' => __('Cart is empty.')]);
             return;
         }
-        $this->discountType = 'fixed';
-        $this->discountAmount = 0;
-        $this->calculateDiscountAndFinal();
-        $this->showDiscountModal = true;
-    }
-
-    public function applyDiscount()
-    {
-        $this->validate([
-            'discountAmount' => 'required|numeric|min:0|' . ($this->discountType === 'percentage' ? 'max:100' : 'max:' . $this->getTotal()),
-        ]);
-
-        $this->calculateDiscountAndFinal();
-        $this->showDiscountModal = false;
-    }
-
-    public function updatedDiscountType()
-    {
-        $this->discountAmount = 0;
-        $this->calculateDiscountAndFinal();
-    }
-
-    public function updatedDiscountAmount()
-    {
-        $this->calculateDiscountAndFinal();
-    }
-
-    public function processPayment()
-    {
-        $this->validate([
-            'paymentMethod' => 'required|in:cash,card,transfer',
-            'receivedAmount' => 'required_if:paymentMethod,cash|numeric|min:' . $this->getTotal(),
-        ]);
 
         try {
+            DB::beginTransaction();
+
+            // Create sale
             $sale = Sale::create([
-                'customer_id' => $this->selectedCustomer?->id,
-                'user_id' => auth()->id(),
-                'subtotal' => $this->getSubtotal(),
-                'tax' => $this->getTax(),
-                'discount' => $this->discount,
-                'total_amount' => $this->getTotal(),
+                'customer_id' => $this->customerId ?: null,
                 'payment_method' => $this->paymentMethod,
-                'received_amount' => $this->receivedAmount,
-                'change_amount' => $this->getChange(),
+                'amount_received' => $this->amountReceived,
+                'total_amount' => $this->total,
+                'tax_amount' => $this->tax,
+                'change_amount' => $this->change,
                 'notes' => $this->notes,
                 'status' => 'completed'
             ]);
 
-            foreach ($this->cartItems as $item) {
-                $sale->items()->create([
-                    'product_id' => $item->id,
-                    'quantity' => $item->quantity,
-                    'unit_price' => $item->price,
-                    'total' => $item->price * $item->quantity
+            // Create sale items and update stock
+            foreach ($cart as $item) {
+                $product = Product::findOrFail($item['id']);
+                
+                if ($product->stock < $item['quantity']) {
+                    throw new \Exception(__('Not enough stock for :product', ['product' => $product->name]));
+                }
+
+                SaleItem::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'subtotal' => $item['price'] * $item['quantity']
                 ]);
+
+                $product->decrement('stock', $item['quantity']);
             }
 
-            $this->lastSale = $sale;
-            $this->clearCart();
-            $this->showPaymentModal = false;
-            $this->dispatch('sale-completed', $sale->id);
+            DB::commit();
+
+            // Clear cart and reset form
+            session()->forget('cart');
+            $this->reset(['customerId', 'paymentMethod', 'amountReceived', 'notes']);
+            $this->lastSaleId = $sale->id;
+            $this->showSuccessModal = true;
 
         } catch (\Exception $e) {
-            $this->addError('payment', __('Une erreur est survenue lors du traitement du paiement'));
-        }
-    }
-
-    public function handleBarcodeScan()
-    {
-        if (empty($this->barcodeInput)) {
-            return;
-        }
-
-        // Recherche du produit par code-barres
-        $product = Product::where('barcode', $this->barcodeInput)->first();
-
-        if ($product) {
-            // Ajouter le produit au panier
-            $this->addToCart($product->id);
-            // Réinitialiser le champ de saisie
-            $this->barcodeInput = '';
-        } else {
-            // Produit non trouvé
-            $this->dispatch('notify', [
-                'type' => 'error',
-                'message' => __('Produit non trouvé pour ce code-barres')
-            ]);
+            DB::rollBack();
+            $this->dispatch('error', ['message' => $e->getMessage()]);
         }
     }
 
     public function render()
     {
-        $customers = [];
-        if ($this->showCustomerModal) {
-            $customers = Customer::when($this->customerSearch, function($query) {
-                $query->where(function($q) {
-                    $q->where('name', 'like', "%{$this->customerSearch}%")
-                        ->orWhere('email', 'like', "%{$this->customerSearch}%")
-                        ->orWhere('phone', 'like', "%{$this->customerSearch}%");
-                });
-            })->paginate(10);
+        $categories = Category::where('is_active', true)->get();
+        $customers = Customer::all();
+        
+        $productsQuery = Product::with('category')
+            ->where('is_active', true);
+
+        if ($this->search) {
+            $productsQuery->where('name', 'like', '%' . $this->search . '%');
         }
 
+        if ($this->categoryFilter) {
+            $productsQuery->where('category_id', $this->categoryFilter);
+        }
+
+        $products = $productsQuery->paginate(12);
+
         return view('livewire.pos.terminal', [
+            'categories' => $categories,
             'customers' => $customers,
-            'subtotal' => $this->getSubtotal(),
-            'tax' => $this->getTax(),
-            'total' => $this->getTotal(),
-            'change' => $this->getChange(),
+            'products' => $products,
+            'cart' => session()->get('cart', [])
         ]);
     }
 } 

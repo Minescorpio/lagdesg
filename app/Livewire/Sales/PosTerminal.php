@@ -49,7 +49,7 @@ class PosTerminal extends Component
     public function render()
     {
         $query = Product::query()
-            ->where('active', true)
+            ->where('is_active', true)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%')
@@ -63,7 +63,7 @@ class PosTerminal extends Component
                 $query->where('is_favorite', true);
             });
 
-        $categories = Category::where('active', true)
+        $categories = Category::where('is_active', true)
             ->orderBy('sort_order')
             ->get();
 

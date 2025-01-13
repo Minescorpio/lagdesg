@@ -76,11 +76,11 @@
                             <td class="table-td">
                                 <button wire:click="toggleActive({{ $category->id }})" 
                                     class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium
-                                    {{ $category->active 
+                                    {{ $category->is_active 
                                         ? 'bg-green-100 text-green-800 hover:bg-green-200' 
                                         : 'bg-red-100 text-red-800 hover:bg-red-200' }}">
                                     <i class="fas fa-circle text-xs mr-1"></i>
-                                    {{ $category->active ? 'Actif' : 'Inactif' }}
+                                    {{ $category->is_active ? __('Active') : __('Inactive') }}
                                 </button>
                             </td>
                             <td class="table-td">

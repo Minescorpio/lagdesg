@@ -9,7 +9,10 @@ use App\Models\Fournisseur;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Layout('components.layouts.app')]
+#[Title('Create Product')]
 class Create extends Component
 {
     use WithFileUploads;
@@ -62,14 +65,19 @@ class Create extends Component
         return CurrencyHelper::format($value);
     }
 
-    #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('products.create', [
-            'categories' => Category::where('active', true)->orderBy('name')->get(),
+        return view('livewire.products.create', [
+            'categories' => Category::where('is_active', true)->orderBy('name')->get(),
             'fournisseurs' => Fournisseur::orderBy('nom')->get(),
             'formatted_price' => $this->formatPrice($this->price),
             'formatted_cost_price' => $this->formatPrice($this->cost_price)
+        ])->layout('components.layouts.app', [
+            'header' => view('components.page-header', [
+                'title' => __('Create New Product'),
+                'backUrl' => route('products.index'),
+                'backLabel' => __('Back to List')
+            ])
         ]);
     }
 

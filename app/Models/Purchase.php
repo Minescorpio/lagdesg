@@ -4,25 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Purchase extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'customer_id',
-        'total_amount',
-        'total_items',
-        'signature_type',
-        'electronic_signature',
-        'document_path',
-        'notes',
+        'number',
+        'supplier_id',
         'status',
+        'total',
+        'note',
     ];
 
-    public function customer()
+    protected $casts = [
+        'total' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
+
+    public function supplier()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
     public function items()

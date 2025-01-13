@@ -4,82 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('active', true)->orderBy('name')->get();
-        $products = Product::where('active', true)
-            ->where('condition', 'new')
-            ->with('category')
-            ->orderBy('name')
-            ->paginate(12);
-
-        return view('shop.index', compact('categories', 'products'));
+        $products = Product::latest()->paginate(12);
+        return view('shop.index', compact('products'));
     }
 
-    public function category(Category $category)
+    public function products()
     {
-        $categories = Category::where('active', true)->orderBy('name')->get();
-        $products = Product::where('active', true)
-            ->where('condition', 'new')
-            ->where('category_id', $category->id)
-            ->with('category')
-            ->orderBy('name')
-            ->paginate(12);
-
-        return view('shop.category', compact('categories', 'category', 'products'));
+        $products = Product::with('category')->latest()->paginate(12);
+        return view('shop.products', compact('products'));
     }
 
     public function product(Product $product)
     {
-        if (!$product->active || $product->condition !== 'new') {
-            abort(404);
-        }
-
         return view('shop.product', compact('product'));
     }
 
-    public function addToCart(Request $request, Product $product)
+    public function adminProducts()
     {
-        $quantity = $request->input('quantity', 1);
-        
-        if (!$product->active || $product->condition !== 'new') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product is not available'
-            ], 400);
-        }
-
-        // Get current cart from session
-        $cart = session()->get('cart', []);
-        
-        // Add/update product in cart
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += $quantity;
-        } else {
-            $cart[$product->id] = [
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => $quantity,
-                'image' => $product->image_path
-            ];
-        }
-        
-        session()->put('cart', $cart);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Product added to cart successfully',
-            'cart_count' => count($cart)
-        ]);
+        $this->authorize('view products');
+        $products = Product::with('category')->latest()->paginate(15);
+        return view('shop.admin.products', compact('products'));
     }
 
-    public function cart()
+    public function adminOrders()
     {
-        $cart = session()->get('cart', []);
-        return view('shop.cart', compact('cart'));
+        $this->authorize('view orders');
+        $orders = Order::with(['customer', 'products'])->latest()->paginate(15);
+        return view('shop.admin.orders', compact('orders'));
+    }
+
+    public function adminCustomers()
+    {
+        $this->authorize('view customers');
+        $customers = Customer::latest()->paginate(15);
+        return view('shop.admin.customers', compact('customers'));
+    }
+
+    public function adminReports()
+    {
+        $this->authorize('view reports');
+        return view('shop.admin.reports');
+    }
+
+    public function adminSettings()
+    {
+        $this->authorize('admin');
+        return view('shop.admin.settings');
     }
 }
